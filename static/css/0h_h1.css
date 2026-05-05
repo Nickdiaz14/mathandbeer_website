@@ -1,0 +1,28 @@
+.red {
+    background: linear-gradient(135deg, #bc2111 0%, #e13712 100%);
+}
+
+.blue {
+    background: linear-gradient(135deg, #551ba5 0%, #0b54e7 100%);
+}
+
+.locked {
+    pointer-events: none;
+}
+
+.blocked {
+    position: relative;
+    pointer-events: none;
+}
+
+.blocked::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("../images/logos/logo_M&B_b.png");
+    background-size: 90%;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.15;
+    pointer-events: none;
+}

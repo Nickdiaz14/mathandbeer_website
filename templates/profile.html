@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, height=device-height">
+    <meta name="google-site-verification" content="prMhJRzxbzY-OPF8pAc3w72jFMuNqcPC9nxMkH_9rQU" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/profile.css">
+    <link rel="icon" type="image/png" href="../static/images/logos/favicon.png">
+    <title>Mi Perfil | Math & Beer</title>
+    <meta name="description" content="Edita tu perfil y compite con tus amigos.">
+    <meta name="robots" content="index, follow">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg menu">
+        <div class="container-fluid">
+            <button onclick="window.location.href='/'" class="navbar-brand"><div class="logo"></div></button>
+            <button class="navbar-toggler menuHamb" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars fa-2xl" style="color: #b6bde7;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="/profile" class="nav-link active" aria-current="page"><i class="fa-solid fa-user"></i> Mi Perfil</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/menu_games" class="nav-link active" aria-current="page"><i class="fa-solid fa-gamepad"></i> Juegos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/leaderboards" class="nav-link active" aria-current="page"><i class="fa-solid fa-ranking-star"></i> Rankings</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/" class="nav-link active" aria-current="page"><i class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
+                </li>
+            </ul>
+            </div>
+        </div>
+        </nav>
+    </header>
+    <main>
+        <!-- Loading state -->
+        <div id="profile-loading" class="profile-loading">
+            <i class="fa-solid fa-spinner fa-spin fa-2x" style="color: var(--accent-beer);"></i>
+            <p class="mt-2">Cargando tu perfil...</p>
+        </div>
+
+        <!-- No account state -->
+        <div id="profile-no-account" class="profile-no-account" style="display:none;">
+            <i class="fa-solid fa-user-slash fa-3x mb-3" style="color: var(--accent-beer);"></i>
+            <h2 class="title fs-3">Aún no tienes cuenta</h2>
+            <p class="small" style="color: var(--text-muted);">Crea un Nickname para desbloquear tu perfil y empezar a participar.</p>
+            <a href="/register" class="profile-cta-btn"><i class="fa-solid fa-rocket me-2"></i>Crear Nickname</a>
+        </div>
+
+        <!-- Profile content -->
+        <div id="profile-content" style="display:none;" class="w-100 displayColumn">
+            <!-- Header card -->
+            <div class="profile-header-card myBg myBorder rounded-4 p-4 shadow-sm">
+                <div class="profile-avatar">
+                    <i class="fa-solid fa-user-astronaut"></i>
+                </div>
+                <h1 id="profile-nick" class="subtitle fs-3 mb-0"></h1>
+                <div class="profile-edit-row">
+                    <button id="edit-nick-btn" class="profile-edit-btn" title="Cambiar nombre">
+                        <i class="fa-solid fa-pen me-1"></i>Cambiar nombre
+                    </button>
+                </div>
+                <!-- Edit nickname form (hidden) -->
+                <div id="edit-nick-form" class="profile-edit-form" style="display:none;">
+                    <input type="text" id="new-nick-input" placeholder="Nuevo nombre" maxlength="20">
+                    <button id="save-nick-btn" class="profile-save-btn"><i class="fa-solid fa-check"></i></button>
+                    <button id="cancel-nick-btn" class="profile-cancel-btn"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <p id="nick-error" class="profile-nick-error" style="display:none;"></p>
+
+                <!-- Badges showcase -->
+                <div id="profile-badges" class="profile-badges mt-3"></div>
+            </div>
+
+            <!-- Stats row -->
+            <div class="profile-stats-row">
+                <div class="profile-stat myBg myBorder rounded-4 p-3 shadow-sm">
+                    <span class="profile-stat-num" id="stat-comments">0</span>
+                    <span class="profile-stat-label"><i class="fa-solid fa-comments me-1"></i>Comentarios</span>
+                </div>
+                <div class="profile-stat myBg myBorder rounded-4 p-3 shadow-sm">
+                    <span class="profile-stat-num" id="stat-brindis">0</span>
+                    <span class="profile-stat-label"><i class="fa-solid fa-beer-mug-empty me-1"></i>Brindis</span>
+                </div>
+                <div class="profile-stat myBg myBorder rounded-4 p-3 shadow-sm">
+                    <span class="profile-stat-num" id="stat-games">0</span>
+                    <span class="profile-stat-label"><i class="fa-solid fa-gamepad me-1"></i>Juegos</span>
+                </div>
+            </div>
+
+            <!-- Records -->
+            <div class="profile-section myBg myBorder rounded-4 p-4 shadow-sm">
+                <h3 class="profile-section-title"><i class="fa-solid fa-trophy me-2"></i>Mis Récords</h3>
+                <div id="profile-records" class="profile-records-list"></div>
+            </div>
+
+            <!-- RSVPs -->
+            <div id="profile-rsvps-section" class="profile-section myBg myBorder rounded-4 p-4 shadow-sm" style="display:none;">
+                <h3 class="profile-section-title"><i class="fa-solid fa-calendar-check me-2"></i>Asistiré a</h3>
+                <div id="profile-rsvps" class="profile-list"></div>
+            </div>
+
+            <!-- Liked talks -->
+            <div id="profile-liked-section" class="profile-section myBg myBorder rounded-4 p-4 shadow-sm">
+                <h3 class="profile-section-title"><i class="fa-solid fa-heart me-2"></i>Charlas con Brindis</h3>
+                <div id="profile-liked" class="profile-list"></div>
+            </div>
+        </div>
+    </main>
+
+    <div class="menu-toggle">
+        <a class="mail" href="mailto:mate.et.cerv@gmail.com?subject=Math and Beer en mi ciudad🍻&body=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre..." aria-label="Enviar correo"><i class="fa-solid fa-envelope"></i></a>
+        <a class="instagram" href="https://www.instagram.com/math_and_beer/#"><i class="fa-brands fa-instagram"></i></a>
+        <a class="whatsapp" href="https://wa.me/+573115709293"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+    <button class="contact"><i class="fa-solid fa-chevron-up"></i></button>
+
+    <script src="../static/scripts/main.js"></script>
+    <script src="../static/scripts/profile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>

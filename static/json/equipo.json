@@ -1,0 +1,27 @@
+[
+    {
+        "person": "Ruth Alejandra Torres Rubiano",
+        "description": "Quien creyó en esta locura y la hizo posible. Con su guía, experiencia y entusiasmo, mantuvo viva la chispa del proyecto y nos recordó que las matemáticas también se enseñan con una sonrisa.",
+        "image": "static/images/about/ruth.jpeg"
+    },
+    {
+        "person": "Nicolás Díaz Guayazana",
+        "description": "El cerebro detrás de la logística y el corazón del evento. Coordina las charlas, habla con los conferencistas y se asegura de que todo fluya. Si quieres participar en Math & Beer, él será tu contacto principal… y probablemente quien te convenza con una buena charla y una mejor historia.",
+        "image": "static/images/about/nicolas.jpg"
+    },
+    {
+        "person": "Blaymi Tatiana Romero López",
+        "description": "Nuestra presentadora estrella y cómplice en cada encuentro. Es la voz, la energía y la sonrisa que le da ritmo a Math & Beer. Siempre lista para animar al público, acompañar al equipo y hacer que cada sesión se sienta como una conversación entre amigos.",
+        "image": "static/images/about/blaymi.jpeg"
+    },
+    {
+        "person": "Juan José Escorcia",
+        "description": "El paparazzi oficial del proyecto. Siempre está detrás de la cámara capturando el mejor ángulo, el mejor brindis y las caras más concentradas durante una charla. Gracias a él, cada encuentro de Math & Beer queda inmortalizado, incluso esos momentos que preferirías no recordar.",
+        "image": "static/images/about/pan.jpeg"
+    },
+    {
+        "person": "Karla Violeta Ruiz Vargas",
+        "description": "Convierte ideas locas en afiches brillantes y hace que Math & Beer se vea tan bien como suena. Si viste un poster y te dieron ganas de venir, probablemente fue culpa suya. Diseña todo, desde los posters hasta las excusas para tomarse otra cerveza.",
+        "image": "static/images/about/violeta.jpeg"
+    }
+]

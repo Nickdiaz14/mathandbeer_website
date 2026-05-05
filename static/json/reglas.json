@@ -1,0 +1,48 @@
+[
+    {
+        "0h-h1": {
+            "summary": "Debes llenar todo el tablero con rojos y azules cumpliendo las siguientes reglas y respetando la condición inicial dada",
+            "rules": {
+                "r1": "El tablero debe estar lleno.",
+                "r2": "Cada fila y columna debe tener la misma cantidad de rojos que azules.",
+                "r3": "No pueden haber tres del mismo color seguidos ni en filas ni en columnas.",
+                "r4": "No pueden haber dos filas o columnas iguales."
+            }
+        },
+        "knight": {
+            "summary": "Mueve el caballo desde su posición inicial para capturar las 5 celdas rojas en el menor número de saltos y tiempo posible.",
+            "rules": {
+                "r1": "El caballo se mueve exclusivamente en 'L' (dos casillas en una dirección y una en perpendicular).",
+                "r2": "Debes visitar las 5 celdas rojas; el orden es libre, pero el objetivo es la eficiencia.",
+                "r3": "No es necesario detenerse en celdas intermedias que no sean objetivo, a menos que sea parte del camino.",
+                "r4": "El juego termina cuando la última celda roja es alcanzada."
+            }
+        },
+        "unicolor": {
+            "summary": "Pon a prueba tu memoria espacial replicando patrones de colores en una cuadrícula 6x6 antes de que el tiempo se agote.",
+            "rules": {
+                "r1": "Fase de Observación: Se muestra un patrón de celdas durante 3 segundos.",
+                "r2": "Fase de Acción: Tienes 8 segundos para marcar todas las celdas del patrón.",
+                "r3": "Interacción: Un clic en la celda correcta la marca, un clic en una celda incorrecta te hace perder.",
+                "r4": "Precisión: El patrón debe ser exacto, de lo contrario pierdes el juego."
+            }
+        },
+        "bicolor": {
+            "summary": "Pon a prueba tu memoria espacial replicando patrones de colores en una cuadrícula 5x5 antes de que el tiempo se agote.",
+            "rules": {
+                "r1": "Fase de Observación: Se muestra un patrón con dos colores distintos durante 3 segundos.",
+                "r2": "Fase de Acción: Tienes 8 segundos para replicar la disposición exacta de colores.",
+                "r3": "Interacción: Cada clic en una celda correcta alterna los colores disponibles, un clic en una celda incorrecta te hace perder.",
+                "r4": "Precisión: El patrón debe ser exacto, de lo contrario pierdes el juego."
+            }
+        },
+        "cuentamania": {
+            "summary": "Pon a prueba tu agudeza visual y velocidad de reacción seleccionando los números en orden ascendente en el menor tiempo posible.",
+            "rules": {
+                "r1": "El jugador debe presionar las celdas siguiendo la secuencia numérica estricta (1, 2, 3...) hasta completar el tablero.",
+                "r3": "Si se presiona un número fuera de orden, perderás automáticamente el juego.",
+                "r4": "Se el más rápido en completar el tablero."
+            }
+        }
+    }
+]

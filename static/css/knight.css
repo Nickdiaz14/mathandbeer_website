@@ -1,0 +1,27 @@
+.black {
+    background: linear-gradient(135deg, #2e2b2a 0%, #000000 100%);
+}
+
+.white {
+    background: linear-gradient(135deg, #fefefe 0%, #e2d7b5 100%);
+}
+
+.red {
+    background: linear-gradient(135deg, #bc2111 0%, #e13712 100%);
+}
+
+.locked {
+    pointer-events: none;
+}
+
+.horse::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("../images/in game/knight.png");
+    background-size: 90%;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 1;
+    pointer-events: none;
+}

@@ -1,0 +1,49 @@
+name: Sincronizar Fotos desde Drive
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Instalar dependencias
+        run: pip install -r github_actions_requirements.txt
+
+      - name: Correr script de descarga
+        run: python sync_images.py
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_PORT: "6543"
+
+      - name: Subir cambios al repositorio
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+          # Agregamos TODA la carpeta de imágenes, sin importar la extensión
+          git add static/images/events/
+
+          # Verificamos si hay algo nuevo
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Auto: Sincronización completa de imágenes (JPG y WEBP)"
+            git push
+          else
+            echo "No se detectaron archivos nuevos."
+          fi

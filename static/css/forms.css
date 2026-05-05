@@ -1,0 +1,196 @@
+main {
+    margin: 0;
+}
+
+html,
+body {
+    height: 100%;
+    margin-top: 10%;
+    padding: 0;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #15003e;
+    font-family: "Rubik", sans-serif;
+    box-sizing: border-box;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+h1 {
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.background-logo {
+    pointer-events: none;
+    animation: float 10s ease-in-out infinite;
+    position: absolute;
+    opacity: 0.05;
+    z-index: 0;
+}
+
+form {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    width: 87%;
+    overflow-y: auto;
+    height: 85%;
+}
+
+/* Scrollbar personalizado para el formulario */
+form::-webkit-scrollbar {
+    width: 8px;
+}
+
+form::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+form::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+}
+
+form::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+label {
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.opcion-multiple {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    gap: 10px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.opcion-multiple:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    /* se aclara al pasar el mouse */
+}
+
+.opcion-multiple input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #00d4ff;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea {
+    width: 98%;
+    padding: 10px;
+    margin: 10px 0 20px 0;
+    border: 2px solid #4a4949;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 16px;
+}
+
+label.titulo-pregunta {
+    font-weight: bold;
+    font-size: 1.2em;
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+textarea {
+    resize: none;
+}
+
+button {
+    background-color: #00c09d;
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    font-size: 16px;
+    margin-top: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #2ca893;
+}
+
+/* Estilo para la sección de estrellas */
+.rating {
+    display: flex;
+    justify-content: center;
+    margin: 5px 0;
+}
+
+.rating img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.rating img.active {
+    opacity: 1;
+
+}
+
+.rating input[type="radio"] {
+    opacity: 0;
+    position: relative;
+    left: 60px;
+    top: 0px;
+}
+
+.rating label img {
+    opacity: 0.5;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.rating input[type="radio"]:checked+label img {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-items: center;
+    color: white;
+    font-size: 15vw;
+    font-family: 'Rubik', sans-serif;
+    z-index: 1000;
+}

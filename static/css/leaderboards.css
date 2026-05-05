@@ -1,0 +1,72 @@
+.game_select {
+    background: var(--primary-gradient-text);
+    padding: 2px;
+    font-size: 3vh;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 3px;
+    margin: 4vw 0 0 0;
+    font-size: 26px;
+}
+
+.game_select:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.leaderboard {
+    width: 85%;
+    background: rgba(50, 14, 67, 0.445);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(9.5px);
+    -webkit-backdrop-filter: blur(9.5px);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard h2 {
+    background: var(--primary-gradient-text);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 100%;
+    text-align: center;
+}
+
+.leaderboard table {
+    width: 90%;
+    border-collapse: collapse;
+}
+
+.leaderboard th,
+.leaderboard td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    color: white;
+    font-family: 'Inter', sans-serif;
+}
+
+.leaderboard th {
+    background: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+}
+
+.leaderboard tr:hover {
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.record_count {
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: .8rem;
+    text-align: center;
+    margin: 0;
+    float: left;
+}

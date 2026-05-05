@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="prMhJRzxbzY-OPF8pAc3w72jFMuNqcPC9nxMkH_9rQU" />
+    <meta name="viewport" content="width=device-width height=device-height, initial-scale=0.8">
+    <link rel="icon" type="image/png" href="../static/images/logos/favicon.png">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/menu.css">
+    <link rel="stylesheet" href="../static/css/forms.css">
+    <title>Asistencia | Math & Beer</title>
+    <meta name="description" content="Formulario de asistencia para Math & Beer">
+    <meta name="robots" content="noindex">
+</head>
+
+<body>
+    <main>
+    <div id="overlay">
+        <label id="overlay-label" style="font-size: 33px; margin-bottom: 20px; text-align: center;"></label>
+        <div id="overlay-buttons"></div>
+    </div>
+    <div style="margin-top: 4vh;"><h1 class="title">Asistencia<br>Math & Beer</h1></div>
+    
+
+    <form id="your-form-id" onsubmit="submitForm(event)" style="margin-bottom: 10px;">
+        <label class="titulo-pregunta">Nombre Completo <span style="color: red;">*</span></label>
+        <input type="text" name="nombre_completo" required><br>
+
+        <label class="titulo-pregunta">Sexo <span style="color: red;">*</span></label>
+        <div class="opcion-multiple">
+            <input type="radio" name="sexo" value="Masculino">
+            <label>Masculino</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="sexo" value="Femenino">
+            <label>Femenino</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="sexo" value="Otro" required>
+            <label>Otro</label>
+        </div>
+
+        <label class="titulo-pregunta">Tipo de documento <span style="color: red;">*</span></label>
+        <div class="opcion-multiple">
+            <input type="radio" name="tipo_doc" value="CC">
+            <label>Cédula de Ciudadanía</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="tipo_doc" value="TI">
+            <label>Tarjeta de Identidad</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="tipo_doc" value="CE">
+            <label>Cédula de Extranjería</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="tipo_doc" value="PA">
+            <label>Pasaporte</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="tipo_doc" value="Otro" required>
+            <label>Otro</label>
+        </div>
+
+        <label class="titulo-pregunta">Número de documento <span style="color: red;">*</span></label>
+        <input type="number" name="numero_doc" required><br>
+
+        <label class="titulo-pregunta">Edad <span style="color: red;">*</span></label>
+        <div class="opcion-multiple">
+            <input type="radio" name="edad" value="Menor de 18">
+            <label>Menor de 18</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="edad" value="18 - 25">
+            <label>18 - 25</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="edad" value="26 - 35">
+            <label>26 - 35</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="edad" value="36 - 50">
+            <label>36 - 50</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="edad" value="51 - 65">
+            <label>51 - 65</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="edad" value="Mayor de 65" required>
+            <label>Mayor de 65</label>
+        </div>
+
+        <label class="titulo-pregunta">Correo Electrónico <span style="color: red;">*</span></label>
+        <input type="email" name="correo_electronico" required><br>
+
+        <label class="titulo-pregunta">Ciudad del Evento <span style="color: red;">*</span></label>
+        <div class="opcion-multiple" onclick="toggleCiudad(true)">
+            <input type="radio" name="ciudad" value="Bogotá">
+            <label>Bogotá</label>
+        </div>
+        <div class="opcion-multiple" onclick="toggleCiudad(false)">
+            <input type="radio" name="ciudad" value="Cali">
+            <label>Cali</label>
+        </div>
+        <div class="opcion-multiple" onclick="toggleCiudad(false)">
+            <input type="radio" name="ciudad" value="Barranquilla" required>
+            <label>Barranquilla</label>
+        </div>
+
+        <label class="titulo-pregunta">Rol del Asistente <span style="color: red;">*</span></label>
+        <div class="opcion-multiple">
+            <input type="radio" name="rol" value="Asistente ocasional">
+            <label>Asistente ocasional</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="rol" value="Estudiante">
+            <label>Estudiante</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="rol" value="Egresado">
+            <label>Egresado</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="rol" value="Docente" required >
+            <label>Docente</label>
+        </div>
+
+        <div  id="ciudad-field" style="display: none;">
+        <label class="titulo-pregunta">¿Pertenece a la comunidad konradista? <span style="color: red;">*</span></label>
+        <div class="opcion-multiple" onclick="toggleKonradista(true)">
+            <input type="radio" name="konradista" value="Si" class="input-condicional-ciudad">
+            <label>Sí</label>
+        </div>
+        <div class="opcion-multiple" onclick="toggleKonradista(false)">
+            <input type="radio" name="konradista" value="No" class="input-condicional-ciudad" required>
+            <label>No</label>
+        </div>
+        </div>
+
+        <div id="carrera-field" style="display: none;">
+            <label class="titulo-pregunta">¿Qué carrera estudiaste o estudias?<span style="color: red;">*</span></label>
+            <div class="opcion-multiple">
+                <input type="radio" name="carrera" value="Matemáticas" class="input-condicional-carrera">
+                <label>Matemáticas</label>
+            </div>
+            <div class="opcion-multiple">
+                <input type="radio" name="carrera" value="Ingeniería de Sistemas" class="input-condicional-carrera">
+                <label>Ingeniería de Sistemas</label>
+            </div>
+            <div class="opcion-multiple">
+                <input type="radio" name="carrera" value="Ingeniería Industrial" class="input-condicional-carrera">
+                <label>Ingeniería Industrial</label>
+            </div>
+            <div class="opcion-multiple">
+                <input type="radio" name="carrera" value="Marketing" class="input-condicional-carrera">
+                <label>Marketing</label>
+            </div>
+            <div class="opcion-multiple">
+                <input type="radio" name="carrera" value="Administración de Negocios Internacionales" class="input-condicional-carrera">
+                <label>Administración de Negocios Internacionales</label>
+            </div>
+            <div class="opcion-multiple">
+                <input type="radio" name="carrera" value="Psicología" class="input-condicional-carrera">
+                <label>Psicología</label>
+            </div>
+            <div class="opcion-multiple">
+                <input type="radio" name="carrera" value="Tecnología en desarrollo de software" class="input-condicional-carrera">
+                <label>Tecnología en desarrollo de software</label>
+            </div>
+            <div class="opcion-multiple">
+                <input type="radio" name="carrera" value="Administración de Empresas" class="input-condicional-carrera">
+                <label>Administración de Empresas</label>
+            </div>
+            <div class="opcion-multiple">
+                <input type="radio" name="carrera" value="Administración en Seguridad y Salud en el Trabajo" class="input-condicional-carrera">
+                <label>Administración en Seguridad y Salud en el Trabajo</label>
+            </div>
+            <div class="opcion-multiple">
+                <input type="radio" name="carrera" value="Escuela de Posgrados" class="input-condicional-carrera">
+                <label>Escuela de Posgrados</label>
+            </div>
+
+            <input type="radio" name="carrera" value="No aplica" id="carrera-default" style="display: none;" class="input-condicional-carrera" checked>
+        </div>
+
+        <label class="titulo-pregunta">¿Qué te pareció el contenido y desarrollo del evento? <span style="color: red;">*</span></label>
+        <label>¡Califícalo del 1 al 5!</label>
+        <div class="rating">
+            <div>
+                <input type="radio" name="calificacion" value="1" id="star1" required>
+                <label for="star1"><img src="/static/images/logos/logo_M&B_b.png" style="width: 60px; height: 60px;" alt="1 estrella" onclick="updateRating(1)"></label>
+            </div>
+            <div>
+                <input type="radio" name="calificacion" value="2" id="star2" required>
+                <label for="star2"><img src="/static/images/logos/logo_M&B_b.png" style="width: 60px; height: 60px;" alt="2 estrella" onclick="updateRating(2)"></label>
+            </div>
+            <div>
+                <input type="radio" name="calificacion" value="3" id="star3" required>
+                <label for="star3"><img src="/static/images/logos/logo_M&B_b.png" style="width: 60px; height: 60px;" alt="3 estrella" onclick="updateRating(3)"></label>
+            </div>
+            <div>
+                <input type="radio" name="calificacion" value="4" id="star4" required>
+                <label for="star4"><img src="/static/images/logos/logo_M&B_b.png" style="width: 60px; height: 60px;" alt="4 estrella" onclick="updateRating(4)"></label>
+            </div>
+            <div>
+                <input type="radio" name="calificacion" value="5" id="star5" required>
+                <label for="star5"><img src="/static/images/logos/logo_M&B_b.png" style="width: 60px; height: 60px;" alt="5 estrella" onclick="updateRating(5)"></label>
+            </div>
+        </div>
+        <input type="hidden" name="calificacion" id="calificacion">
+
+        <label class="titulo-pregunta">¿Quieres que te invitemos a nuestras próximas ediciones de Math&Beer? <span style="color: red;">*</span></label>
+        <div class="opcion-multiple">
+            <input type="radio" name="futuros_eventos" value="¡Por supuesto!">
+            <label>¡Por supuesto!</label>
+        </div>
+        <div class="opcion-multiple">
+            <input type="radio" name="futuros_eventos" value="No, gracias." required>
+            <label>No, gracias.</label>
+        </div>
+
+        <label class="titulo-pregunta">¿Tienes algún comentario o recomendación?</label>
+        <label>Tu opinión es muy importante y nos ayuda a mejorar.</label>
+        <textarea name="comentario" rows="2" placeholder="Escribe tus comentarios aquí..."></textarea><br>
+        <button id="enviar" type="submit">Enviar</button>
+    </form>
+      </main>
+      <script src="../static/scripts/forms.js"></script>
+</body>
+</html>

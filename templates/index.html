@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="prMhJRzxbzY-OPF8pAc3w72jFMuNqcPC9nxMkH_9rQU" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, height=device-height">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/about.css">
+    <link rel="stylesheet" href="../static/css/blog.css">
+    <link rel="stylesheet" href="../static/css/profile.css">
+    <link rel="icon" type="image/png" href="../static/images/logos/favicon.png">
+    <title>Sobre Nosotros | Math & Beer</title>
+    <meta name="description" content="Conoce más sobre Math & Beer, un proyecto que busca divulgar las matemáticas de una manera divertida y accesible. Si quieres llevar Math & Beer a tu ciudad, no dudes en contactarnos.">
+    <meta name="robots" content="index, follow">
+</head>
+<body data-proxima = '{{ proxima | safe }}''>
+    <header>
+        <nav class="navbar navbar-expand-lg menu">
+        <div class="container-fluid">
+            <button onclick="window.location.href='/'" class="navbar-brand"><div class="logo"></div></button>
+            <button class="navbar-toggler menuHamb" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars fa-2xl" style="color: #b6bde7;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="/profile" class="nav-link active" aria-current="page"><i class="fa-solid fa-user"></i> Mi Perfil</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/menu_games" class="nav-link active" aria-current="page"><i class="fa-solid fa-gamepad"></i> Juegos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/leaderboards" class="nav-link active" aria-current="page"><i class="fa-solid fa-ranking-star"></i> Rankings</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-people-group"></i> Sobre Nosotros
+                    </button>
+                    <ul class="dropdown-menu myBg myWidth">
+                        <li class="nav-item">
+                            <button onclick="window.location.href='#Inicio'" class="nav-link active" aria-current="page">
+                                <i class="fa-solid fa-circle-info"></i> ¿Qué es Math & Beer?
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button onclick="location.href='#Charlas'" class="nav-link active" aria-current="page">
+                                <i class="fa-solid fa-comment"></i> Charlas
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button onclick="location.href='#Nosotros'" class="nav-link active" aria-current="page">
+                                <i class="fa-solid fa-people-group"></i> ¿Quién está detrás de esto?
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button onclick="location.href='#Ciudad'" class="nav-link active" aria-current="page">
+                                <i class="fa-solid fa-map-location-dot"></i> Lleva Math & Beer a tu ciudad
+                            </button>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</header>
+
+<main>
+
+    <hr id="Inicio">
+    <h1 class="title">¿Qué es Math &amp; Beer?</h1>
+    <hr>
+    <section class="about-section">
+        <!-- Bloque 1 -->
+        <div class="mb-5 w-100 w-md-75 mx-auto">
+            <div class="row mx-auto">
+                <div class="col-xxl-5 mt-4 mt-md-0 align-self-center">
+                    <h3 class="subtitle fw-semibold fs-3 mb-2 subtitle">Una idea simple <br> Una comunidad enorme</h3>
+                    <div class="about_text displayColumn">
+                        <p class="lh-lg small">
+                            <strong>Math & Beer</strong> nació de una idea tan simple como poderosa: sacar las matemáticas del aula y llevarlas a un espacio donde cualquiera pudiera disfrutarlas sin miedo ni formalismos.
+                        </p>
+                        <p class="lh-lg small">
+                            Todo comenzó en la <strong>Fundación Universitaria Konrad Lorenz</strong>, cuando <strong>Carlos Díez</strong> y un grupo de estudiantes inspirados por <em>Astronomy on Tap</em> se preguntaron: 
+                            ¿por qué no hacer lo mismo con las matemáticas?
+                        </p>
+                    </div>
+                </div>
+                <div class="col-xxl-7">
+                    <img src="../static/images/about/incios.jpg" class="img-fluid rounded shadow-sm mb-3 mt-3 about-img  img-max-w" alt="Inicio de Math & Beer">
+                </div>
+            </div>
+        </div>
+
+        <!-- Bloque 2 -->
+        <div class="mb-5 w-100 w-md-75 mx-auto">
+            <div class="row mx-auto">
+                <div class="col-xxl-5 order-1 order-xxl-2 mt-4 mt-md-0 align-self-center">
+                    <h3 class="subtitle fw-semibold fs-3">El primer <br>brindis matemático</h3>
+                    <div class="about_text displayColumn">
+                        <p class="lh-lg small">
+                            La primera edición se realizó en <em>A Seis Manos</em> y reunió a profesores, estudiantes y curiosos dispuestos a descubrir otro lado de la matemática.
+                        </p>
+                        <p class="lh-lg small">
+                            Fue una noche de risas, reflexión y asombro: el inicio de una comunidad que entendió que los números también pueden compartirse con una cerveza en mano.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-xxl-7 order-2 order-xxl-1">
+                    <img src="../static/images/about/charla_1.jpg" class="img-fluid rounded shadow-sm mb-3 mt-3 about-img img-max-w" alt="Inicio de Math & Beer">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bloque 3 -->
+        <div class="mb-5 w-100 w-md-75 mx-auto">
+            <div class="row mx-auto">
+                <div class="col-xxl-5 mt-4 mt-md-0 align-self-center">
+                    <h3 class="subtitle fw-semibold fs-4 mb-2">Un encuentro que sigue creciendo</h3>
+                    <div class="about_text displayColumn">
+                        <p class="lh-lg small">
+                            Desde 2022, <strong>Math & Beer</strong> se ha consolidado como un encuentro mensual donde las matemáticas se mezclan con la vida cotidiana, el humor y la curiosidad.
+                        </p>
+                        <p class="lh-lg small">
+                            Hemos explorado temas que van desde el arte y la música hasta la inteligencia artificial y la teoría de juegos, llevando nuestras sesiones a distintas universidades del país y participando como ponentes en el Congreso Colombiano de Matemáticas.
+                        </p>
+                        <blockquote class="displayColumn text-center my-3">
+                            <p class="fst-italic small">“Cada número cuenta una historia —y cada historia comienza con un brindis.”</p>
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="col-xxl-7">
+                    <img src="../static/images/about/charla_2.jpg" class="img-fluid rounded shadow-sm mb-3 mt-3 about-img img-max-w" alt="Inicio de Math & Beer">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bloque 4 -->
+        <div class="text-center myBg myBorder rounded-4 p-2 shadow-sm w-75 mx-auto">
+            <h3 class="subtitle fw-semibold mb-3 fs-3 mt-2">Un proyecto que inspira</h3>
+            <div class="about_text displayColumn">
+                <p class="lh-lg fs-6">
+                    Lo que comenzó como una idea curiosa hoy es una tradición esperada. 
+                    El proyecto fue presentado en el <em>Congreso Colombiano de Matemáticas</em> como un modelo innovador de divulgación científica, 
+                    y pronto llegará a más universidades y ciudades.
+                </p>
+            </div>
+            
+            <div class="d-flex justify-content-around mt-4 small">
+                <div class="about_text displayColumn">
+                    <h2 class="subtitle fw-bold m-0 counter">{{ n_charlas }}</h2>
+                    <p>Charlas</p>
+                </div>
+                <div class="about_text displayColumn">
+                    <h2 class="subtitle fw-bold m-0 counter">{{ charlas|length -1 }}</h2>
+                    <p>Años</p>
+                </div>
+                <div class="about_text displayColumn">
+                    <h2 class="subtitle fw-bold m-0 counter">3</h2>
+                    <p>Ciudades</p>
+                </div>
+            </div>
+            <div class="about_text displayColumn">
+                <p class="mt-3 fs-6">
+                    <strong>Únete a la experiencia:</strong> trae tu bebida favorita y deja que las matemáticas te sorprendan.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    {% if proxima %}
+        <hr id="Futuras">
+        <h2 class="title">Próximas charlas</h2>
+        <hr>
+        <div class="about_text displayColumn">
+            <p class="small lh-lg">
+                ¡La ciencia no se detiene! Acompañanos en nuestras siguientes sesiones para brindar y aprender sobre modelos matemáticos, datos y tecnología.
+            </p>
+        </div>
+        <div id="contenedor-dinamico" class="upcoming-grid mx-auto"></div>
+
+        <!-- Suscripción integrada en la sección de próximas charlas -->
+        <div class="text-center myBg myBorder rounded-4 p-4 shadow-sm upcoming-subscribe-box mx-auto mt-2">
+            <p class="subtitle fs-5 mb-1"><i class="fa-solid fa-bell me-2"></i>¿No quieres perderte nada?</p>
+            <p class="small" style="color: var(--text-muted);">Regístrate y te avisamos cuando haya una nueva charla.</p>
+            <form id="subscribe-form" class="subscribe-inline-form">
+                <input type="text" id="subscribe-name" placeholder="Tu nombre (opcional)" autocomplete="name">
+                <input type="email" id="subscribe-email" placeholder="Tu correo electrónico" required autocomplete="email">
+                <button type="submit" id="subscribe-btn"><i class="fa-solid fa-paper-plane me-1"></i>Suscribirme</button>
+            </form>
+        </div>
+    {% endif %}
+
+    <hr id="Charlas">
+    <h2 class="title">Charlas pasadas</h2>
+    <hr>
+    <div class="about_text displayColumn">
+        <p class="lh-lg small">En cada encuentro de <strong>Math & Beer</strong>, las matemáticas se convierten en historias que despiertan la curiosidad y el asombro. Nuestras charlas son el corazón del proyecto: espacios donde las ideas fluyen entre risas, preguntas y cervezas, y donde descubrimos que detrás de cada número hay una historia que vale la pena contar. Aquí encontrarás un recorrido por todas las ediciones que hemos realizado, con temas que van desde los clásicos teoremas hasta las conexiones más inesperadas entre el arte, la tecnología, la música y la vida cotidiana.</p>
+    </div>
+    <!-- Acordeón -->
+    <div class="accordion displayColumn" id="accordionExample">
+        {% for year, lista in charlas.items() %}
+        <div class="accordion-item myBorder myBg displayColumn">
+            <h2 class="accordion-header myBg w-100">
+                <button class="accordion-button collapsed myBg text-light"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#y{{year}}"
+                aria-expanded="false"
+                aria-controls="y{{year}}">
+                {{year}}
+            </button>
+        </h2>
+        
+        <div id="y{{year}}" class="accordion-collapse collapse displayColumn" data-bs-parent="#accordionExample">
+            <div class="accordion-body yearBox">
+                
+                {% for c in lista %}
+                <!-- Tarjeta -->
+                <div class="card mb-3 myCard">
+                    <div class="row g-0">
+                        <div class="col-xxl-4 w-50">
+                            <img src="/static/images/events/{{ c.id }}.webp" loading="lazy" class="img-fluid rounded-start" alt="{{ c.title }}">
+                        </div>
+                        
+                        <div class="col-xxl-8 w-50 myCardBody">
+                            <div class="card-body myCardBody">
+                                <h2 class="card-title fs-7">{{ c.title }}</h2>
+                                <p class="card-text"><small class="text-muted">{{ c.speaker }}</small></p>
+                            </div>
+                            <div class="card-footer displayColumn">
+                                <button class="btn btn-outline-info btn-sm mt-auto w-100" data-bs-toggle="modal" data-bs-target="#modal{{ loop.index }}{{ year }}">
+                                    Ver detalles
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="modal{{ loop.index }}{{ year }}" tabindex="-1" aria-hidden="true" data-event-id="{{ c.id }}">
+                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                        <div class="modal-content bg-dark text-light overflow-auto">
+                            <div class="modal-header">
+                                <h2 class="subtitle fs-5">{{ c.title }}</h2>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" style="float: left;"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-xxl-5">
+                                        <img src="/static/images/events/{{ c.id }}.webp" loading="lazy" class="img-fluid rounded mb-3">
+                                        <p class="mb-1"><strong><i class="fa-solid fa-user-tie me-2"></i></strong> {{ c.speaker }}</p>
+                                        <p class="mb-1"><strong><i class="fa-solid fa-calendar-day me-2"></i></strong> {{ c.date }}</p>
+                                        <p class="mb-3"><strong><i class="fa-solid fa-location-dot me-2"></i></strong> {{ c.place }}</p>
+                                        <a href="{{ c.video }}" class="btn btn-video w-100 mb-2">Ver Video</a>
+                                    </div>
+                                    <div class="col-xxl-7">
+                                        <h6>Resumen:</h6>
+                                        {% for ndx, parrafo in c.summary.items() %}
+                                        <p class="small text-light-50">{{ parrafo }}</p>
+                                        {% endfor %}
+                                        <!-- Reacción -->
+                                        <div class="blog-section mt-3">
+                                            <button class="blog-react-btn" data-reacted="0" title="Brinda por esta charla">
+                                                <span>🍻</span>
+                                                <span class="blog-react-count">0</span>
+                                                Brindis
+                                            </button>
+                                        </div>
+                                        <!-- Comentarios -->
+                                        <div class="blog-section">
+                                            <p class="blog-section-title"><i class="fa-solid fa-comments me-1"></i>Comentarios</p>
+                                            <div class="blog-comments-list"></div>
+                                            <div class="blog-input-row">
+                                                <textarea class="blog-comment-input" rows="1" placeholder="Escribe un comentario... (Enter para enviar)"></textarea>
+                                                <button class="blog-send-btn" title="Enviar"><i class="fa-solid fa-paper-plane"></i></button>
+                                            </div>
+                                            <p class="blog-login-hint">Solo usuarios con <a href="/register" class="blog-nick-link">Nickname</a> pueden comentar.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+<hr id="Nosotros">
+<h2 class="title">El equipo</h2>
+<hr>
+<div class="about_text displayColumn">
+    <p>Detrás de Math & Beer hay un grupo de estudiantes, egresados y profesores que creemos que las ideas también se disfrutan mejor en compañía. Nos une la curiosidad, las ganas de compartir conocimiento y la convicción de que la matemática puede ser parte de una buena conversación. Cada encuentro es el resultado de trabajo en equipo, creatividad y mucha pasión por hacer que las matemáticas salgan del papel para encontrarse con la gente.</p>
+    <p>Detrás de cada charla, cada idea y cada cerveza compartida, hay un equipo que trabaja para que todo cobre sentido. Conoce al equipo que da vida a Math & Beer:</p>
+    <div id="carouselExampleInterval" class="carousel slide w-100 mt-4 mb-4" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for m in miembros %}
+            {% if loop.index == 1 %}
+            <div class="carousel-item active" data-bs-interval="500000">
+            {% else %}
+            <div class="carousel-item" data-bs-interval="500000">
+            {% endif %}
+                <div class="displayColumn">
+                    <div class="card myBorder mb-3 myBg myPersonalInfo w-md-50">
+                        <div class="card-header">
+                            <h4 class="subtitle fs-4 mb-2">{{ m.person }}</h4>
+                        </div>
+                        <div class="card-body mx-auto text-center">
+                            <div class="row">
+                                <div class="game-card mx-auto text-center col-xxl-4 align-self-center">
+                                    <img src="{{ m.image }}" loading="lazy" class="rounded-circle mb-3 shadow" style="width: 200px; height: 200px; object-fit: cover; border: 3px solid var(--accent-beer);">
+                                </div>
+                                <div class="game-card mx-auto text-center col-xxl-8 align-self-center">
+                                    <div class="displayColumn">
+                                        <p class="lh-lg fs-6">{{ m.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <hr id="Ciudad">
+    <h2 class="title">¿Llevarlo a tu ciudad?</h2>
+    <hr>
+    <div class="row w-md-75 w-100">
+        <div class="col-xxl-6">
+            <div class=" about_text displayColumn">
+                <p class="lh-lg fs-6">Estamos buscando personas apasionadas por la divulgación, la cultura y la buena conversación. Gente curiosa, con iniciativa y con ganas de construir espacios donde las matemáticas se compartan sin miedo y con una sonrisa.</p>
+                <p class="lh-lg fs-6">Si decides postularte, serás el corazón del proyecto en tu ciudad.</p>
+            </div>
+        </div>
+        <div class="col-xxl-6">
+            <div class="myBg myBorder rounded-4 p-4 shadow-sm about_text displayColumn">
+                <p class="lh-lg fs-6">Para hacer esto realidad solo debes realizar los siguientes pasos:</p>
+                <ol>
+                    <li class="lh-lg fs-6">Contáctanos por redes sociales (abajo a la derecha 👇).</li>
+                    <li class="lh-lg fs-6">Completa el <a href="https://forms.office.com/r/sPQb5pxJ9d" class="text-warning fw-bold">formulario con tu propuesta</a> y ultimemos detalles.</li>
+                    <li class="lh-lg fs-6">¡Brindemos por la ciencia en tu ciudad!</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    </main>
+    
+    <div class="menu-toggle">
+        <a class="mail" href="mailto:mate.et.cerv@gmail.com?subject=Math and Beer en mi ciudad🍻&body=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre..." aria-label="Enviar correo"><i class="fa-solid fa-envelope"></i></a>
+        <a class="instagram" href="https://www.instagram.com/math_and_beer/#"><i class="fa-brands fa-instagram"></i></a>
+        <a class="whatsapp" href="https://wa.me/+573115709293"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+    
+    <button class="contact"><i class="fa-solid fa-chevron-up"></i></button>
+    {% if proxima %}
+    <button class="new_events" id="new_events" onclick="location.href='#Futuras'"><i class="fa-solid fa-exclamation"></i></button>
+    {% endif %}
+    <script src="../static/scripts/main.js"></script>
+    <script src="../static/scripts/new_events.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="../static/scripts/blog.js"></script>
+</body>
+</html>
+

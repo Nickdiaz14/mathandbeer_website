@@ -1,0 +1,145 @@
+* {
+    touch-action: manipulation;
+}
+
+/*-----Interfaz-----*/
+.game_info,
+.back,
+.recharge {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgb(50, 14, 67);
+    border: 1px solid rgba(155, 76, 228, 0.3);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #b6bde7;
+}
+
+.game_info {
+    bottom: 15px;
+}
+
+.back {
+    bottom: 15px;
+    left: 15px;
+}
+
+.recharge {
+    bottom: 15px;
+    right: 15px;
+}
+
+.popover-body {
+    background-color: var(--myBg);
+    border: 1px solid var(--myBorder);
+    border-radius: 5px;
+    color: #ffffff !important;
+}
+
+/*-----Matriz-----*/
+.matrix {
+    border-collapse: separate;
+    border-spacing: 7px;
+}
+
+.grey,
+.red,
+.blue,
+.black,
+.white {
+    position: relative;
+    height: 100px;
+    width: 100px;
+    border-radius: 15%;
+    outline: 0.5px solid var(--myBorder);
+    color: #ffffff;
+    transition: all 180ms ease-in-out;
+    transform: scale(1);
+}
+
+.grey {
+    background: var(--matrix-cell-color);
+    text-align: center;
+    font-size: 24px;
+}
+
+.z-3 {
+    height: 120px;
+    width: 120px;
+}
+
+.z-5 {
+    height: 80px;
+    width: 80px;
+}
+
+.z-6 {
+    height: 73px;
+    width: 73px;
+}
+
+.z-8 {
+    height: 55px;
+    width: 55px;
+}
+
+.z-10 {
+    height: 40px;
+    width: 40px;
+}
+
+.cell_alert {
+    border: 3px solid white;
+    box-sizing: border-box;
+}
+
+.cells_no_hit {
+    border: 3px solid rgb(204, 0, 0);
+    box-sizing: border-box;
+}
+
+.cells_hit {
+    border: 3px solid rgb(24, 159, 0);
+    box-sizing: border-box;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.shake-it {
+    animation: shake 0.5s;
+    animation-iteration-count: 1;
+}
+
+main {
+    margin-top: 3vh;
+}
+
+@media (min-width: 768px) {
+    main {
+        margin-top: 0;
+    }
+}

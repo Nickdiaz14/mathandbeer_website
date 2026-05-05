@@ -1,0 +1,184 @@
+.about_text p {
+    text-align: justify;
+    line-height: 1.6;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: min(4vw, 18px);
+    max-width: 87%;
+    hyphens: auto;
+}
+
+.about_text h2 {
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 200%;
+    margin-top: 4vh;
+    margin-bottom: 2vh;
+}
+
+.about_text ol {
+    color: white;
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    font-size: min(4vw, 18px);
+    margin-bottom: 1vh;
+    max-width: 90%;
+    hyphens: auto;
+}
+
+.about-img {
+    --img-width: 90%;
+    width: var(--img-width);
+    margin: 0 calc((100% - var(--img-width))/2);
+}
+
+.img-max-w {
+    max-width: 100% !important;
+}
+
+.myBg {
+    background: var(--myBg) !important;
+}
+
+.yearBox {
+    background: rgba(255, 255, 255, 0.1) !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(400px, auto)) !important;
+    gap: 4vh;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.myCard {
+    max-width: 540px;
+    max-height: 300px;
+}
+
+.myCardBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.modalContent {
+    font-size: 15px !important;
+}
+
+.liveButton {
+    background: var(--background-mail-color);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: min(4vw, 18px);
+    border: none !important;
+    border-radius: 8px;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.closeButton {
+    background: var(--background-color);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: min(4vw, 18px);
+    border: none !important;
+    border-radius: 8px;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.liveButton:hover,
+.closeButton:hover {
+    background: #ffc800;
+    color: black;
+    transform: translateY(-2px);
+    cursor: pointer;
+}
+
+.myButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.leftImg {
+    width: 30%;
+}
+
+.accordion {
+    width: 95%;
+    margin: 0 auto 5vh auto;
+}
+
+.myBorder {
+    border: 1px solid var(--myBorder) !important;
+    box-sizing: border-box;
+    padding: 1px;
+}
+
+.collapsed::after {
+    filter: invert(1);
+}
+
+.myPersonalInfo {
+    min-height: calc(56vh - 14vw) !important;
+    padding: 3%;
+    width: 85%;
+}
+
+.myImgWidth {
+    width: min(30vh, 38vw) !important;
+    height: min(30vh, 38vw) !important;
+    border-radius: 50%;
+}
+
+.fs-personal {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: normal !important;
+    font-size: 16px !important;
+    text-align: justify;
+}
+
+.m-left {
+    margin-left: 0rem !important;
+}
+
+@media (min-width: 1400px) {
+
+    .myPersonalInfo {
+        min-height: 27em !important;
+        padding: 3%;
+        width: 85%;
+    }
+
+    .myWidth {
+        width: 20rem;
+    }
+
+    .img-max-w {
+        max-width: 100% !important;
+        margin: 0;
+    }
+
+    .w-md-75 {
+        width: 75% !important;
+    }
+
+    .w-md-50 {
+        width: 50% !important;
+    }
+
+    .about-img {
+        width: 100%;
+        margin: 0;
+    }
+}
