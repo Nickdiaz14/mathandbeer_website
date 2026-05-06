@@ -161,14 +161,14 @@ def generateUser():
     nickname = request.json['nickname'].strip()
 
     if len(nickname) > 20:
-        return jsonify({'valid': False, 'message_id': 1})
+        return jsonify({'valid': False, 'message': "Nombre de usuario demasiado largo"})
 
     connection = get_connection()
     try:
         cursor = connection.cursor()
         cursor.execute("SELECT 1 FROM nickname WHERE LOWER(nickname) = LOWER(%s) AND userid != %s;", (nickname, user_id))
         if cursor.fetchone():
-            return jsonify({'valid': False, 'message_id': 0})
+            return jsonify({'valid': False, 'message': "Nombre de usuario ya existe"})
         cursor.execute("INSERT INTO nickname (userid, nickname) VALUES (%s, %s);", (user_id, nickname))
         connection.commit()
     finally:
