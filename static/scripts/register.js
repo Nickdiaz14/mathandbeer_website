@@ -32,7 +32,7 @@ function generateUser() {
                 window.location.href = `/menu_games`
             }
             else {
-                window.location.href = `/register?m=${data.message_id}`
+                window.location.href = `/register?m=${data.message}`
             }
         })
 }
