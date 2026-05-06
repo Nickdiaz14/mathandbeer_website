@@ -32,8 +32,14 @@
   --card-border: rgba(255, 255, 255, 0.53);
 
   --myBg: #200928;
-  --myBorder: rgba(255, 255, 255, 0.53);
+  --myBorder: rgba(171, 171, 171, 0.208);
   --matrix-cell-color: rgba(45, 31, 54, 0.53);
+}
+
+
+.streak-fire {
+    font-size: 2rem;
+    filter: drop-shadow(0 0 5px rgba(255, 183, 0, 0.3));
 }
 
 body {

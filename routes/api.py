@@ -1,10 +1,25 @@
 from flask import Blueprint, request, jsonify
-from datetime import datetime
+from datetime import datetime, date, timedelta
 import pytz
 import random
+import hashlib
 from db import get_connection, release_connection
 
 api_bp = Blueprint('api', __name__)
+
+# ─── CONFIGURACIÓN RETO DIARIO ──────────────────────────────────
+# Formato: (tipo_juego, tamaño, nombre_display)
+# Agrega o quita juegos aquí para controlar qué aparece en el reto diario
+DAILY_GAMES = [
+    ('0hh1', 4, '0h-h1 4×4'),
+    ('0hh1', 6, '0h-h1 6×6'),
+    ('0hh1', 8, '0h-h1 8×8'),
+    ('0hh1', 10, '0h-h1 10×10'),
+    ('knight', 8, 'Salto Real'),
+    ('cuentamania', 3, 'CuentaManía S'),
+    ('cuentamania', 4, 'CuentaManía M'),
+    ('cuentamania', 5, 'CuentaManía L'),
+]
 
 @api_bp.route('/attendance', methods=['POST'])
 def attendance():
@@ -447,6 +462,13 @@ def get_badges(userid):
         if cursor.fetchone():
             badges.append({'id': 'leyenda', 'name': 'Leyenda', 'icon': '⭐', 'desc': 'Top 3 en un leaderboard'})
 
+        # Racha de 7 días (reto diario)
+        streak = _calculate_streak(userid)
+        if streak['current'] >= 7 or streak['best'] >= 7:
+            badges.append({'id': 'racha7', 'name': 'Fuego Lento', 'icon': '🔥', 'desc': 'Racha de 7 días en el reto diario'})
+        if streak['current'] >= 30 or streak['best'] >= 30:
+            badges.append({'id': 'racha30', 'name': 'Imparable', 'icon': '🌋', 'desc': 'Racha de 30 días en el reto diario'})
+
     finally:
         cursor.close()
         release_connection(connection)
@@ -538,3 +560,271 @@ def vote_question():
         cursor.close()
         release_connection(connection)
     return jsonify({'success': True, 'voted': voted, 'votes': total})
+
+# ─── DAILY CHALLENGE ─────────────────────────────────────────────
+
+def _get_daily_seed():
+    """Genera un seed determinístico basado en la fecha de hoy."""
+    today = date.today().isoformat()
+    return int(hashlib.md5(today.encode()).hexdigest(), 16)
+
+def _get_daily_game():
+    """Selecciona el juego del día usando el seed de la fecha."""
+    seed = _get_daily_seed()
+    game = DAILY_GAMES[seed % len(DAILY_GAMES)]
+    return game  # (tipo, tamaño, nombre)
+
+def _generate_daily_board(game_type, game_size, seed):
+    """Genera el tablero del día de forma determinística."""
+    rng = random.Random(seed)
+
+    if game_type == '0hh1':
+        with open(f'static/boards/aleatorios{game_size}.txt', 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        line_idx = seed % len(lines)
+        return eval(lines[line_idx].strip())
+
+    elif game_type == 'knight':
+        # Generar spots del caballo con seed fija
+        spots = []
+        count = 0
+        while len(spots) < 6:
+            count += 1
+            a = rng.randint(0, 7)
+            b = rng.randint(0, 7)
+            ok = True
+            for p in spots:
+                if abs(a - p[0]) + abs(b - p[1]) < 3:
+                    ok = False
+                    break
+            if ok:
+                spots.append([a, b, 0])
+            if count >= 400:
+                spots = []
+                count = 0
+        knight_idx = rng.randint(0, len(spots) - 1)
+        spots[knight_idx][2] = 1
+        return spots
+
+    elif game_type == 'cuentamania':
+        numbers = list(range(1, game_size * game_size + 1))
+        rng.shuffle(numbers)
+        board = []
+        for i in range(game_size):
+            row = numbers[i * game_size:(i + 1) * game_size]
+            board.append(row)
+        return board
+
+    return None
+
+@api_bp.route('/api/daily', methods=['GET'])
+def get_daily():
+    user_id = request.args.get('userid', '')
+    game_type, game_size, game_name = _get_daily_game()
+    seed = _get_daily_seed()
+    board_data = _generate_daily_board(game_type, game_size, seed)
+    today = date.today().isoformat()
+
+    already_played = False
+    user_record = None
+
+    if user_id:
+        connection = get_connection()
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                "SELECT record FROM daily_results WHERE challenge_date = %s AND userid = %s;",
+                (today, user_id)
+            )
+            row = cursor.fetchone()
+            if row:
+                already_played = True
+                user_record = row[0]
+        finally:
+            cursor.close()
+            release_connection(connection)
+
+    # Determinar tipo de record para formateo
+    record_type = 'time'  # centisegundos
+    if game_type == 'knight':
+        record_type = 'points'
+    elif game_type == '0hh1':
+        record_type = 'time'
+    elif game_type == 'cuentamania':
+        record_type = 'time'
+
+    return jsonify({
+        'game_type': game_type,
+        'game_size': game_size,
+        'game_name': game_name,
+        'date': today,
+        'already_played': already_played,
+        'user_record': user_record,
+        'board_data': board_data,
+        'record_type': record_type
+    })
+
+@api_bp.route('/api/daily/submit', methods=['POST'])
+def submit_daily():
+    user_id = request.json.get('userid')
+    record = request.json.get('record')
+
+    if not user_id or record is None:
+        return jsonify({'success': False, 'message': 'Datos incompletos'}), 400
+
+    game_type, game_size, game_name = _get_daily_game()
+    today = date.today().isoformat()
+
+    connection = get_connection()
+    try:
+        cursor = connection.cursor()
+        # Verificar que no haya jugado hoy
+        cursor.execute(
+            "SELECT id FROM daily_results WHERE challenge_date = %s AND userid = %s;",
+            (today, user_id)
+        )
+        if cursor.fetchone():
+            return jsonify({'success': False, 'message': 'Ya jugaste el reto de hoy'})
+
+        cursor.execute(
+            """INSERT INTO daily_results (challenge_date, game_type, game_size, userid, record)
+               VALUES (%s, %s, %s, %s, %s);""",
+            (today, game_type, game_size, user_id, int(record))
+        )
+        connection.commit()
+
+        # Obtener posición
+        if game_type == 'knight':
+            cursor.execute(
+                """SELECT COUNT(*) + 1 FROM daily_results
+                   WHERE challenge_date = %s AND record > %s;""",
+                (today, int(record))
+            )
+        else:
+            cursor.execute(
+                """SELECT COUNT(*) + 1 FROM daily_results
+                   WHERE challenge_date = %s AND record < %s;""",
+                (today, int(record))
+            )
+        position = cursor.fetchone()[0]
+    finally:
+        cursor.close()
+        release_connection(connection)
+
+    return jsonify({'success': True, 'position': position})
+
+@api_bp.route('/api/daily/leaderboard', methods=['GET'])
+def daily_leaderboard():
+    user_id = request.args.get('userid', '')
+    today = date.today().isoformat()
+    game_type, game_size, game_name = _get_daily_game()
+
+    # Knight es puntos (mayor mejor), el resto es tiempo (menor mejor)
+    order = 'DESC' if game_type == 'knight' else 'ASC'
+
+    connection = get_connection()
+    try:
+        cursor = connection.cursor()
+        cursor.execute(f"""
+            SELECT ROW_NUMBER() OVER (ORDER BY record {order}) AS pos,
+                   n.nickname, dr.record, dr.userid
+            FROM daily_results dr
+            JOIN nickname n ON n.userid = dr.userid
+            WHERE dr.challenge_date = %s
+            ORDER BY dr.record {order}
+            LIMIT 10;
+        """, (today,))
+        ranking = cursor.fetchall()
+
+        # Formatear records
+        formatted = []
+        for r in ranking:
+            if game_type == 'knight':
+                formatted.append([r[0], r[1], f'{round(r[2], 2)}', r[3]])
+            else:
+                rec = int(r[2])
+                formatted.append([r[0], r[1], f'{(rec//6000):02}:{((rec%6000)//100):02}.{(rec%100):02}', r[3]])
+
+        # Posición personal
+        personal = ['-', '-', '-', '-']
+        if user_id:
+            cursor.execute(f"""
+                SELECT pos, nickname, record, userid FROM (
+                    SELECT ROW_NUMBER() OVER (ORDER BY record {order}) AS pos,
+                           n.nickname, dr.record, dr.userid
+                    FROM daily_results dr
+                    JOIN nickname n ON n.userid = dr.userid
+                    WHERE dr.challenge_date = %s
+                ) t WHERE t.userid = %s;
+            """, (today, user_id))
+            prow = cursor.fetchone()
+            if prow:
+                if game_type == 'knight':
+                    personal = [prow[0], prow[1], f'{round(prow[2], 2)}', prow[3]]
+                else:
+                    rec = int(prow[2])
+                    personal = [prow[0], prow[1], f'{(rec//6000):02}:{((rec%6000)//100):02}.{(rec%100):02}', prow[3]]
+
+        cursor.execute("SELECT COUNT(*) FROM daily_results WHERE challenge_date = %s;", (today,))
+        total = cursor.fetchone()[0]
+    finally:
+        cursor.close()
+        release_connection(connection)
+
+    return jsonify({
+        'ranking': formatted,
+        'personal_ranking': personal,
+        'count_records': total,
+        'game_name': game_name,
+        'record_type': 'points' if game_type == 'knight' else 'time'
+    })
+
+# ─── STREAK (RACHA) ──────────────────────────────────────────────
+
+def _calculate_streak(userid):
+    """Calcula la racha de reto diario del usuario."""
+    connection = get_connection()
+    try:
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT DISTINCT challenge_date FROM daily_results
+            WHERE userid = %s ORDER BY challenge_date DESC;
+        """, (userid,))
+        dates = [row[0] for row in cursor.fetchall()]
+    finally:
+        cursor.close()
+        release_connection(connection)
+
+    if not dates:
+        return {'current': 0, 'best': 0, 'today': False}
+
+    today = date.today()
+    today_played = dates[0] == today
+
+    # Racha actual: contar días consecutivos desde hoy (o ayer si hoy no ha jugado)
+    streak = 0
+    check_date = today if today_played else today - timedelta(days=1)
+    for d in dates:
+        if d == check_date:
+            streak += 1
+            check_date -= timedelta(days=1)
+        elif d < check_date:
+            break
+
+    # Mejor racha histórica
+    best = 1 if dates else 0
+    current_run = 1
+    for i in range(1, len(dates)):
+        if dates[i - 1] - dates[i] == timedelta(days=1):
+            current_run += 1
+            best = max(best, current_run)
+        else:
+            current_run = 1
+
+    return {'current': streak, 'best': max(best, streak), 'today': today_played}
+
+@api_bp.route('/api/streak/<userid>', methods=['GET'])
+def get_streak(userid):
+    streak = _calculate_streak(userid)
+    return jsonify(streak)
+

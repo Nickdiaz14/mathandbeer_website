@@ -300,3 +300,38 @@
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+
+/* ─── Calendar Buttons ─────────────────────────────────────── */
+.calendar-btns {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.calendar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.calendar-btn i {
+  color: var(--accent-math);
+}
+
+.calendar-btn:hover {
+  color: var(--accent-math);
+  background: rgba(0, 242, 255, 0.1);
+  border-color: rgba(0, 242, 255, 0.3);
+}

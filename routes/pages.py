@@ -142,3 +142,7 @@ def page_leaderboard():
 @pages_bp.route('/profile')
 def page_profile():
     return render_template('profile.html')
+
+@pages_bp.route('/daily')
+def page_daily():
+    return render_template('daily.html')

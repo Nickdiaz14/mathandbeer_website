@@ -1,0 +1,232 @@
+.daily-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px;
+    color: var(--text-muted);
+}
+
+.daily-streak-row {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    width: 95%;
+    max-width: 500px;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.daily-streak-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex: 1;
+    padding: 15px !important;
+}
+
+.streak-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.streak-number {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--accent-beer);
+}
+
+.streak-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}
+
+.daily-game-card {
+    width: 90%;
+    max-width: 500px;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.daily-date {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: capitalize;
+}
+
+.daily-game-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 18px;
+    background: rgba(0, 242, 255, 0.08);
+    border: 1px solid rgba(0, 242, 255, 0.4);
+    border-radius: 50px;
+    color: var(--accent-math);
+    font-weight: 600;
+    margin: 15px 0;
+    font-size: 0.9rem;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.15);
+}
+
+.daily-play-btn {
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    margin: 25px auto 0;
+    padding: 16px;
+    background: var(--accent-beer);
+    border: none;
+    border-radius: 12px;
+    color: #000;
+    font-weight: 700;
+    font-size: 1.25rem;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.daily-play-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+    box-shadow: 0 10px 20px rgba(255, 183, 0, 0.3);
+}
+
+.daily-result {
+    margin-top: 25px;
+}
+
+.daily-result-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+
+.daily-result-value {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--accent-beer);
+    line-height: 1;
+}
+
+.daily-result-pos {
+    font-size: 1.1rem;
+    color: var(--text-main);
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+.daily-leaderboard-card {
+    width: 90%;
+    max-width: 500px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.daily-section-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.record_count {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.leaderboard table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+    table-layout: fixed;
+}
+
+.leaderboard th {
+    padding: 12px 5px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.leaderboard td {
+    padding: 15px 5px;
+    font-size: 1rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.leaderboard th:nth-child(1), .leaderboard td:nth-child(1) { width: 25%; }
+.leaderboard th:nth-child(2), .leaderboard td:nth-child(2) { width: 45%; }
+.leaderboard th:nth-child(3), .leaderboard td:nth-child(3) { width: 30%; }
+
+.leaderboard tbody tr {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.leaderboard td:first-child { border-radius: 10px 0 0 10px; }
+.leaderboard td:last-child { border-radius: 0 10px 10px 0; }
+
+.my-row {
+    background: rgba(255, 183, 0, 0.1) !important;
+    border: 1px solid var(--accent-beer);
+}
+
+.share-row {
+    display: flex;
+    gap: 10px;
+    margin: 30px 0 50px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.share-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.2s;
+}
+
+.share-btn:active {
+    transform: scale(0.95);
+}
+
+.share-wa {
+    background: #25D366;
+    color: white;
+}
+
+.share-copy {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 480px) {
+    .daily-streak-row {
+        flex-direction: row;
+        padding: 0 10px;
+    }
+    
+    .daily-result-value {
+        font-size: 2rem;
+    }
+}

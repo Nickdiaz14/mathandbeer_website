@@ -11,6 +11,8 @@ const ALL_BADGES = [
   { id: 'fan', name: 'Fan #1', icon: '🍻', desc: 'Brinda por 10+ charlas' },
   { id: 'calculadora', name: 'Calculadora Humana', icon: '🧮', desc: 'Ten récord en un juego' },
   { id: 'leyenda', name: 'Leyenda', icon: '⭐', desc: 'Top 3 en un leaderboard' },
+  { id: 'racha7', name: 'Fuego Lento', icon: '🔥', desc: 'Racha de 7 días en el reto diario' },
+  { id: 'racha30', name: 'Imparable', icon: '🌋', desc: 'Racha de 30 días en el reto diario' },
 ];
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -21,12 +23,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-    const [profileRes, badgesRes] = await Promise.all([
+    const [profileRes, badgesRes, streakRes] = await Promise.all([
       fetch(`/api/profile/${userId}`),
-      fetch(`/api/badges/${userId}`)
+      fetch(`/api/badges/${userId}`),
+      fetch(`/api/streak/${userId}`)
     ]);
     const profile = await profileRes.json();
     const badgesData = await badgesRes.json();
+    const streakData = await streakRes.json();
 
     if (!profile.nickname) {
       document.getElementById('profile-loading').style.display = 'none';
@@ -41,9 +45,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('profile-nick').textContent = profile.nickname;
 
     // Stats
-    document.getElementById('stat-comments').textContent = profile.stats.comments;
     document.getElementById('stat-brindis').textContent = profile.stats.brindis;
     document.getElementById('stat-games').textContent = profile.stats.games;
+    
+    // Streak (new)
+    const statStreak = document.getElementById('stat-streak');
+    if (statStreak) {
+      statStreak.textContent = streakData.current;
+      if (streakData.today) {
+        statStreak.parentElement.classList.add('streak-active');
+      }
+    }
 
     // Badges
     renderBadges(badgesData.badges);
@@ -56,7 +68,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       recordsEl.innerHTML = profile.records.map(r => `
         <div class="profile-record-row">
           <span class="profile-record-game">${getGameName(r.game)}</span>
-          <span class="profile-record-value"><span style="color: rgba(182, 189, 231, 0.6); font-size: 0.8em; margin-right: 5px;">#${r.position}</span> ${r.record}</span>
+          <span class="profile-record-value" style="color: var(--accent-math); font-weight: 700;">
+            <span style="color: rgba(182, 189, 231, 0.6); font-size: 0.8em; margin-right: 5px;">#${r.position}</span> 
+            ${r.record}
+          </span>
         </div>
       `).join('');
     }

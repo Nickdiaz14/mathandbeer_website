@@ -109,14 +109,25 @@ function toggle_color(row, col, td) {
 }
 
 function startGame() {
-    fetch('/0h_h1/play', {
-        method: 'POST',
+    const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
+    const userId = localStorage.getItem('userId');
+    const fetchUrl = isDaily ? `/api/daily?userid=${userId}` : '/0h_h1/play';
+    const fetchBody = isDaily ? null : JSON.stringify({ n: n });
+    const fetchMethod = isDaily ? 'GET' : 'POST';
+
+    if (isDaily) {
+        const rechargeBtn = document.getElementById('recharge');
+        if (rechargeBtn) rechargeBtn.style.display = 'none';
+    }
+
+    fetch(fetchUrl, {
+        method: fetchMethod,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ n: n })
+        body: fetchBody
     })
         .then(response => response.json())
         .then(data => {
-            const cond_ini = data.matrix;
+            const cond_ini = isDaily ? data.board_data : data.matrix;
             game_matrix = cond_ini.map(row => [...row]);
 
             for (let i = 0; i < game_matrix.length; i++) {
@@ -270,7 +281,10 @@ function valid_solution() {
 }
 
 function sendRecord() {
-    fetch('/leaderboard/submit', {
+    const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
+    const submitUrl = isDaily ? '/api/daily/submit' : '/leaderboard/submit';
+
+    fetch(submitUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -281,6 +295,10 @@ function sendRecord() {
     })
         .then(response => response.json())
         .then(data => {
-            window.location.href = `/leaderboard?game=T${n}&name=0h-h1 - ${n}&better=${data.better}&type=1&record=${centisecondsElapsed}`
+            if (isDaily) {
+                window.location.href = '/daily';
+            } else {
+                window.location.href = `/leaderboard?game=T${n}&name=0h-h1 - ${n}&better=${data.better}&type=1&record=${centisecondsElapsed}`
+            }
         })
 }

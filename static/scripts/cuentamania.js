@@ -94,8 +94,24 @@ function toggle_color(row, col, td) {
 
 }
 
-function startGame() {
-    game_matrix = random_board();
+async function startGame() {
+    const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
+    const userId = localStorage.getItem('userId');
+    
+    if (isDaily) {
+        const rechargeBtn = document.getElementById('recharge');
+        if (rechargeBtn) rechargeBtn.style.display = 'none';
+        try {
+            const response = await fetch(`/api/daily?userid=${userId}`);
+            const data = await response.json();
+            game_matrix = data.board_data;
+        } catch (error) {
+            console.error("Error fetching daily cuentamania board:", error);
+            game_matrix = random_board();
+        }
+    } else {
+        game_matrix = random_board();
+    }
 
     for (let i = 0; i < n; i++) {
         for (let j = 0; j < n; j++) {
@@ -147,11 +163,20 @@ function max_value(matrix) {
 
 function sendRecord() {
     stop_timer();
+    const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
+    
     if (max_value(user_matrix) !== n * n) {
-        window.location.href = `/leaderboard?game=TS${n}&name=${game_name}&better=false&type=1`;
+        if (isDaily) {
+            window.location.href = '/daily';
+        } else {
+            window.location.href = `/leaderboard?game=TS${n}&name=${game_name}&better=false&type=1`;
+        }
         return;
     }
-    fetch('/leaderboard/submit', {
+
+    const submitUrl = isDaily ? '/api/daily/submit' : '/leaderboard/submit';
+
+    fetch(submitUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -162,6 +187,10 @@ function sendRecord() {
     })
         .then(response => response.json())
         .then(data => {
-            window.location.href = `/leaderboard?game=TS${n}&name=${game_name}&better=${data.better}&type=1&record=${centisecondsElapsed}`
+            if (isDaily) {
+                window.location.href = '/daily';
+            } else {
+                window.location.href = `/leaderboard?game=TS${n}&name=${game_name}&better=${data.better}&type=1&record=${centisecondsElapsed}`
+            }
         })
 }

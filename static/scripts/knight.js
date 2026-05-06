@@ -146,11 +146,29 @@ function getSpots(max) {
     return spots;
 }
 
-function startGame() {
+async function startGame() {
+    const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
+    const userId = localStorage.getItem('userId');
     let spots = null;
-    while (spots === null) {
-        spots = getSpots(8);
+
+    if (isDaily) {
+        const rechargeBtn = document.getElementById('recharge');
+        if (rechargeBtn) rechargeBtn.style.display = 'none';
+        try {
+            const response = await fetch(`/api/daily?userid=${userId}`);
+            const data = await response.json();
+            spots = data.board_data;
+        } catch (error) {
+            console.error("Error fetching daily knight spots:", error);
+        }
     }
+
+    if (!spots) {
+        while (spots === null) {
+            spots = getSpots(8);
+        }
+    }
+
     const horseSpot = spots.find(p => p[2] === 1);
     for (let i = 0; i < n; i++) {
         for (let j = 0; j < n; j++) {
@@ -192,17 +210,25 @@ function valid_solution() {
 }
 
 function sendRecord() {
-    fetch('/leaderboard/submit', {
+    const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
+    const submitUrl = isDaily ? '/api/daily/submit' : '/leaderboard/submit';
+    const recordVal = 100000.0 / (((centisecondsElapsed / 100) + 1) * (moves + 1));
+
+    fetch(submitUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             game: `TKnight`,
-            record: 100000.0 / (((centisecondsElapsed / 100) + 1) * (moves + 1)),
+            record: recordVal,
             userid: localStorage.getItem('userId')
         })
     })
         .then(response => response.json())
         .then(data => {
-            window.location.href = `/leaderboard?game=TKnight&name=Salto Real&better=${data.better}&type=2&record=${100000.0 / (((centisecondsElapsed / 100) + 1) * (moves + 1))}`
+            if (isDaily) {
+                window.location.href = '/daily';
+            } else {
+                window.location.href = `/leaderboard?game=TKnight&name=Salto Real&better=${data.better}&type=2&record=${recordVal}`
+            }
         })
 }

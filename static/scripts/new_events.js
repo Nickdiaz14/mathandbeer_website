@@ -59,6 +59,12 @@ function construirTarjetas(eventos) {
                 <span class="rsvp-count">0</span>
                 Asistiré
             </button>
+            <!-- Calendar buttons -->
+            <div class="calendar-btns">
+                <a href="${googleCalendarUrl(evento)}" target="_blank" rel="noopener" class="calendar-btn">
+                    <i class="fa-solid fa-calendar-plus me-1"></i>Google Calendar
+                </a>
+            </div>
             <!-- Q&A -->
             <div class="qa-section">
                 <p class="qa-title"><i class="fa-solid fa-microphone me-1"></i>Pregúntale al ponente</p>
@@ -147,6 +153,35 @@ function iniciarQA(eventos) {
             });
         }
     });
+}
+
+// ─── Calendar helpers ─────────────────────────────────────────
+function googleCalendarUrl(evento) {
+    const start = new Date(evento.date);
+    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+    const fmt = d => d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(evento.title + ' - Math & Beer')}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent('Math & Beer - ' + evento.city + '\nhttps://mathandbeer.com')}&location=${encodeURIComponent(evento.city)}`;
+}
+
+function downloadICS(evento) {
+    const start = new Date(evento.date);
+    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+    const fmt = d => d.toISOString().replace(/[-:.]/g, '').slice(0, 15) + 'Z';
+    const ics = [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Math and Beer//ES',
+        'BEGIN:VEVENT',
+        `DTSTART:${fmt(start)}`, `DTEND:${fmt(end)}`,
+        `SUMMARY:${evento.title} - Math & Beer`,
+        `DESCRIPTION:Math & Beer - ${evento.city}`,
+        `LOCATION:${evento.city}`,
+        'END:VEVENT', 'END:VCALENDAR'
+    ].join('\r\n');
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `mathandbeer_${evento.title.replace(/\s+/g, '_')}.ics`;
+    a.click();
+    URL.revokeObjectURL(a.href);
 }
 
 // Función para actualizar las cuentas regresivas
