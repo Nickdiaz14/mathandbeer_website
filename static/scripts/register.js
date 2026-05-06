@@ -1,6 +1,4 @@
 let message;
-const messages = ['Este nombre ya está en uso, por favor elije otro', 'Superaste el máximo de carácteres permitidos']
-
 const user_id = localStorage.getItem('userId');
 
 const start = document.getElementById('start');
@@ -11,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     message = document.body.dataset.m
     if (message) {
         message_case.style.display = 'flex';
-        message_case.textContent = messages[Number(message)];
+        message_case.textContent = message;
     } else {
         message_case.style.display = 'none';
     }

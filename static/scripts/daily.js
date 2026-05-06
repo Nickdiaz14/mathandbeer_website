@@ -1,11 +1,25 @@
 document.addEventListener('DOMContentLoaded', function () {
     const userId = localStorage.getItem('userId');
     if (!userId) {
-        window.location.href = '/register?m=Para participar en el Reto Diario primero necesitas un Nickname';
+        window.location.href = '/register?m=Para participar en el Reto Diario primero necesitas registrarte';
         return;
     }
+    else {
+        fetch(`/api/profile/${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.nickname) {
+                    window.location.href = '/register?m=Para jugar necesitas un registro previo';
+                } else {
+                    loadDailyData();
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching profile:', error);
+                window.location.href = '/register?m=Para jugar necesitas un registro previo';
+            });
+    }
 
-    loadDailyData();
 });
 
 async function loadDailyData() {
