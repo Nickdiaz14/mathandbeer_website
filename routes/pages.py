@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, json, Response, current_app, redirect
 from db import get_connection, release_connection
-import locale
+from babel.dates import format_date
 
 pages_bp = Blueprint('pages', __name__)
 
@@ -37,8 +37,7 @@ def page_about():
         for row in charlas:
             c = dict(zip(columnas, row))
             year = c["date"].year
-            locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
-            c["date"] = c["date"].strftime("%A, %d de %B del %Y, %H:%M")
+            c["date"] = format_date(c["date"], format='full', locale='es')
             grouped.setdefault(int(year), []).append(c)
 
         cursor.execute("""
