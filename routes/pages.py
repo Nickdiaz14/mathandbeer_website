@@ -38,7 +38,7 @@ def page_about():
             c = dict(zip(columnas, row))
             year = c["date"].year
             locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
-            c["date"] = c["date"].strftime("%A, %d de %B del %Y, %I:%M %p")
+            c["date"] = c["date"].strftime("%A, %d de %B del %Y, %H:%M")
             grouped.setdefault(int(year), []).append(c)
 
         cursor.execute("""
