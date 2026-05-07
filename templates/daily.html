@@ -12,7 +12,7 @@
     <link rel="icon" type="image/png" href="../static/images/logos/favicon.png">
     <title>Reto Diario | Math & Beer</title>
     <meta name="description" content="Reto diario de Math & Beer. ¡Compite cada día con un nuevo desafío matemático!">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="noindex, nofollow">
 </head>
 <body>
     <header>
@@ -54,23 +54,6 @@
 
         <!-- Content -->
         <div id="daily-content" style="display:none;" class="w-100 displayColumn">
-            <!-- Streak -->
-            <div class="daily-streak-row">
-                <div class="daily-streak-card myBg myBorder rounded-4 p-3 shadow-sm">
-                    <span class="streak-fire" id="streak-icon">🔥</span>
-                    <div class="streak-info">
-                        <span class="streak-number" id="streak-current">0</span>
-                        <span class="streak-label">Racha</span>
-                    </div>
-                </div>
-                <div class="daily-streak-card myBg myBorder rounded-4 p-3 shadow-sm">
-                    <span class="streak-fire">🏆</span>
-                    <div class="streak-info">
-                        <span class="streak-number" id="streak-best">0</span>
-                        <span class="streak-label">Mejor</span>
-                    </div>
-                </div>
-            </div>
 
             <!-- Game Info -->
             <div class="daily-game-card myBg myBorder rounded-4 p-4 shadow-sm">
@@ -79,6 +62,23 @@
                 <div class="daily-game-badge" id="daily-game-badge">
                     <i class="fa-solid fa-dice me-2"></i>
                     <span id="daily-game-name">Cargando...</span>
+                </div>
+                <!-- Streak -->
+                <div class="daily-streak-row">
+                    <div class="daily-streak-card myBg myBorder">
+                        <span class="streak-fire" id="streak-icon">🔥</span>
+                        <div class="streak-info">
+                            <span class="streak-number" id="streak-current">0</span>
+                            <span class="streak-label">Racha</span>
+                        </div>
+                    </div>
+                    <div class="daily-streak-card myBg myBorder rounded-4 p-3 shadow-sm">
+                        <span class="streak-fire">🏆</span>
+                        <div class="streak-info">
+                            <span class="streak-number" id="streak-best">0</span>
+                            <span class="streak-label">Mejor</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Play button (shown when not played) -->

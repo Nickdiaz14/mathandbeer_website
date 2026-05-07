@@ -10,8 +10,8 @@
 
 :root {
   /* Fondo con profundidad (Efecto Radial) */
-  --background-color: radial-gradient(circle at top, #1a0b2e 0%, #090216 100%);
-  --header-bg: rgba(15, 5, 30, 0.85);
+  --background-color: radial-gradient(ellipse at bottom, #28015ff7 0%, #090216 100%);
+  --header-bg: rgba(12, 4, 25, 0.85);
 
   /* Colores de Marca */
   --accent-beer: #ffb700;
@@ -31,8 +31,8 @@
   --card-bg: rgba(255, 255, 255, 0.05);
   --card-border: rgba(255, 255, 255, 0.53);
 
-  --myBg: #200928;
-  --myBorder: rgba(171, 171, 171, 0.208);
+  --myBg: #00000037;
+  --myBorder: rgba(214, 214, 214, 0.527);
   --matrix-cell-color: rgba(45, 31, 54, 0.53);
 }
 
@@ -168,10 +168,10 @@ main {
   -webkit-text-fill-color: transparent;
   font-weight: 670;
   font-size: clamp(2rem, 8vw, 3.5rem);
-  padding: 5px 0;
+  padding: 2px 0;
   text-align: center;
   line-height: 1.1;
-  margin-top: 2rem;
+  margin-top: 0.6rem;
 }
 
 .subtitle {
@@ -188,7 +188,7 @@ hr {
   width: 90%;
   height: 2px;
   border: none;
-  margin: 40px 0 0 0;
+  margin: 0.6rem 0 0 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   opacity: 0.2;
 }
@@ -404,4 +404,8 @@ hr {
 .reveal.active {
   opacity: 1;
   transform: translateY(0);
+}
+
+.first-row {
+  margin-top: 2em !important;
 }

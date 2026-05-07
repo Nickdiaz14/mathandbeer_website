@@ -1,7 +1,15 @@
-from flask import Blueprint, render_template, request, json, Response, current_app
+from flask import Blueprint, render_template, request, json, Response, current_app, redirect
 from db import get_connection, release_connection
+import locale
 
 pages_bp = Blueprint('pages', __name__)
+
+@pages_bp.before_request
+def redireccion_permanente():
+    # Si el usuario entra por la URL de Render...
+    if request.host == 'math-and-beer.onrender.com':
+        # ...lo redirigimos al .com manteniendo la ruta en la que estaba
+        return redirect('https://www.mathandbeer.com' + request.path , code=301)
 
 @pages_bp.route('/sitemap.xml')
 def sitemap():
@@ -29,6 +37,8 @@ def page_about():
         for row in charlas:
             c = dict(zip(columnas, row))
             year = c["date"].year
+            locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
+            c["date"] = c["date"].strftime("%A, %d de %B del %Y, %I:%M %p")
             grouped.setdefault(int(year), []).append(c)
 
         cursor.execute("""

@@ -2,6 +2,10 @@
     touch-action: manipulation;
 }
 
+:root {
+    --background-color: radial-gradient(ellipse at bottom, #20024af7 0%, #090216 100%);
+}
+
 /*-----Interfaz-----*/
 .game_info,
 .back,
@@ -10,8 +14,9 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: rgb(50, 14, 67);
-    border: 1px solid rgba(155, 76, 228, 0.3);
+    backdrop-filter: blur(6px);
+    background: var(--myBg) !important;
+    border: 1px solid var(--myBorder) !important;
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -132,14 +137,4 @@
 .shake-it {
     animation: shake 0.5s;
     animation-iteration-count: 1;
-}
-
-main {
-    margin-top: 3vh;
-}
-
-@media (min-width: 768px) {
-    main {
-        margin-top: 0;
-    }
 }
