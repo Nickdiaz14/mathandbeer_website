@@ -393,6 +393,7 @@ def get_profile(userid):
             ]
         
         is_admin = userid in admins
+        tops_1 = []
 
         if is_admin:
             #admin
