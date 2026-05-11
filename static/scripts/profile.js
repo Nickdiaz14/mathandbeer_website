@@ -44,6 +44,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.getElementById('profile-nick').textContent = profile.nickname;
 
+
+    if (profile.is_admin) {
+        document.getElementById('admin-section-tops-1').style.display = 'flex';
+        const tabla = document.getElementById("ranking");
+        if (profile.tops_1 && profile.tops_1.length > 0) {
+            tabla.innerHTML = profile.tops_1.map((t, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td style="font-weight: 600;">${t.nickname}</td>
+                    <td>${t.tops_1}</td>
+                </tr>
+            `).join('');
+        } else {
+            tabla.innerHTML = '<tr><td colspan="3" class="profile-empty">No hay datos de rankings disponibles</td></tr>';
+        }
+    }
+
     // Stats
     document.getElementById('stat-brindis').textContent = profile.stats.brindis;
     document.getElementById('stat-games').textContent = profile.stats.games;

@@ -111,15 +111,49 @@ async function loadLeaderboard() {
         const tbody = document.getElementById('daily-ranking');
         tbody.innerHTML = '';
 
-        data.ranking.forEach(row => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${row[0]}</td>
-                <td>${row[1]}</td>
-                <td>${row[2]}</td>
-            `;
-            tbody.appendChild(tr);
-        });
+        data.ranking.forEach((register, index) => {
+                let colorClass = "#ffffff";
+                const mtr = document.createElement('tr');
+                const mtd_position = document.createElement('td');
+                const mtd_name = document.createElement('td');
+                const mtd_record = document.createElement('td');
+                const mtd_streak = document.createElement('td');
+
+                // register es el array [posición, nombre, record]
+                mtd_position.textContent = register[0];
+                mtd_name.textContent = register[1];
+                mtd_record.textContent = register[2];
+                mtd_streak.innerHTML = register[4] + ' <i class="fa-solid fa-fire me-1"></i>';
+
+
+                if (index === 0) {
+                    colorClass = "#f1c40f";
+                } else if (index === 1) {
+                    colorClass = "#7bafb9";
+                } else if (index === 2) {
+                    colorClass = "#bd6104";
+                }
+
+                if (localStorage.getItem('userId') === register[3]) {
+                    mtr.style.borderLeft = "3px solid var(--accent-math)";
+                    mtr.style.borderRight = "3px solid var(--accent-math)";
+                    mtd_position.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
+                    mtd_name.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
+                    mtd_record.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
+                    mtd_streak.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
+                }
+
+                mtd_position.style.color = colorClass;
+                mtd_name.style.color = colorClass;
+                mtd_record.style.color = colorClass;
+                mtd_streak.style.color = colorClass;
+
+                mtr.appendChild(mtd_position);
+                mtr.appendChild(mtd_name);
+                mtr.appendChild(mtd_record);
+                mtr.appendChild(mtd_streak);
+                tbody.appendChild(mtr);
+            });
 
         // If user not in top 10 but has played
         const extraLeaderboard = document.getElementById('extra_leaderboard');
@@ -135,6 +169,7 @@ async function loadLeaderboard() {
                 <td>${data.personal_ranking[0]}</td>
                 <td>${data.personal_ranking[1]}</td>
                 <td>${data.personal_ranking[2]}</td>
+                <td>${data.personal_ranking[4]}</td>
             `;
             extraRanking.appendChild(tr);
         } else {

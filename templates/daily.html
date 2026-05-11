@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="prMhJRzxbzY-OPF8pAc3w72jFMuNqcPC9nxMkH_9rQU" />
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, height=device-height">
+    <meta name="viewport" content="width=device-width, initial-scale=0.75, height=device-height">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="../static/css/main.css">
     <link rel="stylesheet" href="../static/css/daily.css">
+    <link rel="stylesheet" href="../static/css/about.css">
     <link rel="stylesheet" href="../static/css/leaderboards.css">
     <link rel="icon" type="image/png" href="../static/images/logos/favicon.png">
     <title>Reto Diario | Math & Beer</title>
@@ -56,7 +57,7 @@
         <div id="daily-content" style="display:none;" class="w-100 displayColumn">
 
             <!-- Game Info -->
-            <div class="daily-game-card myBg myBorder rounded-4 p-4 shadow-sm">
+            <div class="daily-game-card rounded-4 p-4 shadow-sm">
                 <p class="daily-date" id="daily-date"></p>
                 <h1 class="title fs-2">Reto Diario</h1>
                 <div class="daily-game-badge" id="daily-game-badge">
@@ -65,14 +66,14 @@
                 </div>
                 <!-- Streak -->
                 <div class="daily-streak-row">
-                    <div class="daily-streak-card myBg myBorder">
+                    <div class="daily-streak-card">
                         <span class="streak-fire" id="streak-icon">🔥</span>
                         <div class="streak-info">
                             <span class="streak-number" id="streak-current">0</span>
                             <span class="streak-label">Racha</span>
                         </div>
                     </div>
-                    <div class="daily-streak-card myBg myBorder rounded-4 p-3 shadow-sm">
+                    <div class="daily-streak-card rounded-4 p-3 shadow-sm">
                         <span class="streak-fire">🏆</span>
                         <div class="streak-info">
                             <span class="streak-number" id="streak-best">0</span>
@@ -96,13 +97,14 @@
             <!-- Leaderboard -->
             <hr style="margin: 5px 0px 15px;">
             <p class="record_count" style="margin-bottom: 15px;">Hay <span id="daily-count">0</span> registros hoy</p>
-            <div id="daily-leaderboard" class="leaderboard displayColumn">
+            <div id="daily-leaderboard" class="leaderboard displayColumn myBg myBorder">
                 <table>
                     <thead>
                         <tr>
-                            <th>Posición</th>
+                            <th>#</th>
                             <th>Jugador</th>
                             <th>Record</th>
+                            <th>Racha</th>
                         </tr>
                     </thead>
                     <tbody id="daily-ranking">
@@ -115,9 +117,10 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Posición</th>
+                            <th>#</th>
                             <th>Jugador</th>
                             <th>Record</th>
+                            <th>Racha</th>
                         </tr>
                     </thead>
                     <tbody id="extra_ranking">

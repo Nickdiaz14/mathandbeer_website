@@ -166,9 +166,10 @@
     vertical-align: middle;
 }
 
-.leaderboard th:nth-child(1), .leaderboard td:nth-child(1) { width: 25%; }
-.leaderboard th:nth-child(2), .leaderboard td:nth-child(2) { width: 45%; }
-.leaderboard th:nth-child(3), .leaderboard td:nth-child(3) { width: 30%; }
+.leaderboard th:nth-child(1), .leaderboard td:nth-child(1) { width: 15%; }
+.leaderboard th:nth-child(2), .leaderboard td:nth-child(2) { width: 35%; }
+.leaderboard th:nth-child(3), .leaderboard td:nth-child(3) { width: 25%; }
+.leaderboard th:nth-child(4), .leaderboard td:nth-child(4) { width: 25%; }
 
 .leaderboard tbody tr {
     background: rgba(255, 255, 255, 0.03);

@@ -90,6 +90,14 @@ function updateLeaderboard() {
                     colorClass = "#bd6104";
                 }
 
+                if (localStorage.getItem('userId') === register[3]) {
+                    mtr.style.borderLeft = "3px solid var(--accent-math)";
+                    mtr.style.borderRight = "3px solid var(--accent-math)";
+                    mtd_position.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
+                    mtd_name.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
+                    mtd_record.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
+                }
+
                 mtd_position.style.color = colorClass;
                 mtd_name.style.color = colorClass;
                 mtd_record.style.color = colorClass;

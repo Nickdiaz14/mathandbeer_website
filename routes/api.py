@@ -383,6 +383,43 @@ def get_profile(userid):
         """, (userid,))
         rsvps = [{'id': r[0], 'title': r[1], 'city': r[2], 'date': r[3].isoformat()} for r in cursor.fetchall()]
 
+        #admins
+        admins = [
+            '5a7d2cc7-963d-4a5d-a754-62c0c9292617', 
+            'f5b8e00b-7e2b-4c4a-8152-15423f7dac37', 
+            'f6765b9b-8a5f-4a56-ad4a-898097e87b85', 
+            'b99e88d6-10f7-4e9b-b898-812471be9a57', 
+            'd17e6ee5-253e-49ec-b0c9-d0ebbc8b664f'
+            ]
+        
+        is_admin = userid in admins
+
+        if is_admin:
+            #admin
+            cursor.execute("""
+                WITH leaders AS (
+                    SELECT 
+                    nickname,
+                    board,
+                    string_record,
+                    ROW_NUMBER() OVER(
+                            PARTITION BY board
+                            ORDER BY 
+                                CASE 
+                                    WHEN string_record LIKE '%:%' THEN record * -1
+                                    ELSE record 
+                                END DESC
+                        ) AS enumeracion
+                    FROM leader_final_view
+                )
+
+                SELECT nickname, COUNT(*) AS tops FROM leaders
+                WHERE enumeracion = 1
+                GROUP BY nickname
+                ORDER BY tops DESC
+            """)
+            tops_1 = [{'nickname': r[0], 'tops_1': r[1]} for r in cursor.fetchall()]
+
     finally:
         cursor.close()
         release_connection(connection)
@@ -392,7 +429,9 @@ def get_profile(userid):
         'stats': {'comments': total_comments, 'brindis': total_brindis, 'games': games_played},
         'records': records,
         'liked_talks': liked_talks,
-        'rsvps': rsvps
+        'rsvps': rsvps,
+        'is_admin': is_admin,
+        'tops_1': tops_1
     })
 
 # --- UPDATE NICKNAME ---
@@ -726,27 +765,55 @@ def daily_leaderboard():
     try:
         cursor = connection.cursor()
         cursor.execute(f"""
-            SELECT ROW_NUMBER() OVER (ORDER BY record {order}) AS pos,
-                   n.nickname, dr.record, dr.userid
-            FROM daily_results dr
-            JOIN nickname n ON n.userid = dr.userid
-            WHERE dr.challenge_date = %s
-            ORDER BY dr.record {order}
-            LIMIT 10;
-        """, (today,))
+            WITH top_today AS (
+                SELECT dr.userid, dr.record, n.nickname,
+                    ROW_NUMBER() OVER (ORDER BY dr.record {order}) AS pos
+                FROM daily_results dr
+                JOIN nickname n ON n.userid = dr.userid
+                WHERE dr.challenge_date = %s
+                ORDER BY dr.record {order}
+                LIMIT 10
+            ),
+            historial_top AS (
+                -- 2. Sacamos el historial de fechas SOLO para esos 10 usuarios.
+                -- Usamos DENSE_RANK por si un usuario tiene varios intentos el mismo día.
+                SELECT dr.userid, dr.challenge_date,
+                    DENSE_RANK() OVER (PARTITION BY dr.userid ORDER BY dr.challenge_date DESC) as rn
+                FROM daily_results dr
+                JOIN top_today t ON dr.userid = t.userid
+                WHERE dr.challenge_date <= %s
+            ),
+            racha_actual AS (
+                -- 3. Filtramos solo los días que forman parte de la cadena ininterrumpida.
+                -- Si un registro ocurrió hace 3 días, su 'rn' debe ser 4 (contando hoy como 1).
+                SELECT userid, MAX(rn) AS streak
+                FROM historial_top
+                
+                -- IMPORTANTE: Ajusta esta línea según el motor de tu base de datos (ver abajo)
+                WHERE challenge_date = %s::date - (rn - 1)::int
+                
+                GROUP BY userid
+            )
+
+            -- 4. Unimos el top 10 con su racha calculada.
+            SELECT t.pos, t.nickname, t.record, t.userid, COALESCE(r.streak, 1) AS racha
+            FROM top_today t
+            LEFT JOIN racha_actual r ON t.userid = r.userid
+            ORDER BY t.pos;
+        """, (today,today,today))
         ranking = cursor.fetchall()
 
         # Formatear records
         formatted = []
         for r in ranking:
             if game_type == 'knight':
-                formatted.append([r[0], r[1], f'{round(r[2], 2)}', r[3]])
+                formatted.append([r[0], r[1], f'{round(r[2], 2)}', r[3], r[4]])
             else:
                 rec = int(r[2])
-                formatted.append([r[0], r[1], f'{(rec//6000):02}:{((rec%6000)//100):02}.{(rec%100):02}', r[3]])
+                formatted.append([r[0], r[1], f'{(rec//6000):02}:{((rec%6000)//100):02}.{(rec%100):02}', r[3], r[4]])
 
         # Posición personal
-        personal = ['-', '-', '-', '-']
+        personal = ['-', '-', '-', '-', '-']
         if user_id:
             cursor.execute(f"""
                 SELECT pos, nickname, record, userid FROM (
@@ -759,11 +826,13 @@ def daily_leaderboard():
             """, (today, user_id))
             prow = cursor.fetchone()
             if prow:
+                # Obtener racha para el ranking personal
+                u_streak = _calculate_streak(user_id)['current']
                 if game_type == 'knight':
-                    personal = [prow[0], prow[1], f'{round(prow[2], 2)}', prow[3]]
+                    personal = [prow[0], prow[1], f'{round(prow[2], 2)}', prow[3], u_streak]
                 else:
                     rec = int(prow[2])
-                    personal = [prow[0], prow[1], f'{(rec//6000):02}:{((rec%6000)//100):02}.{(rec%100):02}', prow[3]]
+                    personal = [prow[0], prow[1], f'{(rec//6000):02}:{((rec%6000)//100):02}.{(rec%100):02}', prow[3], u_streak]
 
         cursor.execute("SELECT COUNT(*) FROM daily_results WHERE challenge_date = %s;", (today,))
         total = cursor.fetchone()[0]
@@ -827,4 +896,3 @@ def _calculate_streak(userid):
 def get_streak(userid):
     streak = _calculate_streak(userid)
     return jsonify(streak)
-
