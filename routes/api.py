@@ -19,6 +19,8 @@ DAILY_GAMES = [
     ('cuentamania', 3, 'CuentaManía S'),
     ('cuentamania', 4, 'CuentaManía M'),
     ('cuentamania', 5, 'CuentaManía L'),
+    ('0hn0', 4, '0h-n0 4×4'),
+    ('0hn0', 5, '0h-n0 5×5'),
 ]
 
 @api_bp.route('/attendance', methods=['POST'])
@@ -663,6 +665,12 @@ def _generate_daily_board(game_type, game_size, seed):
             board.append(row)
         return board
 
+    elif game_type == '0hn0':
+        with open(f'static/boards/aleatorios_ohno{game_size}.txt', 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        line_idx = seed % len(lines)
+        return eval(lines[line_idx].strip())
+
     return None
 
 @api_bp.route('/api/daily', methods=['GET'])
@@ -699,6 +707,8 @@ def get_daily():
     elif game_type == '0hh1':
         record_type = 'time'
     elif game_type == 'cuentamania':
+        record_type = 'time'
+    elif game_type == '0hn0':
         record_type = 'time'
 
     return jsonify({
