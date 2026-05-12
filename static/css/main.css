@@ -43,7 +43,7 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif !important;
   background: var(--background-color);
   background-attachment: fixed;
   color: var(--text-main);

@@ -123,6 +123,17 @@ def page_cuentamania():
         reglas = json.load(f)
     return render_template('cuentamania.html', c=reglas[0]["cuentamania"], n=n)
 
+@pages_bp.route('/0h_n0')
+def page_0h_n0():
+    n = int(request.args.get('n'))
+    with open("static/json/reglas.json", "r", encoding="utf-8") as f:
+        reglas = json.load(f)
+    return render_template('0h_n0.html', c=reglas[0]["0h-n0"], n=n)
+
+@pages_bp.route('/tutorial_0h_n0')
+def page_tutorial_0h_n0():
+    return render_template('tutorial_0h_n0.html')
+
 @pages_bp.route('/leaderboard')
 def page_leaderboard():
     game = request.args.get('game')

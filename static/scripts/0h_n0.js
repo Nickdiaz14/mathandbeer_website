@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
             window.location.reload();
         }
     });
-    const cell_size = n === 4 ? 'grey' : n === 6 ? 'z-6' : n === 8 ? 'z-8' : 'z-10';
+    const cell_size = n === 4 ? 'grey' : 'z-5';
     const matrix = document.getElementById('matrix');
     for (let i = 0; i < n; i++) {
         const mtr = document.createElement('tr')
@@ -88,16 +88,16 @@ function stop_timer() {
 }
 
 function toggle_color(row, col, td) {
-    if (game_matrix[row][col] === -1) {
+    if (game_matrix[row][col] === -2) {
         game_matrix[row][col] = 0;
         td.classList.remove('grey');
         td.classList.add('red');
     } else if (game_matrix[row][col] === 0) {
-        game_matrix[row][col] = 1;
+        game_matrix[row][col] = -1;
         td.classList.remove('red');
         td.classList.add('blue');
     } else {
-        game_matrix[row][col] = -1;
+        game_matrix[row][col] = -2;
         td.classList.remove('blue');
         td.classList.add('grey');
     }
@@ -111,7 +111,7 @@ function toggle_color(row, col, td) {
 function startGame() {
     const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
     const userId = localStorage.getItem('userId');
-    const fetchUrl = isDaily ? `/api/daily?userid=${userId}` : '/0h_h1/play';
+    const fetchUrl = isDaily ? `/api/daily?userid=${userId}` : '/0h_n0/play';
     const fetchBody = isDaily ? null : JSON.stringify({ n: n });
     const fetchMethod = isDaily ? 'GET' : 'POST';
 
@@ -134,9 +134,10 @@ function startGame() {
                 for (let j = 0; j < game_matrix[i].length; j++) {
                     const cell = document.getElementById(`cell-${i}-${j}`);
                     cell.classList.remove('grey')
-                    const color = game_matrix[i][j] === 0 ? ['red', 'blocked'] :
-                        game_matrix[i][j] === 1 ? ['blue', 'blocked'] :
+                    const color = game_matrix[i][j] > 0 ? ['red', 'locked'] :
+                        game_matrix[i][j] === -1 ? ['blue', 'blocked'] :
                             ['grey'];
+                    cell.innerText = game_matrix[i][j] > 0 ? game_matrix[i][j] : '';
                     for (let k = 0; k < color.length; k++) {
                         cell.classList.add(color[k])
                     }
@@ -161,105 +162,61 @@ function startGame() {
 
 function valid_solution() {
     let num = Math.floor(Math.random() * messages.length)
-    title.textContent = '0h-h1';
+    title.textContent = '0h-n0';
     cells.forEach(cell => cell.classList.remove('cell_alert'))
 
-    if (solved || game_matrix.some(row => row.includes(-1))) return;
-    let game_matrix_t = game_matrix[0].map((_, col) =>
-        game_matrix.map(row => row[col])
-    );
+    if (solved || game_matrix.some(row => row.includes(-2))) return;
 
-    // Validar tres consecutivos
-    for (let r = 0; r < n; r++) {
+    let valid_matrix = Array.from({ length: n }, () => Array(n).fill(false));
 
-        const row = game_matrix[r];
-        const col = game_matrix_t[r];
-
-        let row_prev = null, row_count = 0;
-        let col_prev = null, col_count = 0;
-
-        for (let c = 0; c < n; c++) {
-
-            if (row_prev === row[c]) {
-                row_count++;
-                if (row_count === 3) {
+    for (let i = 0; i < game_matrix.length; i++) {
+        for (let j = 0; j < game_matrix[i].length; j++) {
+            if (game_matrix[i][j] >= 0) {
+                let viewedCells = 0;
+                let up = true;
+                let down = true;
+                let left = true;
+                let right = true;
+                for (let k = 1; k < game_matrix.length; k++) {
+                    if (up && i - k >= 0 && game_matrix[i - k][j] > -1) {
+                        viewedCells += 1;
+                    } else { up = false; }
+                    if (right && j + k < game_matrix[0].length && game_matrix[i][j + k] > -1) {
+                        viewedCells += 1;
+                    } else { right = false; }
+                    if (left && j - k >= 0 && game_matrix[i][j - k] > -1) {
+                        viewedCells += 1;
+                    } else { left = false; }
+                    if (down && i + k < game_matrix.length && game_matrix[i + k][j] > -1) {
+                        viewedCells += 1;
+                    } else { down = false; }
+                }
+                if (game_matrix[i][j] === 0 && viewedCells === 0) {
                     title.textContent = messages[num];
-                    for (let consec = 0; consec < 3; consec++) {
-                        const mtd = document.getElementById(`cell-${r}-${c - consec}`)
-                        mtd.classList.add('cell_alert')
-                    }
+                    document.getElementById(`cell-${i}-${j}`).classList.add('cell_alert');
                     return;
                 }
-            } else {
-                row_prev = row[c];
-                row_count = 1;
-            }
-
-            if (col_prev === col[c]) {
-                col_count++;
-                if (col_count === 3) {
-                    title.textContent = messages[num];
-                    for (let consec = 0; consec < 3; consec++) {
-                        const mtd = document.getElementById(`cell-${c - consec}-${r}`)
-                        mtd.classList.add('cell_alert')
+                valid_matrix[i][j] = viewedCells;
+                if (game_matrix[i][j] > 0) {
+                    control = viewedCells == game_matrix[i][j]? true:false;
+                    if (!control && game_matrix[i][j] > 0) {
+                        document.getElementById(`cell-${i}-${j}`).classList.add('cell_alert');
+                        if (viewedCells < game_matrix[i][j]) {
+                            title.textContent = "Esta ve pocas celdas";
+                        } else {
+                            title.textContent = "Esta ve muchas celdas";
+                        }
+                        return;
                     }
-                    return;
                 }
-            } else {
-                col_prev = col[c];
-                col_count = 1;
-            }
-        }
-
-        // Validar cantidad de 0s y 1s
-        let row_sum = row.reduce((a, b) => a + b, 0);
-        let col_sum = col.reduce((a, b) => a + b, 0);
-
-        if (row_sum !== n / 2) {
-            title.textContent = messages[num];
-            for (let consec = 0; consec < n; consec++) {
-                const mtd = document.getElementById(`cell-${r}-${consec}`)
-                mtd.classList.add('cell_alert')
-            }
-            return;
-        }
-        if (col_sum !== n / 2) {
-            title.textContent = messages[num];
-            for (let consec = 0; consec < n; consec++) {
-                const mtd = document.getElementById(`cell-${consec}-${r}`)
-                mtd.classList.add('cell_alert')
-            }
-            return;
-        }
-    }
-
-    // Revisar unicidad de filas y columnas
-    for (let i = 0; i < n; i++) {
-        for (let j = i + 1; j < n; j++) {
-            if (game_matrix[i].every((v, k) => v === game_matrix[j][k])) {
-                title.textContent = messages[num];
-                for (let consec = 0; consec < n; consec++) {
-                    const mtd_1 = document.getElementById(`cell-${i}-${consec}`)
-                    const mtd_2 = document.getElementById(`cell-${j}-${consec}`)
-                    mtd_1.classList.add('cell_alert')
-                    mtd_2.classList.add('cell_alert')
-                }
-                return;
             }
         }
     }
 
-    for (let i = 0; i < n; i++) {
-        for (let j = i + 1; j < n; j++) {
-            if (game_matrix_t[i].every((v, k) => v === game_matrix_t[j][k])) {
-                title.textContent = messages[num];
-                for (let consec = 0; consec < n; consec++) {
-                    const mtd_1 = document.getElementById(`cell-${consec}-${i}`)
-                    const mtd_2 = document.getElementById(`cell-${consec}-${j}`)
-                    mtd_1.classList.add('cell_alert')
-                    mtd_2.classList.add('cell_alert')
-                }
-                return;
+    for (let i = 0; i < game_matrix.length; i++) {
+        for (let j = 0; j < game_matrix[i].length; j++) {
+            if (game_matrix[i][j] === 0){
+                document.getElementById(`cell-${i}-${j}`).innerText = valid_matrix[i][j];
             }
         }
     }
@@ -279,7 +236,7 @@ function sendRecord() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            game: `T${n}`,
+            game: `T0${n}`,
             record: centisecondsElapsed,
             userid: localStorage.getItem('userId')
         })
@@ -289,7 +246,7 @@ function sendRecord() {
             if (isDaily) {
                 window.location.href = '/daily';
             } else {
-                window.location.href = `/leaderboard?game=T${n}&name=0h-h1 - ${n}&better=${data.better}&type=1&record=${centisecondsElapsed}`
+                window.location.href = `/leaderboard?game=T0${n}&name=0h-n0 - ${n}&better=${data.better}&type=1&record=${centisecondsElapsed}`
             }
         })
 }

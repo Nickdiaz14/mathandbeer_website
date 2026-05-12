@@ -56,6 +56,14 @@ def get_cond_ini():
         linea_especifica = lineas[random.randint(0, len(lineas)-1)].strip()
     return jsonify({'matrix': eval(linea_especifica)})
 
+@api_bp.route('/0h_n0/play', methods=['POST'])
+def get_cond_ini_0h_n0():
+    n = request.json['n'] 
+    with open(f'static/boards/aleatorios_ohno{n}.txt', 'r', encoding='utf-8') as file:
+        lineas = file.readlines()
+        linea_especifica = lineas[random.randint(0, len(lineas)-1)].strip()
+    return jsonify({'matrix': eval(linea_especifica)})
+
 @api_bp.route('/leaderboard/submit', methods=['POST'])
 def update_leaderboard():
     better = False

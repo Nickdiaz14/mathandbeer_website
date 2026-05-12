@@ -39,7 +39,7 @@
 }
 
 .popover-body {
-    background-color: var(--myBg);
+    background-color: color-mix(in srgb, var(--myBg) 10%, #150316);
     border: 1px solid var(--myBorder);
     border-radius: 5px;
     color: #ffffff !important;
@@ -64,12 +64,12 @@
     color: #ffffff;
     transition: all 180ms ease-in-out;
     transform: scale(1);
+    font-size: 30px;
+    text-align: center;
 }
 
 .grey {
     background: var(--matrix-cell-color);
-    text-align: center;
-    font-size: 24px;
 }
 
 .z-3 {

@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let j = 0; j < n; j++) {
             const mtd = document.createElement('td')
             mtd.classList.add('grey')
+            mtd.classList.add('locked');
             mtd.id = `cell-${i}-${j}`;
             mtd.addEventListener('click', () => {
                 toggle_color(i, j, mtd)
@@ -88,10 +89,10 @@ function startGame() {
                 cell.classList.add(color[k])
             }
         }
-        table.rows[0].cells[0].classList.remove('locked');
-        table.rows[0].cells[0].classList.add('cell_alert');
-        timer.textContent = `Presiona la celda una vez para volverla roja.`
     }
+    table.rows[0].cells[0].classList.remove('locked');
+    table.rows[0].cells[0].classList.add('cell_alert');
+    timer.textContent = `Presiona la celda una vez para volverla roja.`
 }
 
 function steps() {

@@ -43,6 +43,13 @@
                 "r3": "Si se presiona un número fuera de orden, perderás automáticamente el juego.",
                 "r4": "Se el más rápido en completar el tablero."
             }
+        },
+        "0h-n0": {
+            "summary": "Debes llenar todo el tablero con rojos y azules cumpliendo las siguientes reglas y respetando la condición inicial dada",
+            "rules": {
+                "r1": "El tablero debe estar lleno.",
+                "r2": "Cada celda roja debe tener tantas celdas rojas como su número indica, sin ser interrumpidas por celdas azules en su misma fila y columna."
+            }
         }
     }
 ]
