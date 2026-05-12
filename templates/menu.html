@@ -83,6 +83,12 @@
                 <img src="../static/images/games/cuentamania.png" alt="" class="game_img">
                 <span class="game_text">Cuenta<br>Manía</span>
             </button>
+
+            <button class="game" data-bs-toggle="modal" data-bs-target="#0h-n0-size">
+                <span class="game_text_out">¡Jugar!</span>
+                <img src="../static/images/games/0h-n0.png" alt="" class="game_img">
+                <span class="game_text_big">0h-n0</span>
+            </button>
         </div>
         
         <!-- Modal 0h-h1 -->
@@ -140,6 +146,26 @@
                                 <td><button class="btn btn-secondary btn-lg p-4 subGameBtn" onclick="window.location.href='/cuentamania?n=3'">S</button></td>
                                 <td><button class="btn btn-secondary btn-lg p-4 subGameBtn" onclick="window.location.href='/cuentamania?n=4'">M</button></td>
                                 <td><button class="btn btn-secondary btn-lg p-4 subGameBtn" onclick="window.location.href='/cuentamania?n=5'">L</button></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer myButtons">
+                        <button type="button" class="btn btn-secondary closeButton" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 0h-n0 -->
+        <div class="modal fade" id="0h-n0-size" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content bg-dark text-light overflow-auto">
+                    <div class="modal-header displayColumn">Elige el tamaño del tablero</div>
+                    <div class="modal-body">
+                        <table class="displayColumn">
+                            <tr>
+                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn" onclick="window.location.href='/0h_n0?n=4'">4x4</button></td>
+                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn" onclick="window.location.href='/0h_n0?n=5'">5x5</button></td>
                             </tr>
                         </table>
                     </div>
