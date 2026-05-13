@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (profile.is_admin) {
         document.getElementById('admin-section-tops-1').style.display = 'flex';
+        document.getElementById('admin-section-streaks').style.display = 'flex';
         const tabla = document.getElementById("ranking");
         if (profile.tops_1 && profile.tops_1.length > 0) {
             tabla.innerHTML = profile.tops_1.map((t, i) => `
@@ -58,6 +59,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             `).join('');
         } else {
             tabla.innerHTML = '<tr><td colspan="3" class="profile-empty">No hay datos de rankings disponibles</td></tr>';
+        }
+
+        const tabla_2 = document.getElementById("ranking_streaks");
+        if (profile.tops_2 && profile.tops_2.length > 0) {
+            tabla_2.innerHTML = profile.tops_2.map((t, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td style="font-weight: 600;">${t.nickname}</td>
+                    <td>${t.tops_2}</td>
+                </tr>
+            `).join('');
+        } else {
+            tabla_2.innerHTML = '<tr><td colspan="3" class="profile-empty">No hay datos de rankings disponibles</td></tr>';
         }
     }
 

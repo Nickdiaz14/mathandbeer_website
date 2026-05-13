@@ -404,6 +404,7 @@ def get_profile(userid):
         
         is_admin = userid in admins
         tops_1 = []
+        tops_2 = []
 
         if is_admin:
             #admin
@@ -430,6 +431,31 @@ def get_profile(userid):
                 ORDER BY tops DESC
             """)
             tops_1 = [{'nickname': r[0], 'tops_1': r[1]} for r in cursor.fetchall()]
+            
+            cursor.execute("""
+                WITH fechas_unicas AS (
+                    SELECT DISTINCT userid, challenge_date FROM daily_results
+                ),
+                diferencias AS (
+                    SELECT 
+                        userid,
+                        challenge_date,
+                        challenge_date - (ROW_NUMBER() OVER (PARTITION BY userid ORDER BY challenge_date)) * INTERVAL '1 day' as grp
+                    FROM fechas_unicas
+                ),
+                todas_las_rachas AS (
+                    SELECT userid, COUNT(*) as racha
+                    FROM diferencias
+                    GROUP BY userid, grp
+                )
+                SELECT n.nickname, MAX(tlr.racha) as mejor_racha
+                FROM todas_las_rachas tlr
+                JOIN nickname n ON tlr.userid = n.userid
+                GROUP BY n.nickname
+                ORDER BY MAX(tlr.racha) DESC
+                LIMIT 10;
+            """)
+            tops_2 = [{'nickname': r[0], 'tops_2': r[1]} for r in cursor.fetchall()]
 
     finally:
         cursor.close()
@@ -442,7 +468,8 @@ def get_profile(userid):
         'liked_talks': liked_talks,
         'rsvps': rsvps,
         'is_admin': is_admin,
-        'tops_1': tops_1
+        'tops_1': tops_1,
+        'tops_2': tops_2
     })
 
 # --- UPDATE NICKNAME ---

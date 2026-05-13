@@ -123,7 +123,7 @@
             <div id="admin-section-tops-1" class="profile-section rounded-4 shadow-sm displayColumn" style="display:none;">
                 <h3 class="profile-section-title"><i class="fa-solid fa-ranking-star me-2"></i>Ranking Global (#1s)</h3>
                 <div class="profile-table-container displayColumn myBg myBorder leaderboard">
-                    <table class="profile-table displayColumn">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Posición</th>
@@ -132,6 +132,25 @@
                             </tr>
                         </thead>
                         <tbody id="ranking">
+                            <!-- Leaderboard rows will be dynamically inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Admin Section: Top 10 users with best streaks -->
+            <div id="admin-section-streaks" class="profile-section rounded-4 shadow-sm displayColumn" style="display:none;">
+                <h3 class="profile-section-title"><i class="fa-solid fa-ranking-star me-2"></i>Ranking Global (Streaks)</h3>
+                <div class="profile-table-container displayColumn myBg myBorder leaderboard">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Posición</th>
+                                <th>Jugador</th>
+                                <th>Mejor Racha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ranking_streaks">
                             <!-- Leaderboard rows will be dynamically inserted here -->
                         </tbody>
                     </table>
