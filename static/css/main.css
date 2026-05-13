@@ -130,20 +130,21 @@ main {
 .menu_games {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  width: 100%;
-  margin-top: 20px;
+  gap: 15px;
+  width: 90%;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .menu_games button {
   color: var(--text-muted) !important;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 16px;
-  padding: 25px;
+  background: var(--myBg);
+  border: 2px solid var(--myBorder);
+  border-radius: 28px;
+  min-height: 15vh;
+  padding: 15px;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 18px !important;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
@@ -151,6 +152,7 @@ main {
   justify-content: center;
   gap: 15px;
   backdrop-filter: blur(5px);
+  overflow: hidden;
 }
 
 .menu_games button:hover {
@@ -408,4 +410,11 @@ hr {
 
 .first-row {
   margin-top: 2em !important;
+}
+
+@media (min-width: 768px) {
+
+  .menu_games button {
+    min-height: 22vh;
+  }
 }

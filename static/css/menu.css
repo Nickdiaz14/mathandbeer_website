@@ -7,66 +7,28 @@
   color: var(--text-muted);
 }
 
-
-.grid_container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, auto));
-  gap: 3vh;
-  width: 90%;
-  justify-content: stretch;
-  align-items: center;
-  max-width: 1200px;
-  margin-top: 4vh;
-}
-
-.game {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  overflow: hidden;
-  padding: 25px;
-  border-radius: 35px;
-  align-items: center;
-  transition: all 0.3s ease;
-  display: flex;
-  position: relative;
-  justify-content: space-around;
-  min-width: 180px;
-  min-height: 110px;
-}
-
 .game_img {
-  width: 40px;
+  width: 150px;
   position: absolute;
-  left: 25px;
+  top: 40px;
+  left: 40px;
   transition: all 0.3s ease;
 }
 
 .game_text {
   color: white;
-  font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 100%;
+  font-size: 30px;
   position: absolute;
-  right: 35px;
+  right: 40px;
   transition: all 0.4s ease;
 }
 
-.game_text_big {
-  color: white;
-  font-family: 'Inter', sans-serif;
+.game_text_out {
+  opacity: 0;
+  color: var(--accent-beer);
   font-weight: 600;
-  font-size: 100%;
-  position: absolute;
-  right: 20px;
-  transition: all 0.4s ease;
-}
-
-.game_text_out,
-.game_text_out_big {
-  color: white;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 100%;
+  font-size: 45px;
   position: absolute;
   left: -200px;
   right: none;
@@ -74,36 +36,56 @@
 }
 
 .game:hover {
-  background: rgba(116, 37, 128, 0.352);
-  border: 1px solid rgba(155, 76, 228, 0.3);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.636);
-  transform: scale(1.069);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--accent-math);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 242, 255, 0.2);
+  transform: translateY(-10px) rotateX(5deg);
   cursor: pointer;
-  transition: all 0.3s ease;
+}
+
+@keyframes shine {
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .game:hover .game_img {
-  transform: scale(2.5) translateX(110%) translateY(30%);
-  transition: all 0.3s ease;
+  transform: scale(1.4) rotate(-10deg);
+  opacity: 0.15;
+  filter: blur(4px);
+}
+
+.game:hover .game_text {
+  opacity: 0.1;
+  transform: translateX(20px);
+  filter: blur(2px);
 }
 
 .game:hover .game_text_out {
-  left: 25px;
-  transition: all 0.4s ease;
-}
-
-.game:hover .game_text_out_big {
-  left: 10px;
-  transition: all 0.4s ease;
-}
-
-.game:hover .game_text,
-.game:hover .game_text_big {
-  right: -200px;
+  opacity: 1;
+  top: 30%;
+  left: 33%;
   transition: all 0.4s ease;
 }
 
 .subGameBtn {
   background: rgba(255, 255, 255, 0.1) !important;
   width: 120px;
+}
+
+@media (min-width: 768px) {
+  .game_img {
+    width: 70px;
+    top: auto;
+  }
+
+  .game_text {
+    font-size: 20px;
+  }
+
+  .game:hover .game_text_out {
+    top: 28%;
+    right: auto;
+    left: 38%;
+  }
 }
