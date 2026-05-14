@@ -1,18 +1,49 @@
-.game_select {
-    background: var(--primary-gradient-text);
-    padding: 2px;
-    font-size: 3vh;
-    text-align: center;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 3px;
-    margin: 4vw 0 0 0;
-    font-size: 26px;
+.selection-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px 0;
+    width: 100%;
 }
 
-.game_select:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+.select-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.select-label {
+    color: #b6bde7;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+}
+
+.game_select {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(182, 189, 231, 0.3);
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+
+.game_select:hover, .game_select:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--accent-math, #6366f1);
+    outline: none;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+}
+
+.game_select option {
+    background: #2a1b3d;
+    color: white;
 }
 
 .leaderboard {

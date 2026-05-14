@@ -133,3 +133,29 @@ function updateLeaderboard() {
             console.error('Error:', error);
         });
 }
+
+function filterGamesByCategory() {
+    const categorySelect = document.getElementById('category_select');
+    const gameSelect = document.getElementById('select');
+    const category = categorySelect.value;
+    const options = gameSelect.options;
+    
+    let firstVisibleSet = false;
+    
+    for (let i = 0; i < options.length; i++) {
+        const option = options[i];
+        const optionCat = option.getAttribute('data-cat');
+        
+        if (category === 'all' || optionCat === category) {
+            option.style.display = 'block';
+            if (!firstVisibleSet) {
+                gameSelect.value = option.value;
+                firstVisibleSet = true;
+            }
+        } else {
+            option.style.display = 'none';
+        }
+    }
+    
+    updateLeaderboard();
+}
