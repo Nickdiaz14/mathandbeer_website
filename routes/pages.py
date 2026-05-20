@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, json, Response, current_app, redirect
 from db import get_connection, release_connection
 from babel.dates import format_date
+from datetime import datetime
 
 pages_bp = Blueprint('pages', __name__)
 
@@ -26,6 +27,16 @@ def page_about():
         equipo = json.load(f)
 
     connection = get_connection()
+    testimonials = []
+    fallback_testimonials = [
+        {
+            "name": "Laura C.",
+            "rating": 5,
+            "comment": "Vine sin saber qué esperar y me fui con ganas de volver. Nunca pensé que las matemáticas podían ser tan entretenidas y cercanas. ¡Completamente recomendado!",
+            "info": "Asistente habitual · Bogotá"
+        }
+    ]
+
     try:
         cursor = connection.cursor()
         
@@ -47,13 +58,39 @@ def page_about():
         
         proxima = cursor.fetchall()
         proxima = [{"id": evento[0], "city": evento[1], "title": evento[2], "date": evento[3].isoformat()} for evento in proxima]
+
+        # Fetch 3 random testimonials
+        try:
+            cursor.execute("""
+                SELECT name, rating, comment, info 
+                FROM testimonials 
+                ORDER BY RANDOM() 
+                LIMIT 3;
+            """)
+            testimonials_rows = cursor.fetchall()
+            for r in testimonials_rows:
+                testimonials.append({
+                    "name": r[0],
+                    "rating": r[1],
+                    "comment": r[2],
+                    "info": r[3] if r[3] else ""
+                })
+        except Exception as db_err:
+            print("Error query testimonials, using fallback:", db_err)
+            connection.rollback()
+            testimonials = []
+            
     finally:
         cursor.close()
         release_connection(connection)
 
+    if not testimonials:
+        testimonials = fallback_testimonials
+
+    n_anos = datetime.now().year - 2022
     if len(proxima) > 0:
-        return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), proxima=json.dumps(proxima))
-    return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas))
+        return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), proxima=json.dumps(proxima), n_anos=n_anos, testimonials=testimonials)
+    return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), n_anos=n_anos, testimonials=testimonials)
 
 @pages_bp.route('/leaderboards')
 def page_leaderboards():
@@ -166,3 +203,7 @@ def page_profile():
 @pages_bp.route('/daily')
 def page_daily():
     return render_template('daily.html')
+
+@pages_bp.route('/empresas')
+def page_empresas():
+    return render_template('empresas.html')

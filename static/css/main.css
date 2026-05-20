@@ -38,8 +38,8 @@
 
 
 .streak-fire {
-    font-size: 2rem;
-    filter: drop-shadow(0 0 5px rgba(255, 183, 0, 0.3));
+  font-size: 2rem;
+  filter: drop-shadow(0 0 5px rgba(255, 183, 0, 0.3));
 }
 
 body {
@@ -108,7 +108,8 @@ main {
   justify-content: center;
 }
 
-.menu a, .menu button {
+.menu a,
+.menu button {
   color: #b6bde7 !important;
   background: none;
   font-family: 'Inter', sans-serif;
@@ -118,7 +119,8 @@ main {
   border: none;
 }
 
-.menu a:hover, .menu button:hover {
+.menu a:hover,
+.menu button:hover {
   color: #ffc800 !important;
   border: none;
   font-size: 20px;
@@ -161,6 +163,14 @@ main {
   background: rgba(255, 200, 0, 0.05);
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.hero-accent {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--accent-beer), var(--accent-math));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .title {
@@ -409,6 +419,11 @@ hr {
 
 .first-row {
   margin-top: 2em !important;
+}
+
+/* ── NAVBAR HIGHLIGHT ────────────────────────── */
+#nav-active {
+  color: var(--accent-beer) !important;
 }
 
 @media (min-width: 768px) {

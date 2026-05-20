@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="prMhJRzxbzY-OPF8pAc3w72jFMuNqcPC9nxMkH_9rQU" />
@@ -10,41 +11,54 @@
     <link rel="stylesheet" href="../static/css/leaderboards.css">
     <link rel="stylesheet" href="../static/css/profile.css">
     <link rel="stylesheet" href="../static/css/fire_works.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" type="image/png" href="../static/images/logos/favicon.png">
     <title>Tabla de posiciones - {{ name }} | Math and Beer</title>
     <meta name="description" content="Tabla de posiciones de {{ name }} | Math and Beer">
     <meta name="robots" content="noindex">
 </head>
+
 <body data-game="{{ game }}" data-records="{{ records }}" data-better="{{ better }}">
     <header>
         <nav class="navbar navbar-expand-lg menu">
-        <div class="container-fluid">
-            <button onclick="window.location.href='/'" class="navbar-brand"><div class="logo"></div></button>
-            <button class="navbar-toggler menuHamb" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fa-solid fa-bars fa-2xl" style="color: #b6bde7;"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a href="/profile" class="nav-link active" aria-current="page"><i class="fa-solid fa-user"></i> Mi Perfil</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/menu_games" class="nav-link active" aria-current="page"><i class="fa-solid fa-gamepad"></i> Juegos</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/daily" class="nav-link active" aria-current="page"><i class="fa-solid fa-crosshairs"></i> Reto Diario</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/leaderboards" class="nav-link active" aria-current="page"><i class="fa-solid fa-ranking-star"></i> Rankings</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/" class="nav-link active" aria-current="page"><i class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
-                </li>
-            </ul>
+            <div class="container-fluid">
+                <button onclick="window.location.href='/'" class="navbar-brand">
+                    <div class="logo"></div>
+                </button>
+                <button class="navbar-toggler menuHamb" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars fa-2xl" style="color: #b6bde7;"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="/profile" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-user"></i> Mi Perfil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/menu_games" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-gamepad"></i> Juegos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/daily" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-crosshairs"></i> Reto Diario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/leaderboards" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-ranking-star"></i> Rankings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
         </nav>
     </header>
     <main>
@@ -65,7 +79,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         <div id="extra_leaderboard" class="leaderboard displayColumn myBg myBorder" style="display: none;">
             <table>
                 <thead>
@@ -96,7 +110,7 @@
             </button>
         </div>
     </main>
-    
+
     <!-- fireworks -->
     <div id="fireworks-layer" style="display: none;">
         <div class="firework"></div>
@@ -109,51 +123,54 @@
 
     <script src="../static/scripts/main.js"></script>
     <script src="../static/scripts/leaderboards.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const game = document.body.dataset.game || 'un juego';
-      const msg = document.querySelector('.title.fs-6')?.textContent || '';
-      const siteUrl = window.location.origin;
+        document.addEventListener('DOMContentLoaded', () => {
+            const game = document.body.dataset.game || 'un juego';
+            const msg = document.querySelector('.title.fs-6')?.textContent || '';
+            const siteUrl = window.location.origin;
 
-      let cleanMsg = msg.replace(', sigue así!', '').replace('!', '').replace('¡Hiciste ', 'Hice ');
-      if (cleanMsg.includes('Felicidades')) cleanMsg = '¡Conseguí un nuevo récord';
-      
-      const shareText = `🧠🍺 ${cleanMsg} en ${getGameName(game)} de Math & Beer! ¿Puedes superarme? ${siteUrl}/register`;
+            let cleanMsg = msg.replace(', sigue así!', '').replace('!', '').replace('¡Hiciste ', 'Hice ');
+            if (cleanMsg.includes('Felicidades')) cleanMsg = '¡Conseguí un nuevo récord';
 
-      const waBtn = document.getElementById('share-wa');
-      const xBtn = document.getElementById('share-x');
-      const copyBtn = document.getElementById('share-copy');
+            const shareText = `🧠🍺 ${cleanMsg} en ${getGameName(game)} de Math & Beer! ¿Puedes superarme? ${siteUrl}/register`;
 
-      if (waBtn) waBtn.href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
-      if (xBtn) xBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
-      if (copyBtn) {
-        copyBtn.addEventListener('click', async () => {
-          try {
-            await navigator.clipboard.writeText(shareText);
-            copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> ¡Copiado!';
-            setTimeout(() => copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i> Copiar', 2000);
-          } catch { /* silencioso */ }
+            const waBtn = document.getElementById('share-wa');
+            const xBtn = document.getElementById('share-x');
+            const copyBtn = document.getElementById('share-copy');
+
+            if (waBtn) waBtn.href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+            if (xBtn) xBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+            if (copyBtn) {
+                copyBtn.addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(shareText);
+                        copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> ¡Copiado!';
+                        setTimeout(() => copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i> Copiar', 2000);
+                    } catch { /* silencioso */ }
+                });
+            }
         });
-      }
-    });
 
-    function getGameName(gameCode) {
-        switch (gameCode) {
-            case "T4": return "0h-h1 - 4";
-            case "T6": return "0h-h1 - 6";
-            case "T8": return "0h-h1 - 8";
-            case "T10": return "0h-h1 - 10";
-            case "TContrareloj": return "Contrareloj";
-            case "TKnight": return "Salto Real";
-            case "TUnicolor": return "Unicolor";
-            case "TBicolor": return "Bicolor";
-            case "TS3": return "CuentaManía - S";
-            case "TS4": return "CuentaManía - M";
-            case "TS5": return "CuentaManía - L";
-            default: return gameCode.replace('T', ''); // Fallback por si no coincide
+        function getGameName(gameCode) {
+            switch (gameCode) {
+                case "T4": return "0h-h1 - 4";
+                case "T6": return "0h-h1 - 6";
+                case "T8": return "0h-h1 - 8";
+                case "T10": return "0h-h1 - 10";
+                case "TContrareloj": return "Contrareloj";
+                case "TKnight": return "Salto Real";
+                case "TUnicolor": return "Unicolor";
+                case "TBicolor": return "Bicolor";
+                case "TS3": return "CuentaManía - S";
+                case "TS4": return "CuentaManía - M";
+                case "TS5": return "CuentaManía - L";
+                default: return gameCode.replace('T', ''); // Fallback por si no coincide
+            }
         }
-    }
     </script>
 </body>
+
 </html>

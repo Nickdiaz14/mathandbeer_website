@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/about.css">
+    <link rel="stylesheet" href="../static/css/empresas.css">
+    <link rel="icon" type="image/png" href="../static/images/logos/favicon.png">
+    <title>Charlas para Empresas y Universidades | Math & Beer</title>
+    <meta name="description"
+        content="Lleva Math & Beer a tu empresa, universidad o colegio. Experiencias matemáticas únicas para team building, semanas de la ciencia y actividades extracurriculares en Colombia.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.mathandbeer.com/empresas">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg menu">
+            <div class="container-fluid">
+                <button onclick="window.location.href='/'" class="navbar-brand">
+                    <div class="logo"></div>
+                </button>
+                <button class="navbar-toggler menuHamb" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars fa-2xl" style="color: #b6bde7;"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="/profile" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-user"></i> Mi Perfil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/menu_games" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-gamepad"></i> Juegos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/daily" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-crosshairs"></i> Reto Diario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/leaderboards" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-ranking-star"></i> Rankings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/empresas" class="nav-link active" aria-current="page" id="nav-empresas">
+                                <i class="fa-solid fa-building"></i> Empresas & Universidades
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- ====== HERO EMPRESAS ====== -->
+        <section class="emp-hero displayColumn">
+            <div class="emp-hero-badge">
+                <i class="fa-solid fa-building me-2"></i>Para empresas, universidades y colegios
+            </div>
+            <h1 class="title emp-hero-title">Lleva <span style="color: var(--accent-beer);">Math & Beer</span><br>a tu
+                organización</h1>
+            <p class="emp-hero-subtitle">Una experiencia única que combina matemáticas, humor y asombro.<br>
+                Ideal para <strong>team building</strong>, semanas de la ciencia y actividades extracurriculares.</p>
+            <a href="#contacto" class="btn-hero-primary mt-3" id="cta-contacto-hero">
+                <i class="fa-solid fa-paper-plane"></i> Solicitar información
+            </a>
+        </section>
+
+        <!-- ====== PROPUESTAS DE VALOR ====== -->
+        <hr>
+        <h2 class="title">¿Para quién es?</h2>
+        <hr>
+
+        <section class="emp-cards-section">
+            <div class="emp-cards-grid">
+
+                <!-- Empresas -->
+                <div class="emp-card reveal" id="card-empresas">
+                    <div class="emp-card-icon">🏢</div>
+                    <h3 class="emp-card-title">Empresas</h3>
+                    <p class="emp-card-desc">Activa tu equipo con una experiencia diferente. Math & Beer lleva
+                        pensamiento lógico, toma de decisiones y estadística a tu sala de reuniones de forma
+                        entretenida.</p>
+                    <ul class="emp-card-list">
+                        <li><i class="fa-solid fa-check"></i> Team building con impacto real</li>
+                        <li><i class="fa-solid fa-check"></i> Temáticas adaptadas al negocio</li>
+                        <li><i class="fa-solid fa-check"></i> Duración: 1-2 horas</li>
+                        <li><i class="fa-solid fa-check"></i> Modalidad presencial o virtual</li>
+                    </ul>
+                    <div class="emp-card-price">
+                        <span class="emp-price-label">Desde</span>
+                        <span class="emp-price-value">COP 600.000</span>
+                    </div>
+                </div>
+
+                <!-- Universidades -->
+                <div class="emp-card emp-card-featured reveal" id="card-universidades">
+                    <div class="emp-card-badge-top">Más solicitado</div>
+                    <div class="emp-card-icon">🎓</div>
+                    <h3 class="emp-card-title">Universidades</h3>
+                    <p class="emp-card-desc">Formatos perfectos para semanas culturales, días de la ciencia y
+                        actividades extracurriculares. Ya hemos presentado en el Congreso Colombiano de Matemáticas.</p>
+                    <ul class="emp-card-list">
+                        <li><i class="fa-solid fa-check"></i> Credibilidad académica comprobada</li>
+                        <li><i class="fa-solid fa-check"></i> Temas de frontera: IA, criptografía, juegos</li>
+                        <li><i class="fa-solid fa-check"></i> Ideal para grupos de 30-200 personas</li>
+                        <li><i class="fa-solid fa-check"></i> Certificado de participación</li>
+                    </ul>
+                    <div class="emp-card-price">
+                        <span class="emp-price-label">Desde</span>
+                        <span class="emp-price-value">COP 300.000</span>
+                    </div>
+                </div>
+
+                <!-- Colegios -->
+                <div class="emp-card reveal" id="card-colegios">
+                    <div class="emp-card-icon">📚</div>
+                    <h3 class="emp-card-title">Colegios</h3>
+                    <p class="emp-card-desc">Cambiamos la relación de los estudiantes con las matemáticas. Una charla
+                        que demuestra que los números son creativos, sorprendentes y están en todas partes.</p>
+                    <ul class="emp-card-list">
+                        <li><i class="fa-solid fa-check"></i> Diseñado para bachillerato</li>
+                        <li><i class="fa-solid fa-check"></i> Conecta con el currículo escolar</li>
+                        <li><i class="fa-solid fa-check"></i> Aumenta la motivación matemática</li>
+                        <li><i class="fa-solid fa-check"></i> Sin jerga técnica, 100% accesible</li>
+                    </ul>
+                    <div class="emp-card-price">
+                        <span class="emp-price-label">Desde</span>
+                        <span class="emp-price-value">COP 200.000</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ====== CÓMO FUNCIONA ====== -->
+        <hr>
+        <h2 class="title">¿Cómo funciona?</h2>
+        <hr>
+
+        <section class="emp-steps-section displayColumn">
+            <div class="emp-steps-grid">
+                <div class="emp-step reveal">
+                    <div class="emp-step-number">01</div>
+                    <h4 class="emp-step-title">Nos contactas</h4>
+                    <p class="emp-step-desc">Completa el formulario de abajo o escríbenos directamente. Cuéntanos tu
+                        organización, el número de personas y la fecha tentativa.</p>
+                </div>
+                <div class="emp-step-arrow">→</div>
+                <div class="emp-step reveal">
+                    <div class="emp-step-number">02</div>
+                    <h4 class="emp-step-title">Diseñamos la charla</h4>
+                    <p class="emp-step-desc">Adaptamos el tema y el formato a tu audiencia. En 48 horas te enviamos una
+                        propuesta personalizada.</p>
+                </div>
+                <div class="emp-step-arrow">→</div>
+                <div class="emp-step reveal">
+                    <div class="emp-step-number">03</div>
+                    <h4 class="emp-step-title">¡Brindamos juntos!</h4>
+                    <p class="emp-step-desc">Llegamos, montamos la experiencia y dejamos a tu equipo con la mente activa
+                        y con ganas de más matemáticas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== TEMAS DISPONIBLES ====== -->
+        <hr>
+        <h2 class="title">Temas disponibles</h2>
+        <hr>
+
+        <section class="emp-topics-section displayColumn">
+            <div class="emp-topics-grid">
+                <div class="emp-topic-pill reveal"><span>🎲</span> Probabilidad & Toma de Decisiones</div>
+                <div class="emp-topic-pill reveal"><span>🔐</span> Criptografía & Seguridad</div>
+                <div class="emp-topic-pill reveal"><span>🤖</span> Matemáticas detrás de la IA</div>
+                <div class="emp-topic-pill reveal"><span>🎵</span> Música & Matemáticas</div>
+                <div class="emp-topic-pill reveal"><span>🌐</span> Topología en la vida real</div>
+                <div class="emp-topic-pill reveal"><span>📊</span> Estadística que no miente</div>
+                <div class="emp-topic-pill reveal"><span>♟️</span> Teoría de Juegos</div>
+                <div class="emp-topic-pill reveal"><span>🌀</span> El infinito y sus paradojas</div>
+                <div class="emp-topic-pill reveal"><span>✨</span> Tema personalizado</div>
+            </div>
+        </section>
+
+        <!-- ====== FORMULARIO DE CONTACTO ====== -->
+        <hr id="contacto">
+        <h2 class="title">Solicitar información</h2>
+        <hr>
+
+        <section class="emp-form-section displayColumn">
+            <p class="emp-form-intro">Escríbenos y te respondemos en menos de 48 horas.</p>
+            <form class="emp-form myBg myBorder rounded-4 p-4" id="form-empresas" action="mailto:mate.et.cerv@gmail.com"
+                method="get">
+                <div class="emp-form-row">
+                    <div class="emp-form-group">
+                        <label for="emp-nombre" class="emp-label">Nombre completo *</label>
+                        <input type="text" id="emp-nombre" name="nombre" class="emp-input" placeholder="Tu nombre"
+                            required>
+                    </div>
+                    <div class="emp-form-group">
+                        <label for="emp-org" class="emp-label">Organización *</label>
+                        <input type="text" id="emp-org" name="organizacion" class="emp-input"
+                            placeholder="Empresa, universidad o colegio" required>
+                    </div>
+                </div>
+                <div class="emp-form-row">
+                    <div class="emp-form-group">
+                        <label for="emp-email" class="emp-label">Correo electrónico *</label>
+                        <input type="email" id="emp-email" name="correo" class="emp-input" placeholder="tu@correo.com"
+                            required>
+                    </div>
+                    <div class="emp-form-group">
+                        <label for="emp-tipo" class="emp-label">Tipo de organización *</label>
+                        <select id="emp-tipo" name="tipo" class="emp-input emp-select" required>
+                            <option value="" disabled selected>Selecciona una opción</option>
+                            <option value="empresa">Empresa</option>
+                            <option value="universidad">Universidad</option>
+                            <option value="colegio">Colegio / Institución educativa</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="emp-form-row">
+                    <div class="emp-form-group">
+                        <label for="emp-personas" class="emp-label">Número aproximado de personas</label>
+                        <input type="number" id="emp-personas" name="personas" class="emp-input" placeholder="Ej: 50"
+                            min="10">
+                    </div>
+                    <div class="emp-form-group">
+                        <label for="emp-fecha" class="emp-label">Fecha tentativa</label>
+                        <input type="date" id="emp-fecha" name="fecha" class="emp-input">
+                    </div>
+                </div>
+                <div class="emp-form-group" style="width:100%">
+                    <label for="emp-mensaje" class="emp-label">Mensaje (opcional)</label>
+                    <textarea id="emp-mensaje" name="mensaje" class="emp-input emp-textarea" rows="3"
+                        placeholder="Cuéntanos qué tienes en mente..."></textarea>
+                </div>
+                <button type="submit" class="btn-hero-primary w-100 mt-2" id="btn-enviar-form">
+                    <i class="fa-solid fa-paper-plane me-2"></i>Enviar solicitud
+                </button>
+                <p class="emp-form-note">También puedes escribirnos directamente a <a
+                        href="mailto:mate.et.cerv@gmail.com" class="emp-email-link">mate.et.cerv@gmail.com</a></p>
+            </form>
+        </section>
+
+    </main>
+
+    <div class="menu-toggle">
+        <a class="mail"
+            href="mailto:mate.et.cerv@gmail.com?subject=Math and Beer en mi empresa🍻&body=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre..."
+            aria-label="Enviar correo"><i class="fa-solid fa-envelope"></i></a>
+        <a class="instagram" href="https://www.instagram.com/math_and_beer/#"><i class="fa-brands fa-instagram"></i></a>
+        <a class="whatsapp" href="https://wa.me/+573115709293"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+
+    <button class="contact"><i class="fa-solid fa-chevron-up"></i></button>
+    <script src="../static/scripts/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script>
+        // Scroll reveal para la página de empresas
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); } });
+        }, { threshold: 0.1 });
+        reveals.forEach(r => observer.observe(r));
+    </script>
+</body>
+
+</html>

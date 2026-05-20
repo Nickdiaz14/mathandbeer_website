@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (bsCollapse) bsCollapse.hide();
     });
   });
-  const reveals = document.querySelectorAll('.about-img, .about_text');
+  const reveals = document.querySelectorAll('.about-img, .about_text, .reveal');
 
   // Les añadimos la clase base oculta
   reveals.forEach(el => el.classList.add('reveal'));

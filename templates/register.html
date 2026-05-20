@@ -1,58 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="prMhJRzxbzY-OPF8pAc3w72jFMuNqcPC9nxMkH_9rQU" />
     <meta name="viewport" content="width=device-width, initial-scale=0.75, height=device-height">
     <link rel="stylesheet" href="../static/css/main.css">
     <link rel="stylesheet" href="../static/css/menu.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" type="image/png" href="../static/images/logos/favicon.png">
     <title>Juegos | Math and Beer</title>
-    <meta name="description" content="Descubre juegos matemáticos interactivos de lógica, números y estrategia en Math & Beer. Reta tu mente, mejora tus habilidades y juega con amigos mientras te diviertes aprendiendo.">
+    <meta name="description"
+        content="Descubre juegos matemáticos interactivos de lógica, números y estrategia en Math & Beer. Reta tu mente, mejora tus habilidades y juega con amigos mientras te diviertes aprendiendo.">
     <meta name="robots" content="index, follow">
     <meta name="canonical" href="https://mathandbeer.com/register">
-</head> 
+</head>
+
 <body data-m="{{ m }}">
     <header>
         <nav class="navbar navbar-expand-lg menu">
-        <div class="container-fluid">
-            <button onclick="window.location.href='/'" class="navbar-brand"><div class="logo"></div></button>
-            <button class="navbar-toggler menuHamb" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fa-solid fa-bars fa-2xl" style="color: #b6bde7;"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a href="/profile" class="nav-link active" aria-current="page"><i class="fa-solid fa-user"></i> Mi Perfil</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/menu_games" class="nav-link active" aria-current="page"><i class="fa-solid fa-gamepad"></i> Juegos</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/daily" class="nav-link active" aria-current="page"><i class="fa-solid fa-crosshairs"></i> Reto Diario</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/leaderboards" class="nav-link active" aria-current="page"><i class="fa-solid fa-ranking-star"></i> Rankings</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/" class="nav-link active" aria-current="page"><i class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
-                </li>
-            </ul>
+            <div class="container-fluid">
+                <button onclick="window.location.href='/'" class="navbar-brand">
+                    <div class="logo"></div>
+                </button>
+                <button class="navbar-toggler menuHamb" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars fa-2xl" style="color: #b6bde7;"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="/profile" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-user"></i> Mi Perfil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/menu_games" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-gamepad"></i> Juegos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/daily" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-crosshairs"></i> Reto Diario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/leaderboards" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-ranking-star"></i> Rankings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
         </nav>
     </header>
     <main>
-    <h1 class="title" style="margin-top: 20vh">¡Bienvenido a Math & Beer!</h1>
-    <h2 class="title fs-4">Ingresa un nombre o apodo</h2>
-    <h2 id = "case" class="fs-6" style="color: #ff0000; display: none;">{{ message }}</h2>
-    <input type="text" id="nickname" required>
-    <button id="start" class="game"><span class="title" style="font-size: 25px;">¡Jugar!</span></button>
+        <h1 class="title" style="margin-top: 20vh">¡Bienvenido a Math & Beer!</h1>
+        <h2 class="title fs-4">Ingresa un nombre o apodo</h2>
+        <h2 id="case" class="fs-6" style="color: #ff0000; display: none;">{{ message }}</h2>
+        <input type="text" id="nickname" required>
+        <button id="start" class="game"><span class="title" style="font-size: 25px;">¡Jugar!</span></button>
     </main>
     <div class="menu-toggle">
-        <a class="mail" href="mailto:mate.et.cerv@gmail.com?subject=Math and Beer en mi ciudad🍻&body=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre..." aria-label="Enviar correo"><i class="fa-solid fa-envelope"></i></a>
+        <a class="mail"
+            href="mailto:mate.et.cerv@gmail.com?subject=Math and Beer en mi ciudad🍻&body=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre..."
+            aria-label="Enviar correo"><i class="fa-solid fa-envelope"></i></a>
         <a class="instagram" href="https://www.instagram.com/math_and_beer/#"><i class="fa-brands fa-instagram"></i></a>
         <a class="whatsapp" href="https://wa.me/+573115709293"><i class="fa-brands fa-whatsapp"></i></a>
     </div>
@@ -60,6 +77,9 @@
         <i class="fa-solid fa-chevron-up"></i>
     </button>
     <script src="../static/scripts/register.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
