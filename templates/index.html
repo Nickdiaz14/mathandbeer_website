@@ -239,19 +239,20 @@
                 <div class="testimonial-card reveal myBg myBorder">
                     <div class="testimonial-stars">
                         {% set rating_val = t.rating | default(5) | int %}
-                        {% for i in range(rating_val) %}★{% endfor %}
-                        {% for i in range(5 - rating_val) %}☆{% endfor %}
+                        {% for i in range(5) %}
+                        {% if rating_val > i %}★{% else %}☆{% endif %}
+                        {% endfor %}
                     </div>
                     <p class="testimonial-text">"{{ t.comment }}"</p>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">
                             {% set parts = t.name.split() %}
                             {% if parts | length >= 2 %}
-                                {{ (parts[0][0] + parts[1][0]) | upper }}
+                            {{ (parts[0][0] + parts[1][0]) | upper }}
                             {% elif parts | length == 1 %}
-                                {{ parts[0][0] | upper }}
+                            {{ parts[0][0] | upper }}
                             {% else %}
-                                MB
+                            MB
                             {% endif %}
                         </div>
                         <div class="testimonial-info">
