@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Ocultar automáticamente después de 5 segundos
             setTimeout(function () {
                 popover.hide();
-            }, 30000);
+            }, 3000);
         }, 5000);
     }
 });
