@@ -48,7 +48,7 @@ function construirTarjetas(eventos) {
     eventos.forEach((evento, index) => {
         htmlTarjetas += `
         <div class="upcoming-card myBg myBorder rounded-4 shadow-sm p-3 mt-3" data-event-id="${evento.id}">
-            <p class="subtitle fs-5 mb-1">${evento.city}</p>
+            <h2 class="subtitle fs-5 mb-1">${evento.city}</h2>
             <p class="title fs-5 mb-2">${evento.title}</p>
             <div class="upcoming-countdown">
                 <i class="fa-solid fa-clock me-1" style="color:var(--accent-beer)"></i>

@@ -7,12 +7,12 @@
 .hero-section {
     position: relative;
     width: 100%;
-    min-height: 55vh;
+    min-height: 92vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    padding: 4rem 1rem;
+    padding: 1rem 1rem 8rem 1rem;
 }
 
 .hero-math-bg {
@@ -94,8 +94,9 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.07);
-    color: #fff !important;
+    color: var(--accent-math);
+    background: rgba(0, 242, 255, 0.1);
+    border-color: rgba(0, 242, 255, 0.3);
     font-weight: 600;
     font-size: 1rem;
     padding: 0.85rem 2rem;
@@ -108,10 +109,10 @@
 }
 
 .btn-hero-secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(0, 242, 255, 0.15);
+    border-color: rgba(0, 242, 255, 0.4);
     transform: translateY(-3px);
-    color: #fff !important;
+    color: #00f2ff !important;
 }
 
 .hero-stats {
@@ -151,10 +152,6 @@
 }
 
 /* ── TESTIMONIOS ─────────────────────────────── */
-.testimonials-section {
-    padding: 1rem 0 2rem;
-}
-
 .testimonials-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

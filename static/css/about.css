@@ -81,6 +81,10 @@
     transition: all 0.3s ease;
 }
 
+.card-header {
+    background: none !important;
+}
+
 .closeButton {
     background: var(--background-color);
     color: white;
@@ -116,7 +120,6 @@
 
 .accordion {
     width: 95%;
-    margin: 0 auto 5vh auto;
 }
 
 .myBorder {

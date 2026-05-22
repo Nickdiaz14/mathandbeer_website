@@ -1,3 +1,5 @@
+import os
+import random
 from flask import Blueprint, render_template, request, json, Response, current_app, redirect
 from db import get_connection, release_connection
 from babel.dates import format_date
@@ -25,6 +27,13 @@ def robots_txt():
 def page_about():
     with open("static/json/equipo.json", "r", encoding="utf-8") as f:
         equipo = json.load(f)
+
+    fotos_dir = "static/images/fotos"
+    if os.path.isdir(fotos_dir):
+        todas = [f for f in os.listdir(fotos_dir) if f.lower().endswith(('.webp', '.jpg', '.jpeg', '.png'))]
+        fotos = random.sample(todas, min(20, len(todas)))
+    else:
+        fotos = []
 
     connection = get_connection()
     testimonials = []
@@ -89,8 +98,8 @@ def page_about():
 
     n_anos = datetime.now().year - 2022
     if len(proxima) > 0:
-        return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), proxima=json.dumps(proxima), n_anos=n_anos, testimonials=testimonials)
-    return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), n_anos=n_anos, testimonials=testimonials)
+        return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), proxima=json.dumps(proxima), n_anos=n_anos, testimonials=testimonials, fotos=fotos)
+    return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), n_anos=n_anos, testimonials=testimonials, fotos=fotos)
 
 @pages_bp.route('/leaderboards')
 def page_leaderboards():

@@ -3,7 +3,8 @@
    Math & Beer Games
    ============================================= */
 
-.profile-loading, .profile-no-account {
+.profile-loading,
+.profile-no-account {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,7 +26,12 @@
   text-decoration: none;
   transition: transform 0.2s, opacity 0.2s;
 }
-.profile-cta-btn:hover { transform: scale(1.04); opacity: 0.9; color: #1a0b2e; }
+
+.profile-cta-btn:hover {
+  transform: scale(1.04);
+  opacity: 0.9;
+  color: #1a0b2e;
+}
 
 /* ── Header Card ── */
 .profile-header-card {
@@ -55,7 +61,7 @@
 
 .profile-edit-btn {
   background: none;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   color: var(--text-muted);
   font-family: 'Inter', sans-serif;
@@ -64,6 +70,7 @@
   cursor: pointer;
   transition: all 0.2s;
 }
+
 .profile-edit-btn:hover {
   border-color: var(--accent-beer);
   color: var(--accent-beer);
@@ -78,8 +85,8 @@
 }
 
 .profile-edit-form input {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   color: var(--text-main);
   font-family: 'Inter', sans-serif;
@@ -87,9 +94,14 @@
   padding: 6px 12px;
   width: 160px;
 }
-.profile-edit-form input:focus { outline: none; border-color: var(--accent-beer); }
 
-.profile-save-btn, .profile-cancel-btn {
+.profile-edit-form input:focus {
+  outline: none;
+  border-color: var(--accent-beer);
+}
+
+.profile-save-btn,
+.profile-cancel-btn {
   width: 34px;
   height: 34px;
   border-radius: 10px;
@@ -101,9 +113,21 @@
   justify-content: center;
   transition: transform 0.15s;
 }
-.profile-save-btn { background: #4ade80; color: #1a0b2e; }
-.profile-cancel-btn { background: rgba(255,255,255,0.1); color: var(--text-muted); }
-.profile-save-btn:hover, .profile-cancel-btn:hover { transform: scale(1.1); }
+
+.profile-save-btn {
+  background: #4ade80;
+  color: #1a0b2e;
+}
+
+.profile-cancel-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+}
+
+.profile-save-btn:hover,
+.profile-cancel-btn:hover {
+  transform: scale(1.1);
+}
 
 .profile-nick-error {
   color: #f87171;
@@ -123,8 +147,8 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: rgba(255,183,0,0.08);
-  border: 1px solid rgba(255,183,0,0.2);
+  background: rgba(255, 183, 0, 0.08);
+  border: 1px solid rgba(255, 183, 0, 0.2);
   border-radius: 20px;
   padding: 4px 12px;
   font-size: 0.78rem;
@@ -133,14 +157,20 @@
   cursor: default;
   transition: transform 0.2s;
 }
-.profile-badge:hover { transform: scale(1.05); }
-.profile-badge .badge-icon { font-size: 1rem; }
+
+.profile-badge:hover {
+  transform: scale(1.05);
+}
+
+.profile-badge .badge-icon {
+  font-size: 1rem;
+}
 
 .badge-locked {
   opacity: 0.3;
-  border-color: rgba(255,255,255,0.1);
+  border-color: rgba(255, 255, 255, 0.1);
   color: var(--text-muted);
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 /* ── Stats Row ── */
@@ -205,7 +235,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 12px;
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 10px;
   font-size: 0.82rem;
   animation: fadeIn 0.3s ease;
@@ -231,7 +261,7 @@
 
 .profile-list-item {
   padding: 8px 12px;
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 10px;
   font-size: 0.82rem;
   color: var(--text-main);
@@ -249,7 +279,7 @@
 
 .profile-empty {
   font-size: 0.8rem;
-  color: rgba(182,189,231,0.5);
+  color: rgba(182, 189, 231, 0.5);
   text-align: center;
   padding: 10px 0;
 }
@@ -266,8 +296,8 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: rgba(255,183,0,0.08);
-  border: 1px solid rgba(255,183,0,0.25);
+  background: rgba(255, 183, 0, 0.08);
+  border: 1px solid rgba(255, 183, 0, 0.25);
   border-radius: 20px;
   color: var(--text-muted);
   font-size: 0.8rem;
@@ -278,17 +308,22 @@
   font-family: 'Inter', sans-serif;
   margin-top: 8px;
 }
+
 .rsvp-btn:hover {
-  background: rgba(255,183,0,0.18);
+  background: rgba(255, 183, 0, 0.18);
   color: var(--accent-beer);
   border-color: var(--accent-beer);
 }
+
 .rsvp-btn.rsvp-active {
-  background: rgba(255,183,0,0.22);
+  background: rgba(255, 183, 0, 0.22);
   border-color: var(--accent-beer);
   color: var(--accent-beer);
 }
-.rsvp-btn .rsvp-count { font-weight: 700; }
+
+.rsvp-btn .rsvp-count {
+  font-weight: 700;
+}
 
 /* ── Share buttons (leaderboard) ── */
 .share-row {
@@ -314,14 +349,30 @@
   text-decoration: none;
   color: #fff;
 }
-.share-btn:hover { transform: scale(1.04); opacity: 0.9; color: #fff; }
-.share-btn.share-wa { background: linear-gradient(135deg, #25D366, #128C7E); }
-.share-btn.share-x { background: linear-gradient(135deg, #1DA1F2, #0d8ecf); }
-.share-btn.share-copy { background: rgba(255,255,255,0.1); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.15); }
+
+.share-btn:hover {
+  transform: scale(1.04);
+  opacity: 0.9;
+  color: #fff;
+}
+
+.share-btn.share-wa {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+}
+
+.share-btn.share-x {
+  background: linear-gradient(135deg, #1DA1F2, #0d8ecf);
+}
+
+.share-btn.share-copy {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
 
 /* ── Q&A Section ── */
 .qa-section {
-  border-top: 1px solid rgba(255,255,255,0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   margin-top: 1rem;
   padding-top: 1rem;
 }
@@ -345,8 +396,8 @@
 }
 
 .qa-item {
-  background: rgba(0,242,255,0.04);
-  border: 1px solid rgba(0,242,255,0.1);
+  background: rgba(0, 242, 255, 0.04);
+  border: 1px solid rgba(0, 242, 255, 0.1);
   border-radius: 10px;
   padding: 8px 12px;
   animation: fadeIn 0.3s ease;
@@ -374,7 +425,7 @@
 
 .qa-vote-btn {
   background: none;
-  border: 1px solid rgba(0,242,255,0.2);
+  border: 1px solid rgba(0, 242, 255, 0.2);
   border-radius: 14px;
   color: var(--text-muted);
   font-size: 0.75rem;
@@ -386,8 +437,10 @@
   align-items: center;
   gap: 4px;
 }
-.qa-vote-btn:hover, .qa-vote-btn.qa-voted {
-  background: rgba(0,242,255,0.12);
+
+.qa-vote-btn:hover,
+.qa-vote-btn.qa-voted {
+  background: rgba(0, 242, 255, 0.12);
   border-color: var(--accent-math);
   color: var(--accent-math);
 }
@@ -400,10 +453,10 @@
 
 .qa-input {
   flex: 1;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
-  color: var(--text-main);
+  color: #000000;
   font-family: 'Inter', sans-serif;
   font-size: 0.82rem;
   padding: 8px 12px;
@@ -411,8 +464,15 @@
   min-height: 38px;
   max-height: 80px;
 }
-.qa-input:focus { outline: none; border-color: var(--accent-math); }
-.qa-input::placeholder { color: rgba(182,189,231,0.45); }
+
+.qa-input:focus {
+  outline: none;
+  border-color: var(--accent-math);
+}
+
+.qa-input::placeholder {
+  color: rgba(11, 11, 11, 0.45);
+}
 
 .qa-send-btn {
   background: linear-gradient(135deg, var(--accent-math), #0088ff);
@@ -429,7 +489,10 @@
   transition: transform 0.2s;
   flex-shrink: 0;
 }
-.qa-send-btn:hover { transform: scale(1.1); }
+
+.qa-send-btn:hover {
+  transform: scale(1.1);
+}
 
 /* ── User ID copiable ── */
 .profile-userid-box {
@@ -494,6 +557,13 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
