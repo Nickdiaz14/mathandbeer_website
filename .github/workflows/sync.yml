@@ -43,6 +43,7 @@ jobs:
 
           git add static/images/events/
           git add static/images/fotos/
+          git add static/images/fotos/index.json
 
           if [ -n "$(git status --porcelain)" ]; then
             git commit -m "Auto: Sincronización de imágenes (eventos y fotos)"
