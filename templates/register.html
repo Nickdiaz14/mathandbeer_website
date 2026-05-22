@@ -65,6 +65,15 @@
         <h2 id="case" class="fs-6" style="color: #ff0000; display: none;">{{ message }}</h2>
         <input type="text" id="nickname" required>
         <button id="start" class="game"><span class="title" style="font-size: 25px;">¡Jugar!</span></button>
+
+        <div class="register-divider">
+            <span>o</span>
+        </div>
+
+        <p class="register-restore-label">¿Ya tienes cuenta en otro dispositivo?</p>
+        <input type="text" id="restore-userid" placeholder="Pega tu ID de usuario aquí" autocomplete="off" spellcheck="false">
+        <button id="restore-btn" class="game"><span class="title" style="font-size: 20px;">Restaurar cuenta</span></button>
+        <p id="restore-error" class="register-restore-error" style="display:none;"></p>
     </main>
     <div class="menu-toggle">
         <a class="mail"

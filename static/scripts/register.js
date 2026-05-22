@@ -14,6 +14,45 @@ document.addEventListener('DOMContentLoaded', function () {
         message_case.style.display = 'none';
     }
     start.addEventListener('click', () => generateUser());
+
+    const restoreBtn = document.getElementById('restore-btn');
+    const restoreInput = document.getElementById('restore-userid');
+    const restoreError = document.getElementById('restore-error');
+
+    restoreBtn.addEventListener('click', () => restoreAccount());
+    restoreInput.addEventListener('keydown', e => { if (e.key === 'Enter') restoreAccount(); });
+
+    function restoreAccount() {
+        const inputId = restoreInput.value.trim();
+        restoreError.style.display = 'none';
+        if (!inputId) {
+            restoreError.textContent = 'Ingresa tu ID de usuario';
+            restoreError.style.display = 'block';
+            return;
+        }
+        restoreBtn.disabled = true;
+        fetch('/seeUser', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: inputId })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.valid) {
+                localStorage.setItem('userId', inputId);
+                window.location.href = '/menu_games';
+            } else {
+                restoreError.textContent = 'No encontramos ninguna cuenta con ese ID';
+                restoreError.style.display = 'block';
+                restoreBtn.disabled = false;
+            }
+        })
+        .catch(() => {
+            restoreError.textContent = 'Error de conexión, intenta de nuevo';
+            restoreError.style.display = 'block';
+            restoreBtn.disabled = false;
+        });
+    }
 })
 
 function generateUser() {

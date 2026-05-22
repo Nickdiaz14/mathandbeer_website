@@ -132,6 +132,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       `).join('');
     }
 
+    // User ID
+    setupUserIdCopy();
+
     // Edit nickname
     setupNicknameEdit(profile.nickname);
 
@@ -171,6 +174,25 @@ function renderBadges(unlockedBadges) {
       </span>
     `;
   }).join('');
+}
+
+function setupUserIdCopy() {
+  const el = document.getElementById('profile-userid-value');
+  const btn = document.getElementById('copy-userid-btn');
+  if (!el || !btn) return;
+
+  el.textContent = userId;
+
+  btn.addEventListener('click', () => {
+    navigator.clipboard.writeText(userId).then(() => {
+      btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+      btn.style.color = '#4ade80';
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+        btn.style.color = '';
+      }, 2000);
+    });
+  });
 }
 
 function setupNicknameEdit(currentNick) {

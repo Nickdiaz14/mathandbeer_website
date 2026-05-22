@@ -432,3 +432,69 @@ hr {
     min-height: 22vh;
   }
 }
+
+/* ── Register: inputs ───────────────────────── */
+#nickname,
+#restore-userid {
+  width: 70%;
+  max-width: 320px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  padding: 12px 18px;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+#nickname::placeholder,
+#restore-userid::placeholder {
+  color: rgba(182, 189, 231, 0.4);
+}
+
+#nickname:focus,
+#restore-userid:focus {
+  border-color: var(--accent-beer);
+  box-shadow: 0 0 0 3px rgba(255, 183, 0, 0.12);
+}
+
+#restore-userid {
+  font-size: 0.82rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.03em;
+}
+
+/* ── Register: restaurar cuenta ─────────────── */
+.register-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 70%;
+  max-width: 320px;
+  color: rgba(182,189,231,0.4);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.register-divider::before,
+.register-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.12);
+}
+
+.register-restore-label {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 0;
+}
+
+.register-restore-error {
+  font-size: 0.78rem;
+  color: #f87171;
+  text-align: center;
+  margin-top: -8px;
+}
