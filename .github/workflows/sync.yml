@@ -33,20 +33,18 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_PORT: "6543"
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-          FOTOS_FOLDER_ID: ${{ secrets.FOTOS_FOLDER_ID }}
 
       - name: Subir cambios al repositorio
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
+          # Agregamos TODA la carpeta de imágenes, sin importar la extensión
           git add static/images/events/
-          git add static/images/fotos/
-          git add static/images/fotos/index.json
 
+          # Verificamos si hay algo nuevo
           if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "Auto: Sincronización de imágenes (eventos y fotos)"
+            git commit -m "Auto: Sincronización completa de imágenes (JPG y WEBP)"
             git push
           else
             echo "No se detectaron archivos nuevos."
