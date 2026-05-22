@@ -252,11 +252,7 @@
             <section class="displayColumn photo-strip-section">
                 <div class="photo-strip-track">
                     {% for foto in fotos %}
-                    <img src="/static/images/fotos/{{ foto }}" alt="Foto Math &amp; Beer" class="strip-photo">
-                    {% endfor %}
-                    {% for foto in fotos %}
-                    <img src="/static/images/fotos/{{ foto }}" alt="Foto Math &amp; Beer" class="strip-photo"
-                        aria-hidden="true">
+                    <img src="/static/images/fotos/thumbs/{{ foto }}" alt="Foto Math &amp; Beer" class="strip-photo" decoding="async">
                     {% endfor %}
                 </div>
             </section>
@@ -406,6 +402,18 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     <script src="../static/scripts/blog.js"></script>
+    <script>
+        const track = document.querySelector('.photo-strip-track');
+        if (track) {
+            const imgs = Array.from(track.querySelectorAll('img'));
+            imgs.forEach(img => {
+                const clone = img.cloneNode();
+                clone.setAttribute('aria-hidden', 'true');
+                clone.removeAttribute('alt');
+                track.appendChild(clone);
+            });
+        }
+    </script>
 </body>
 
 </html>

@@ -489,7 +489,7 @@ hr {
   max-width: 100vw;
   padding: 0;
   position: relative;
-  contain: layout;
+  isolation: isolate;
 }
 
 .photo-strip-section::before,
@@ -520,11 +520,7 @@ hr {
   width: max-content;
   padding: 25px 0;
   will-change: transform;
-  backface-visibility: hidden;
-}
-
-.photo-strip-track:hover {
-  animation-play-state: paused;
+  transform: translateZ(0);
 }
 
 .strip-photo {
@@ -535,13 +531,6 @@ hr {
   object-position: center;
   flex-shrink: 0;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-}
-
-.strip-photo:hover {
-  transform: scale(1.06) translateY(-4px);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6);
 }
 
 @keyframes scroll-strip {

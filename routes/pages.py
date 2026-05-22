@@ -28,7 +28,7 @@ def page_about():
     with open("static/json/equipo.json", "r", encoding="utf-8") as f:
         equipo = json.load(f)
 
-    fotos_dir = "static/images/fotos"
+    fotos_dir = "static/images/fotos/thumbs"
     if os.path.isdir(fotos_dir):
         todas = [f for f in os.listdir(fotos_dir) if f.lower().endswith(('.webp', '.jpg', '.jpeg', '.png'))]
         fotos = random.sample(todas, min(20, len(todas)))
