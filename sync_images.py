@@ -12,7 +12,7 @@ def get_drive_ids():
     cur = conn.cursor()
 
     cur.execute(
-        "SELECT id, image FROM events ORDER BY date ASC;"
+        "SELECT ROW_NUMBER() OVER (ORDER BY date DESC) as rn, image FROM events ORDER BY date ASC;"
     )
     rows = cur.fetchall()
     cur.close()
