@@ -71,9 +71,9 @@ def page_about():
         # Fetch 3 random testimonials
         try:
             cursor.execute("""
-                SELECT name, rating, comment, info 
-                FROM testimonials 
-                ORDER BY RANDOM() 
+                SELECT name, rating, comment, info
+                FROM testimonials
+                ORDER BY RANDOM()
                 LIMIT 3;
             """)
             testimonials_rows = cursor.fetchall()
@@ -88,7 +88,26 @@ def page_about():
             print("Error query testimonials, using fallback:", db_err)
             connection.rollback()
             testimonials = []
-            
+
+        # Promedio real de personas por mes
+        try:
+            cursor.execute("""
+                WITH monthly_talks AS (
+                    SELECT DATE_TRUNC('month', "Fecha") AS mes, COUNT(*) AS cnt
+                    FROM attendance
+                    GROUP BY mes
+                )
+
+                SELECT ROUND(AVG(cnt))
+                FROM monthly_talks;
+            """)
+            row_avg = cursor.fetchone()
+            avg_asistentes = int(row_avg[0]) if row_avg and row_avg[0] else 40
+        except Exception as avg_err:
+            print("Error query avg asistentes, using fallback:", avg_err)
+            connection.rollback()
+            avg_asistentes = 40
+
     finally:
         cursor.close()
         release_connection(connection)
@@ -98,8 +117,8 @@ def page_about():
 
     n_anos = datetime.now().year - 2022
     if len(proxima) > 0:
-        return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), proxima=json.dumps(proxima), n_anos=n_anos, testimonials=testimonials, fotos=fotos)
-    return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), n_anos=n_anos, testimonials=testimonials, fotos=fotos)
+        return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), proxima=json.dumps(proxima), n_anos=n_anos, testimonials=testimonials, fotos=fotos, avg_asistentes=avg_asistentes)
+    return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), n_anos=n_anos, testimonials=testimonials, fotos=fotos, avg_asistentes=avg_asistentes)
 
 @pages_bp.route('/leaderboards')
 def page_leaderboards():

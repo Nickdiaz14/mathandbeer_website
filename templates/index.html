@@ -103,8 +103,8 @@
                         <span class="hero-stat-label">Años de historia</span>
                     </div>
                     <div class="hero-stat">
-                        <span class="hero-stat-number counter">40</span>
-                        <span class="hero-stat-label">Asistentes / mes</span>
+                        <span class="hero-stat-number counter">{{ avg_asistentes }}</span>
+                        <span class="hero-stat-label">Personas / mes</span>
                     </div>
                     <div class="hero-stat">
                         <span class="hero-stat-number counter">2</span>
@@ -119,14 +119,14 @@
             <h2 class="subtitle">Mantente al día</h2>
             {% if proxima %}
             <div class="about_text displayColumn">
-                <p class="small lh-lg">¡Hay una nueva sesión en camino! Los cupos son limitados — reserva el tuyo
-                    antes de que se agoten.</p>
+                <p class="small lh-lg">¡Hay una nueva sesión en camino! Si tienes alguna pregunta no dudes en dejarla
+                    abajo.</p>
             </div>
             <div id="contenedor-dinamico" class="upcoming-grid mx-auto"></div>
             {% endif %}
             <div class="about_text displayColumn">
-                <p class="small lh-lg">Nuestras charlas se agotan rápido. Déjanos tu correo y serás el primero en
-                    saber cuándo abrimos cupos para la siguiente sesión.</p>
+                <p class="small lh-lg">¿Quieres saber cuándo tengamos todo listo para la siguiente sesión? Déjanos tu
+                    correo y te avisamos.</p>
             </div>
             <div class="text-center myBg myBorder rounded-4 p-4 shadow-sm upcoming-subscribe-box mx-auto mt-2"
                 id="subscribe-section">
@@ -252,7 +252,8 @@
             <section class="displayColumn photo-strip-section">
                 <div class="photo-strip-track">
                     {% for foto in fotos %}
-                    <img src="/static/images/fotos/thumbs/{{ foto }}" alt="Foto Math &amp; Beer" class="strip-photo" decoding="async">
+                    <img src="/static/images/fotos/thumbs/{{ foto }}" alt="Foto Math &amp; Beer" class="strip-photo"
+                        decoding="async">
                     {% endfor %}
                 </div>
             </section>
