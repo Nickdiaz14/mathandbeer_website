@@ -34,7 +34,4 @@ def download_drive_image(file_id, filename):
 
 if __name__ == "__main__":
     for name, drive_id in get_drive_ids().items():
-        if os.path.exists(os.path.join(DEST_FOLDER, f"{name}.webp")):
-            print(f"  ya existe: {name}.webp")
-            continue
         download_drive_image(drive_id, f"{name}.webp")
