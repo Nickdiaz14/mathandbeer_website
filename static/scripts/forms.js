@@ -154,6 +154,7 @@ async function submitForm(event) {
         `;
     } else {
         overlayLabel.textContent = 'Se produjo un error, intente nuevamente.';
+        showToast('Error: ' + (result.message || 'Se produjo un error, intente nuevamente.'), 'error');
         overlayButtons.innerHTML = ''; // Limpiamos botones
         setTimeout(() => {
             window.location.reload(); // Recargar página después de 3 segundos

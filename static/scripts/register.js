@@ -8,26 +8,22 @@ const message_case = document.getElementById('case');
 document.addEventListener('DOMContentLoaded', function () {
     message = document.body.dataset.m
     if (message) {
-        message_case.style.display = 'flex';
-        message_case.textContent = message;
-    } else {
-        message_case.style.display = 'none';
+        if (message != 'None') {
+            showToast(message, 'info');
+        }
     }
     start.addEventListener('click', () => generateUser());
 
     const restoreBtn = document.getElementById('restore-btn');
     const restoreInput = document.getElementById('restore-userid');
-    const restoreError = document.getElementById('restore-error');
 
     restoreBtn.addEventListener('click', () => restoreAccount());
     restoreInput.addEventListener('keydown', e => { if (e.key === 'Enter') restoreAccount(); });
 
     function restoreAccount() {
         const inputId = restoreInput.value.trim();
-        restoreError.style.display = 'none';
         if (!inputId) {
-            restoreError.textContent = 'Ingresa tu ID de usuario';
-            restoreError.style.display = 'block';
+            showToast('Ingresa tu ID de usuario', 'error');
             return;
         }
         restoreBtn.disabled = true;
@@ -36,22 +32,23 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ user_id: inputId })
         })
-        .then(r => r.json())
-        .then(data => {
-            if (data.valid) {
-                localStorage.setItem('userId', inputId);
-                window.location.href = '/menu_games';
-            } else {
-                restoreError.textContent = 'No encontramos ninguna cuenta con ese ID';
-                restoreError.style.display = 'block';
+            .then(r => r.json())
+            .then(data => {
+                if (data.valid) {
+                    localStorage.setItem('userId', inputId);
+                    showToast('Cuenta restaurada con éxito', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/menu_games';
+                    }, 1000);
+                } else {
+                    showToast('No encontramos ninguna cuenta con ese ID', 'error');
+                    restoreBtn.disabled = false;
+                }
+            })
+            .catch(() => {
+                showToast('Error de conexión, intenta de nuevo', 'error');
                 restoreBtn.disabled = false;
-            }
-        })
-        .catch(() => {
-            restoreError.textContent = 'Error de conexión, intenta de nuevo';
-            restoreError.style.display = 'block';
-            restoreBtn.disabled = false;
-        });
+            });
     }
 })
 
@@ -68,10 +65,13 @@ function generateUser() {
         .then(response => response.json())
         .then(data => {
             if (data.valid) {
-                window.location.href = `/menu_games`
+                showToast('¡Cuenta creada con éxito!', 'success');
+                setTimeout(() => {
+                    window.location.href = `/menu_games`;
+                }, 1000);
             }
             else {
-                window.location.href = `/register?m=${data.message}`
+                showToast(data.message, 'error');
             }
         })
 }

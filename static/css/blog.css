@@ -322,30 +322,7 @@
 }
 
 
-/* ── Toast de notificación ── */
-#blog-toast {
-  position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: rgba(32, 9, 40, 0.95);
-  border: 1px solid rgba(255, 183, 0, 0.4);
-  color: var(--text-main);
-  font-size: 0.85rem;
-  font-family: 'Inter', sans-serif;
-  padding: 10px 22px;
-  border-radius: 20px;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 9999;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  white-space: nowrap;
-}
 
-#blog-toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
 
 /* ─── Calendar Buttons ─────────────────────────────────────── */
 .calendar-btns {

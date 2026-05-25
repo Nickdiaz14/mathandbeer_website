@@ -240,13 +240,12 @@ function setupNicknameEdit(currentNick) {
         editForm.style.display = 'none';
         editBtn.style.display = 'inline-flex';
         errorEl.style.display = 'none';
+        showToast('¡Apodo actualizado exitosamente!', 'success');
       } else {
-        errorEl.textContent = data.message;
-        errorEl.style.display = 'block';
+        showToast(data.message, 'error');
       }
     } catch {
-      errorEl.textContent = 'Error de conexión';
-      errorEl.style.display = 'block';
+      showToast('Error de conexión', 'error');
     } finally {
       saveBtn.disabled = false;
     }

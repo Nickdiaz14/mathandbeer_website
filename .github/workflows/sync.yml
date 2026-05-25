@@ -5,7 +5,7 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: "10 21 * * 6" #Todos los sabados a las 9:10 PM hora local (colombia)
+    - cron: "10 21 * * 5" # Todos los viernes a las 9:10 PM hora local (colombia)
 
 jobs:
   build:

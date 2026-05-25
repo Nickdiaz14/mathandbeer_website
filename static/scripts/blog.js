@@ -280,16 +280,7 @@ async function submitQuestion(eventId, textarea, container) {
 
 // ─── Toast ─────────────────────────────────────────────────
 function showBlogToast(msg) {
-  let toast = document.getElementById('blog-toast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.id = 'blog-toast';
-    document.body.appendChild(toast);
-  }
-  toast.textContent = msg;
-  toast.classList.add('show');
-  clearTimeout(toast._timeout);
-  toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+  showToast(msg);
 }
 
 // ─── Init: adjuntar listeners ──────────────────────────────

@@ -22,6 +22,7 @@ for nombre in fotos:
 
     if os.path.exists(dst_path):
         print(f"  ya existe: {dst_name}")
+        os.remove(src_path)
         continue
 
     with Image.open(src_path) as img:
@@ -31,5 +32,6 @@ for nombre in fotos:
         src_kb = os.path.getsize(src_path) // 1024
         dst_kb = os.path.getsize(dst_path) // 1024
         print(f"  {nombre} {src_kb}KB → {dst_name} {dst_kb}KB")
+        os.remove(src_path)
 
 print("\nListo.")
