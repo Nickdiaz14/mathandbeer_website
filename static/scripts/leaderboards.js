@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
     timerInterval = setInterval(() => {
         updateLeaderboard();
     }, 15000);
+    filterGamesByCategory();
 })
 
 function updateLeaderboard() {
@@ -139,13 +140,13 @@ function filterGamesByCategory() {
     const gameSelect = document.getElementById('select');
     const category = categorySelect.value;
     const options = gameSelect.options;
-    
+
     let firstVisibleSet = false;
-    
+
     for (let i = 0; i < options.length; i++) {
         const option = options[i];
         const optionCat = option.getAttribute('data-cat');
-        
+
         if (category === 'all' || optionCat === category) {
             option.style.display = 'block';
             if (!firstVisibleSet) {
@@ -156,6 +157,6 @@ function filterGamesByCategory() {
             option.style.display = 'none';
         }
     }
-    
+
     updateLeaderboard();
 }

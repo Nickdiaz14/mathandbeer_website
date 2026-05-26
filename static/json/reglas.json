@@ -50,6 +50,17 @@
                 "r1": "El tablero debe estar lleno.",
                 "r2": "Cada celda roja debe tener tantas celdas rojas como su número indica, sin ser interrumpidas por celdas azules en su misma fila y columna."
             }
+        },
+        "Nerdle": {
+            "summary": "Acertar una ecuación matemática en el menor tiempo posible.",
+            "rules": {
+                "r1": "Debes adivinar la ecuación oculta.",
+                "r2": "La ecuación debe utilizar los números (0-9) y operadores (+, -, ×, ÷).",
+                "r3": "Cada intento debe ser una ecuación matemática válida.",
+                "r4": "Debes respetar el orden de las operaciones (PEMDAS/BODMAS).",
+                "r5": "Los números y operadores pueden repetirse en la solución.",
+                "r6": "La solución puede ser negativa."
+            }
         }
     }
 ]

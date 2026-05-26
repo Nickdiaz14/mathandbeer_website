@@ -4,6 +4,14 @@
     --background-cell: #181717a9;
 }
 
+#matrix-wrapper {
+    overflow-y: auto;
+    height: 30vh;
+    padding: 1vh;
+    border-radius: 15px;
+    background-color: var(--header-bg);
+}
+
 #inputs {
     border-collapse: separate;
     border-spacing: 10px;

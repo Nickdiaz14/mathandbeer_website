@@ -135,6 +135,7 @@ function send(action) {
         valid = validate_guess(expression);
         set_colors(valid);
         if (valid) {
+            solved = true;
             stop_timer();
             setTimeout(() => sendRecord(), 200);
         }
@@ -302,7 +303,7 @@ function sendRecord() {
                 window.location.href = '/daily';
             } else {
                 let game_name = n == 6 ? 'Mini-Nerdle' : n == 8 ? 'Nerdle' : 'Maxi-Nerdle';
-                window.location.href = `/leaderboard?game=NRD${n}&name=${game_name}&better=${data.better}&type=2&record=${centisecondsElapsed}`
+                window.location.href = `/leaderboard?game=NRD${n}&name=${game_name}&better=${data.better}&type=2&record=${recordVal}`
             }
         })
 }
