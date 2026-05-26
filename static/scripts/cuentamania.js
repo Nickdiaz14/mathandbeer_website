@@ -119,19 +119,7 @@ async function startGame() {
             td.textContent = game_matrix[i][j];
         }
     }
-    let cuenta = 3;
-    overlay.textContent = cuenta;
-
-    const contador = setInterval(() => {
-        cuenta--;
-        if (cuenta > 0) {
-            overlay.textContent = cuenta;
-        } else {
-            clearInterval(contador);
-            overlay.classList.add('fade-out');
-            setTimeout(start_timer, 200);
-        }
-    }, 800);
+    showAnimatedCountdown(overlay, "Toca los números en orden: 1, 2, 3…", start_timer);
 }
 
 function random_board() {

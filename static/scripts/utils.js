@@ -1,4 +1,49 @@
 /**
+ * Countdown animado con instrucción rápida del juego.
+ * Muestra la instrucción con fade-in y luego cuenta 3-2-1 con animación pop.
+ * @param {HTMLElement} overlay - El elemento #countdown-overlay
+ * @param {string} instruction - Texto breve de instrucción del juego
+ * @param {Function} onComplete - Función a llamar cuando el countdown termina
+ */
+function showAnimatedCountdown(overlay, instruction, onComplete) {
+    overlay.classList.remove('fade-out');
+    overlay.innerHTML = `
+        <p class="countdown-instruction">${instruction}</p>
+        <div class="countdown-number">3</div>
+    `;
+
+    const instrEl = overlay.querySelector('.countdown-instruction');
+    const numEl = overlay.querySelector('.countdown-number');
+
+    // Fade-in de la instrucción (doble RAF para que el browser aplique el estado inicial antes de la transición)
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => instrEl.classList.add('visible'));
+    });
+
+    let cuenta = 3;
+
+    function showNumber(n) {
+        numEl.classList.remove('pop');
+        void numEl.offsetWidth; // forzar reflow para reiniciar la animación
+        numEl.textContent = n;
+        numEl.classList.add('pop');
+    }
+
+    showNumber(3);
+
+    const contador = setInterval(() => {
+        cuenta--;
+        if (cuenta > 0) {
+            showNumber(cuenta);
+        } else {
+            clearInterval(contador);
+            overlay.classList.add('fade-out');
+            setTimeout(onComplete, 500);
+        }
+    }, 800);
+}
+
+/**
  * Sistema global de notificaciones (Toasts) para Math & Beer Games.
  * Proporciona notificaciones efímeras consistentes en todo el sitio.
  */

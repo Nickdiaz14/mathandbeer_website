@@ -26,10 +26,11 @@
 
 .game_info {
     bottom: 15px;
+    left: 15px;
 }
 
 .back {
-    bottom: 15px;
+    top: 130px;
     left: 15px;
 }
 

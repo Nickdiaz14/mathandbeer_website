@@ -139,19 +139,7 @@ function startGame() {
             }
             if (first_seen) {
                 first_seen = false;
-                let cuenta = 3;
-                overlay.textContent = cuenta;
-
-                const contador = setInterval(() => {
-                    cuenta--;
-                    if (cuenta > 0) {
-                        overlay.textContent = cuenta;
-                    } else {
-                        clearInterval(contador);
-                        overlay.classList.add('fade-out');
-                        setTimeout(start_timer, 200);
-                    }
-                }, 800);
+                showAnimatedCountdown(overlay, "Llena el tablero con 🔴 y 🔵 lo más rápido posible", start_timer);
             }
         })
 }

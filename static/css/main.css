@@ -390,17 +390,51 @@ hr {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.97) 0%, rgba(22, 33, 62, 0.97) 100%);
   backdrop-filter: blur(20px);
-  /* Reducido el blur */
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 2.5rem;
   text-align: center;
   color: var(--text-main);
   font-family: 'Inter', sans-serif;
   z-index: 1000;
-  font-size: 6rem;
+}
+
+.countdown-instruction {
+  font-size: 1.2rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 80%;
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.countdown-instruction.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.countdown-number {
+  font-size: 7rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--accent-beer);
+}
+
+.countdown-number.pop {
+  animation: countPop 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes countPop {
+  0%   { transform: scale(2.5); opacity: 0; }
+  60%  { transform: scale(0.9); opacity: 1; }
+  100% { transform: scale(1);   opacity: 1; }
 }
 
 .fade-out {
