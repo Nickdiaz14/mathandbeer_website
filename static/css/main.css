@@ -138,14 +138,65 @@ main section {
   transform: translateY(-2px);
 }
 
-/* --- Menú de Juegos (Botones) --- */
+/* --- Menú de Juegos (Bento asimétrico) --- */
 .menu_games {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap: 15px;
   width: 90%;
-  justify-content: space-evenly;
-  align-items: center;
+  max-width: 640px;
+}
+
+/* Distribución asimétrica: filas alternan cuál lado pesa más */
+.menu_games .game:nth-child(1) {
+  grid-column: span 2;
+}
+
+/* 0h-h1        */
+.menu_games .game:nth-child(2) {
+  grid-column: span 3;
+}
+
+/* Contrarreloj */
+.menu_games .game:nth-child(3) {
+  grid-column: span 3;
+}
+
+/* Salto Real   */
+.menu_games .game:nth-child(4) {
+  grid-column: span 2;
+}
+
+/* Secuenzo     */
+.menu_games .game:nth-child(5) {
+  grid-column: span 5;
+}
+
+/* CuentaManía  */
+.menu_games .game:nth-child(6) {
+  grid-column: span 2;
+}
+
+/* 0h-n0        */
+.menu_games .game:nth-child(7) {
+  grid-column: span 3;
+}
+
+/* Nerdle       */
+
+/* Desktop: 6 columnas base → fila 1 muestra 3 tarjetas iguales */
+@media (min-width: 768px) {
+  .menu_games {
+    grid-template-columns: repeat(6, 1fr);
+    max-width: 900px;
+  }
+  .menu_games .game:nth-child(1) { grid-column: span 2; } /* 0h-h1        */
+  .menu_games .game:nth-child(2) { grid-column: span 2; } /* Contrarreloj */
+  .menu_games .game:nth-child(3) { grid-column: span 2; } /* Salto Real   */
+  .menu_games .game:nth-child(4) { grid-column: span 3; } /* Secuenzo     */
+  .menu_games .game:nth-child(5) { grid-column: span 3; } /* CuentaManía  */
+  .menu_games .game:nth-child(6) { grid-column: span 2; } /* 0h-n0        */
+  .menu_games .game:nth-child(7) { grid-column: span 4; } /* Nerdle       */
 }
 
 .menu_games button {
@@ -153,7 +204,7 @@ main section {
   background: var(--myBg);
   border: 2px solid var(--myBorder);
   border-radius: 28px;
-  min-height: 15vh;
+  min-height: 16vh;
   padding: 15px;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -432,9 +483,20 @@ hr {
 }
 
 @keyframes countPop {
-  0%   { transform: scale(2.5); opacity: 0; }
-  60%  { transform: scale(0.9); opacity: 1; }
-  100% { transform: scale(1);   opacity: 1; }
+  0% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .fade-out {
