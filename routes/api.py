@@ -21,6 +21,9 @@ DAILY_GAMES = [
     ('cuentamania', 5, 'CuentaManía L'),
     ('0hn0', 4, '0h-n0 4×4'),
     ('0hn0', 5, '0h-n0 5×5'),
+    ('nerdle', 6, 'Nerdle Mini'),
+    ('nerdle', 8, 'Nerdle Standard'),
+    ('nerdle', 10, 'Nerdle Maxi')
 ]
 
 @api_bp.route('/attendance', methods=['POST'])
@@ -127,7 +130,7 @@ def update_leaderboard():
 def get_leaderboard():
     user_id = request.json['userid']
     board = request.json['game']
-    desc = ['TContrareloj', 'TUnicolor', 'TBicolor', 'TProgresivo', 'TAleatorio', 'TCruzado', 'TKnight', 'TMini-Nerdle', 'TNerdle', 'TMaxi-Nerdle']
+    desc = ['TContrareloj', 'TUnicolor', 'TBicolor', 'TProgresivo', 'TAleatorio', 'TCruzado', 'TKnight', 'NRD6', 'NRD8', 'NRD10']
     order_type = "DESC" if board in desc else ""
 
     connection = get_connection()
@@ -706,6 +709,12 @@ def _generate_daily_board(game_type, game_size, seed):
         line_idx = seed % len(lines)
         return eval(lines[line_idx].strip())
 
+    elif game_type == 'nerdle':
+        with open(f'static/boards/igualdades{game_size}.txt', 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        line_idx = seed % len(lines)
+        return lines[line_idx].strip()
+
     return None
 
 @api_bp.route('/api/daily', methods=['GET'])
@@ -737,14 +746,8 @@ def get_daily():
 
     # Determinar tipo de record para formateo
     record_type = 'time'  # centisegundos
-    if game_type == 'knight':
+    if game_type in ('knight', 'nerdle'):
         record_type = 'points'
-    elif game_type == '0hh1':
-        record_type = 'time'
-    elif game_type == 'cuentamania':
-        record_type = 'time'
-    elif game_type == '0hn0':
-        record_type = 'time'
 
     return jsonify({
         'game_type': game_type,
@@ -779,25 +782,27 @@ def submit_daily():
         if cursor.fetchone():
             return jsonify({'success': False, 'message': 'Ya jugaste el reto de hoy'})
 
+        # Guardar como float para juegos de puntuación, int para tiempo
+        record_val = float(record) if game_type in ('knight', 'nerdle') else int(record)
         cursor.execute(
             """INSERT INTO daily_results (challenge_date, game_type, game_size, userid, record)
                VALUES (%s, %s, %s, %s, %s);""",
-            (today, game_type, game_size, user_id, int(record))
+            (today, game_type, game_size, user_id, record_val)
         )
         connection.commit()
 
-        # Obtener posición
-        if game_type == 'knight':
+        # Obtener posición (mayor mejor: knight/nerdle; menor mejor: resto)
+        if game_type in ('knight', 'nerdle'):
             cursor.execute(
                 """SELECT COUNT(*) + 1 FROM daily_results
                    WHERE challenge_date = %s AND record > %s;""",
-                (today, int(record))
+                (today, record_val)
             )
         else:
             cursor.execute(
                 """SELECT COUNT(*) + 1 FROM daily_results
                    WHERE challenge_date = %s AND record < %s;""",
-                (today, int(record))
+                (today, record_val)
             )
         position = cursor.fetchone()[0]
     finally:
@@ -812,8 +817,8 @@ def daily_leaderboard():
     today = date.today().isoformat()
     game_type, game_size, game_name = _get_daily_game()
 
-    # Knight es puntos (mayor mejor), el resto es tiempo (menor mejor)
-    order = 'DESC' if game_type == 'knight' else 'ASC'
+    # Knight y Nerdle son puntos (mayor mejor), el resto es tiempo (menor mejor)
+    order = 'DESC' if game_type in ('knight', 'nerdle') else 'ASC'
 
     connection = get_connection()
     try:
@@ -860,8 +865,8 @@ def daily_leaderboard():
         # Formatear records
         formatted = []
         for r in ranking:
-            if game_type == 'knight':
-                formatted.append([r[0], r[1], f'{round(r[2], 2)}', r[3], r[4]])
+            if game_type in ('knight', 'nerdle'):
+                formatted.append([r[0], r[1], f'{round(float(r[2]), 2)}', r[3], r[4]])
             else:
                 rec = int(r[2])
                 formatted.append([r[0], r[1], f'{(rec//6000):02}:{((rec%6000)//100):02}.{(rec%100):02}', r[3], r[4]])
@@ -882,8 +887,8 @@ def daily_leaderboard():
             if prow:
                 # Obtener racha para el ranking personal
                 u_streak = _calculate_streak(user_id)['current']
-                if game_type == 'knight':
-                    personal = [prow[0], prow[1], f'{round(prow[2], 2)}', prow[3], u_streak]
+                if game_type in ('knight', 'nerdle'):
+                    personal = [prow[0], prow[1], f'{round(float(prow[2]), 2)}', prow[3], u_streak]
                 else:
                     rec = int(prow[2])
                     personal = [prow[0], prow[1], f'{(rec//6000):02}:{((rec%6000)//100):02}.{(rec%100):02}', prow[3], u_streak]
@@ -899,7 +904,7 @@ def daily_leaderboard():
         'personal_ranking': personal,
         'count_records': total,
         'game_name': game_name,
-        'record_type': 'points' if game_type == 'knight' else 'time'
+        'record_type': 'points' if game_type in ('knight', 'nerdle') else 'time'
     })
 
 # ─── STREAK (RACHA) ──────────────────────────────────────────────

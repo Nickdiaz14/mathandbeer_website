@@ -80,6 +80,8 @@ function showPlayButton(data) {
             url = `/cuentamania?n=${data.game_size}&daily=true`;
         } else if (data.game_type === '0hn0') {
             url = `/0h_n0?n=${data.game_size}&daily=true`;
+        } else if (data.game_type === 'nerdle') {
+            url = `/nerdle?n=${data.game_size}&daily=true`;
         }
         window.location.href = url;
     };

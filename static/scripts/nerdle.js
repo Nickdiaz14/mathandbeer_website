@@ -172,6 +172,10 @@ function startGame() {
     })
         .then(response => response.json())
         .then(data => {
+            if (isDaily && data.already_played) {
+                window.location.href = '/daily';
+                return;
+            }
             cond_ini = isDaily ? data.board_data : data.equalities;
             let cuenta = 3;
             overlay.textContent = cuenta;
