@@ -105,6 +105,12 @@
                 <img src="../static/images/games/0h-h1.png" alt="" class="game_img">
                 <span class="game_text">0h-n0</span>
             </button>
+
+            <button class="game" data-bs-toggle="modal" data-bs-target="#nerdle-size">
+                <span class="game_text_out">¡Jugar!</span>
+                <img src="../static/images/games/nerdle.png" alt="" class="game_img">
+                <span class="game_text">Nerdle</span>
+            </button>
         </div>
 
         <!-- Modal 0h-h1 -->
@@ -196,6 +202,31 @@
                                         onclick="window.location.href='/0h_n0?n=4'">4x4</button></td>
                                 <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
                                         onclick="window.location.href='/0h_n0?n=5'">5x5</button></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer myButtons">
+                        <button type="button" class="btn btn-secondary closeButton"
+                            data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Nerdle -->
+        <div class="modal fade" id="nerdle-size" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content bg-dark text-light overflow-auto">
+                    <div class="modal-header displayColumn">Elige el tamaño del tablero</div>
+                    <div class="modal-body">
+                        <table class="displayColumn">
+                            <tr>
+                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
+                                        onclick="window.location.href='/nerdle?n=6'">Mini</button></td>
+                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
+                                        onclick="window.location.href='/nerdle?n=8'">Std</button></td>
+                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
+                                        onclick="window.location.href='/nerdle?n=10'">Maxi</button></td>
                             </tr>
                         </table>
                     </div>

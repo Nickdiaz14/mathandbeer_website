@@ -132,7 +132,6 @@ async function submitForm(event) {
     submitButton.disabled = true; // Deshabilitar el botón de envío
 
     const formData = new FormData(event.target);
-    console.log('Datos del formulario:', Object.fromEntries(formData.entries())); // Mostrar datos en consola
 
     const response = await fetch('/attendance', {
         method: 'POST',

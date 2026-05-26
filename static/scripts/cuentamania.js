@@ -97,7 +97,7 @@ function toggle_color(row, col, td) {
 async function startGame() {
     const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
     const userId = localStorage.getItem('userId');
-    
+
     if (isDaily) {
         const rechargeBtn = document.getElementById('recharge');
         if (rechargeBtn) rechargeBtn.style.display = 'none';
@@ -116,7 +116,6 @@ async function startGame() {
     for (let i = 0; i < n; i++) {
         for (let j = 0; j < n; j++) {
             const td = document.getElementById(`cell-${i}-${j}`);
-            console.log(`Td: ${td.id}, Value: ${game_matrix[i][j]}`);
             td.textContent = game_matrix[i][j];
         }
     }
@@ -144,7 +143,6 @@ function random_board() {
             board[i][j] = numbers.splice(randomIndex, 1)[0];
         }
     }
-    console.log(board);
     return board;
 }
 
@@ -164,7 +162,7 @@ function max_value(matrix) {
 function sendRecord() {
     stop_timer();
     const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
-    
+
     if (max_value(user_matrix) !== n * n) {
         if (isDaily) {
             window.location.href = '/daily';

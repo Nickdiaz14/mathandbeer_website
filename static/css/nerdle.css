@@ -1,0 +1,36 @@
+:root {
+    --success-gradient-nerdle: linear-gradient(135deg, #4ffe60 0%, #009247 100%);
+    --warning-gradient-nerdle: linear-gradient(135deg, #fab370 0%, #ee5a24 100%);
+    --background-cell: #181717a9;
+}
+
+#inputs {
+    border-collapse: separate;
+    border-spacing: 10px;
+}
+
+#inputs td {
+    text-align: center;
+    height: 5rem;
+    width: 3.5rem;
+    cursor: pointer;
+}
+
+#inputs td i {
+    font-size: 1.6rem;
+}
+
+.correct_place {
+    background: var(--success-gradient-nerdle) !important;
+    /* Animación más simple */
+    animation: correctPulse 0.4s ease-in-out;
+}
+
+.correct_character {
+    background: var(--warning-gradient-nerdle) !important;
+    animation: partialPulse 0.4s ease-in-out;
+}
+
+.nowhere {
+    background: var(--background-cell) !important;
+}

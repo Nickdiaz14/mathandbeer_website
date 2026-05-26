@@ -66,6 +66,14 @@ def get_cond_ini_0h_n0():
         linea_especifica = lineas[random.randint(0, len(lineas)-1)].strip()
     return jsonify({'matrix': eval(linea_especifica)})
 
+@api_bp.route('/nerdle/play', methods=['POST'])
+def get_cond_ini_nerdle():
+    n = request.json['n']
+    with open(f'static/boards/igualdades{n}.txt', 'r', encoding='utf-8') as file:
+        lineas = file.readlines()
+        linea_especifica = lineas[random.randint(0, len(lineas)-1)].strip()
+    return jsonify({'equalities': linea_especifica})
+
 @api_bp.route('/leaderboard/submit', methods=['POST'])
 def update_leaderboard():
     better = False
@@ -74,7 +82,7 @@ def update_leaderboard():
     record_raw = request.json['record']
     
     count_games = ['TContrareloj', 'TUnicolor', 'TBicolor', 'TProgresivo', 'TAleatorio']
-    points_games = ['TCruzado', 'TKnight', 'TMini-Nerdle', 'TNerdle', 'TMaxi-Nerdle']
+    points_games = ['TCruzado', 'TKnight', 'NRD6', 'NRD8', 'NRD10']
 
     connection = get_connection()
     try:
