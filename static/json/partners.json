@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Universidad Konrad Lorenz",
+        "logo": "static/images/logos/logo_konrad.png",
+        "url": "https://www.konradlorenz.edu.co",
+        "tipo": "universidad"
+    },
+    {
+        "name": "ASeisManos",
+        "logo": "static/images/logos/logo_aseismanos.png",
+        "url": "https://www.instagram.com/aseismanos/reels/",
+        "tipo": "bar"
+    },
+    {
+        "name": "Universidad El Bosque",
+        "logo": "static/images/logos/logo_bosque.png",
+        "url": "https://www.unbosque.edu.co/",
+        "tipo": "universidad"
+    }
+]

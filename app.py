@@ -8,7 +8,7 @@ from routes.api import api_bp
 
 def create_app():
     load_dotenv()
-    
+
     # 1. Start Postgres Connection Pool (Huge performance boost)
     init_db_pool()
 

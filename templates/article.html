@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/about.css">
+    <link rel="stylesheet" href="../static/css/blog_articles.css">
+    <link rel="icon" type="image/png" href="../static/images/logos/favicon.png">
+    <title>{{ article.title }} — Math & Beer</title>
+    <meta name="description" content="{{ article.summary }}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.mathandbeer.com/blog/{{ article.slug }}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.mathandbeer.com/blog/{{ article.slug }}">
+    <meta property="og:title" content="{{ article.title }} — Math & Beer">
+    <meta property="og:description" content="{{ article.summary }}">
+    <meta property="og:image" content="https://www.mathandbeer.com/static/images/logos/logo_M&B.png">
+    <meta property="article:published_time" content="{{ article.published_at }}">
+    <meta property="article:author" content="{{ article.author }}">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg menu">
+            <div class="container-fluid">
+                <button onclick="window.location.href='/'" class="navbar-brand">
+                    <div class="logo"></div>
+                </button>
+                <button class="navbar-toggler menuHamb" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars fa-2xl" style="color: #b6bde7;"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="/profile" class="nav-link active"><i class="fa-solid fa-user"></i> Mi Perfil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/menu_games" class="nav-link active"><i class="fa-solid fa-gamepad"></i> Juegos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/daily" class="nav-link active"><i class="fa-solid fa-crosshairs"></i> Reto Diario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/leaderboards" class="nav-link active"><i class="fa-solid fa-ranking-star"></i> Rankings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/blog" class="nav-link active" id="nav-active"><i class="fa-solid fa-newspaper"></i> Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/" class="nav-link active"><i class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="article-main displayColumn">
+        <article class="article-container">
+            <div class="article-back">
+                <a href="/blog" class="article-back-link">
+                    <i class="fa-solid fa-arrow-left me-2"></i>Volver al blog
+                </a>
+            </div>
+
+            <header class="article-header">
+                <div class="article-tags">
+                    {% for tag in article.tags %}
+                    <span class="article-tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                <h1 class="article-main-title">{{ article.title }}</h1>
+                <p class="article-lead">{{ article.summary }}</p>
+                <div class="article-meta-bar">
+                    <span class="article-author">
+                        <i class="fa-solid fa-pen-nib me-1"></i>{{ article.author }}
+                    </span>
+                    <span class="article-date">
+                        <i class="fa-regular fa-calendar me-1"></i>{{ article.published_at }}
+                    </span>
+                    <span class="article-readtime">
+                        <i class="fa-regular fa-clock me-1"></i>{{ article.read_time }} min de lectura
+                    </span>
+                </div>
+            </header>
+
+            {% if article.cover_image %}
+            <img src="{{ article.cover_image }}" alt="{{ article.title }}" class="article-main-cover" loading="lazy">
+            {% endif %}
+
+            <div class="article-body">
+                {% for paragraph in article.content %}
+                <p>{{ paragraph }}</p>
+                {% endfor %}
+            </div>
+
+            <footer class="article-footer">
+                <a href="/blog" class="btn-hero-secondary" style="text-decoration:none;">
+                    <i class="fa-solid fa-arrow-left me-2"></i>Ver más artículos
+                </a>
+            </footer>
+        </article>
+    </main>
+
+
+    <script src="../static/scripts/utils.js"></script>
+    <script src="../static/scripts/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

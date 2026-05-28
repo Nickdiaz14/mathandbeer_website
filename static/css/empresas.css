@@ -15,11 +15,68 @@
     padding: 1rem 1rem 8rem 1rem;
 }
 
+/* Glow radial detrás del contenido */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(255, 183, 0, 0.1) 0%, rgba(0, 242, 255, 0.04) 50%, transparent 75%);
+    pointer-events: none;
+    z-index: 1;
+    border-radius: 50%;
+    filter: blur(20px);
+}
+
+/* Grain cinematográfico */
+.hero-section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 1;
+}
+
 .hero-math-bg {
     position: absolute;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
+    z-index: 1;
+}
+
+/* Símbolos matemáticos flotantes */
+.hero-math-bg::before {
+    content: '∑ π ∞ √ ∫ ≈ ÷ × ∂ φ Δ λ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    font-size: 1.4rem;
+    letter-spacing: 3.5rem;
+    line-height: 5rem;
+    color: rgba(255, 183, 0, 0.055);
+    white-space: nowrap;
+    word-spacing: 1.5rem;
+    animation: float-symbols 60s linear infinite;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    pointer-events: none;
+}
+
+@keyframes float-symbols {
+    from {
+        transform: translateX(0) translateY(0);
+    }
+
+    to {
+        transform: translateX(-50%) translateY(-30px);
+    }
 }
 
 .hero-content {
@@ -45,10 +102,12 @@
 
 .hero-title {
     font-size: clamp(3.2rem, 6vw, 3.5rem);
-    font-weight: 800;
+    font-weight: 900;
     color: #fff;
-    line-height: 1.1;
+    line-height: 1.05;
     margin: 0;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 60px rgba(255, 183, 0, 0.15);
 }
 
 .hero-subtitle {
@@ -116,10 +175,9 @@
 }
 
 .hero-stats {
-    display: flex;
-    gap: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     justify-content: center;
-    flex-wrap: wrap;
     margin-top: 0.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -601,12 +659,38 @@
         display: none;
     }
 
+    .hero-section {
+        padding: 1rem 1.25rem 6rem;
+        min-height: 88vh;
+    }
+
+    .hero-title {
+        font-size: clamp(2.6rem, 13vw, 3.5rem);
+        letter-spacing: -0.01em;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
     .hero-stats {
-        gap: 1.5rem;
+        gap: 1.2rem;
+        padding-top: 1.2rem;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-stat-number {
+        font-size: 2rem;
     }
 
     .hero-cta-group {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+    }
+
+    .btn-hero-primary,
+    .btn-hero-secondary {
+        justify-content: center;
+        padding: 0.9rem 1.5rem;
     }
 }

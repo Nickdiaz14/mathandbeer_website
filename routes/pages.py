@@ -28,6 +28,9 @@ def page_about():
     with open("static/json/equipo.json", "r", encoding="utf-8") as f:
         equipo = json.load(f)
 
+    with open("static/json/partners.json", "r", encoding="utf-8") as f:
+        partners = json.load(f)
+
     fotos_dir = "static/images/fotos/thumbs"
     if os.path.isdir(fotos_dir):
         todas = [f for f in os.listdir(fotos_dir) if f.lower().endswith(('.webp', '.jpg', '.jpeg', '.png'))]
@@ -117,8 +120,8 @@ def page_about():
 
     n_anos = datetime.now().year - 2022
     if len(proxima) > 0:
-        return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), proxima=json.dumps(proxima), n_anos=n_anos, testimonials=testimonials, fotos=fotos, avg_asistentes=avg_asistentes)
-    return render_template("index.html", charlas=grouped, miembros=equipo, n_charlas=len(charlas), n_anos=n_anos, testimonials=testimonials, fotos=fotos, avg_asistentes=avg_asistentes)
+        return render_template("index.html", charlas=grouped, miembros=equipo, partners=partners, n_charlas=len(charlas), proxima=json.dumps(proxima), n_anos=n_anos, testimonials=testimonials, fotos=fotos, avg_asistentes=avg_asistentes)
+    return render_template("index.html", charlas=grouped, miembros=equipo, partners=partners, n_charlas=len(charlas), n_anos=n_anos, testimonials=testimonials, fotos=fotos, avg_asistentes=avg_asistentes)
 
 @pages_bp.route('/leaderboards')
 def page_leaderboards():
@@ -242,3 +245,20 @@ def page_daily():
 @pages_bp.route('/empresas')
 def page_empresas():
     return render_template('empresas.html')
+
+@pages_bp.route('/blog')
+def page_blog():
+    with open("static/json/articles.json", "r", encoding="utf-8") as f:
+        articles = json.load(f)
+    articles_sorted = sorted(articles, key=lambda a: a["published_at"], reverse=True)
+    return render_template('blog.html', articles=articles_sorted)
+
+@pages_bp.route('/blog/<slug>')
+def page_article(slug):
+    with open("static/json/articles.json", "r", encoding="utf-8") as f:
+        articles = json.load(f)
+    article = next((a for a in articles if a["slug"] == slug), None)
+    if not article:
+        return redirect('/blog')
+    return render_template('article.html', article=article)
+

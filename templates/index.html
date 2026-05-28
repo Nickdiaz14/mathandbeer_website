@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="prMhJRzxbzY-OPF8pAc3w72jFMuNqcPC9nxMkH_9rQU" />
-    <meta name="viewport" content="width=device-width, initial-scale=0.75, height=device-height">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -21,6 +21,21 @@
         content="Math & Beer lleva las matemáticas fuera del aula: charlas mensuales, juegos y comunidad en Bogotá. Llevamos el formato a empresas, universidades y colegios de todo Colombia.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.mathandbeer.com/">
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.mathandbeer.com/">
+    <meta property="og:site_name" content="Math & Beer">
+    <meta property="og:title" content="Math & Beer — Divulgación matemática en Colombia">
+    <meta property="og:description" content="El encuentro mensual donde las matemáticas se bajan del tablero para mezclarse con risas, curiosidad y una cerveza bien fría. Charlas, juegos y comunidad en Colombia.">
+    <meta property="og:image" content="https://www.mathandbeer.com/static/images/logos/logo_M&B.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="es_CO">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Math & Beer — Divulgación matemática en Colombia">
+    <meta name="twitter:description" content="El encuentro mensual donde las matemáticas se bajan del tablero para mezclarse con risas, curiosidad y una cerveza bien fría.">
+    <meta name="twitter:image" content="https://www.mathandbeer.com/static/images/logos/logo_M&B.png">
 </head>
 
 <body data-proxima='{{ proxima | safe }}'>
@@ -53,6 +68,16 @@
                             <a href="/leaderboards" class="nav-link active" aria-current="page"><i
                                     class="fa-solid fa-ranking-star"></i> Rankings</a>
                         </li>
+                        {#
+                        <li class="nav-item">
+                            <a href="/blog" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-newspaper"></i> Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/speakers" class="nav-link active" aria-current="page"><i
+                                    class="fa-solid fa-microphone"></i> Speakers</a>
+                        </li>
+                        #}
                         <li class="nav-item">
                             <a href="#nosotros" class="nav-link active" aria-current="page" id="nav-active"><i
                                     class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
@@ -83,12 +108,11 @@
                     <a href="#Futuras" class="btn-hero-primary" id="cta-proxima-charla">
                         <i class="fa-solid fa-calendar-check"></i> Ver próxima charla
                     </a>
-                    {% endif %}
-                    {#
-                    <a href="/empresas" class="btn-hero-secondary" id="cta-empresas">
-                        <i class="fa-solid fa-building"></i>M&amp;B a tu empresa
+                    {% else %}
+                    <a href="#subscribe-section" class="btn-hero-primary" id="cta-comunidad">
+                        <i class="fa-solid fa-bell"></i> Únete a la comunidad
                     </a>
-                    #}
+                    {% endif %}
                     <a href="#Ciudad" class="btn-hero-secondary calendar-btn">
                         <i class="fa-solid fa-map-marker-alt"></i>M&amp;B a tu ciudad
                     </a>
@@ -103,12 +127,12 @@
                         <span class="hero-stat-label">Años de historia</span>
                     </div>
                     <div class="hero-stat">
-                        <span class="hero-stat-number counter">{{ avg_asistentes }}</span>
-                        <span class="hero-stat-label">Personas / mes</span>
-                    </div>
-                    <div class="hero-stat">
                         <span class="hero-stat-number counter">2</span>
                         <span class="hero-stat-label">Ciudades</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number counter">{{ avg_asistentes }}</span>
+                        <span class="hero-stat-label">Personas / mes</span>
                     </div>
                 </div>
             </div>
@@ -167,7 +191,7 @@
                             <div class="card mb-3 myCard">
                                 <div class="row g-0">
                                     <div class="col-xxl-4 w-50">
-                                        <img src="/static/images/events/{{ c.id }}.webp" loading="lazy"
+                                        <img src="/static/images/events/{{ c.id }}.webp"
                                             class="img-fluid rounded-start" alt="{{ c.title }}">
                                     </div>
                                     <div class="col-xxl-8 w-50 myCardBody">
@@ -299,9 +323,27 @@
                 </div>
                 {% endfor %}
             </div>
-            <blockquote class="fst-italic small text-center mt-2" style="color: var(--text-muted);">
+            <blockquote class="fst-italic small text-center mt-2 w-75" style="color: var(--text-muted);">
                 "Cada número cuenta una historia —y cada historia comienza con un brindis."
             </blockquote>
+
+            <!-- PARTNERS / PRESENTE EN -->
+            {% if partners %}
+            <div class="partners-section">
+                <p class="partners-label">Presente en</p>
+                <div class="partners-row">
+                    {% for p in partners %}
+                    <a href="{{ p.url }}" target="_blank" rel="noopener noreferrer" class="partner-chip">
+                        {% if p.logo %}
+                        <img src="{{ p.logo }}" alt="{{ p.name }}" class="partner-logo">
+                        {% else %}
+                        <span class="partner-name">{{ p.name }}</span>
+                        {% endif %}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
         </section>
         <div class="black-light-transition"></div>
         <!-- 5. EQUIPO — quién está detrás -->
@@ -375,7 +417,7 @@
                     <div class="myBg myBorder rounded-4 p-4 shadow-sm about_text displayColumn">
                         <p class="lh-lg fs-6">Para hacer esto realidad solo debes realizar los siguientes pasos:</p>
                         <ol>
-                            <li class="lh-lg fs-6">Contáctanos por redes sociales (abajo a la derecha 👇).</li>
+                            <li class="lh-lg fs-6">Contáctanos por Instagram o WhatsApp (en el pie de página 👇).</li>
                             <li class="lh-lg fs-6">Completa el <a href="https://forms.office.com/r/sPQb5pxJ9d"
                                     class="text-warning fw-bold">formulario con tu propuesta</a> y ultimemos
                                 detalles.
@@ -386,17 +428,117 @@
                 </div>
             </div>
         </section>
+        <hr>
+        <!-- 6.5 REDES SOCIALES -->
+        <section class="displayColumn social-section" id="redes">
+            <h2 class="subtitle">Síguenos</h2>
+            <div class="about_text displayColumn">
+                <p class="lh-lg small">Cada charla, cada juego, cada brindis tiene su momento detrás de cámara.
+                    Sígenos en Instagram y no te pierdas nada.</p>
+            </div>
+            <behold-widget feed-id="lTleD49RMwpuyliqK3Vu"></behold-widget>
+        </section>
+
+        <!-- FAQ -->
+        <section class="displayColumn faq-section" id="faq">
+            <h2 class="subtitle">Preguntas frecuentes</h2>
+            <div class="accordion faq-accordion" id="faqAccordion">
+
+                <div class="accordion-item myBorder myBg">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed myBg text-light" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#faq1">
+                            ¿Hay que saber mucho de matemáticas para asistir?
+                        </button>
+                    </h3>
+                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body faq-body" style="padding: 15px;">
+                            Para nada. Las charlas están pensadas para todo el mundo: no se necesitan conocimientos previos. Si sabes que 2+2=4, ya estás listo.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item myBorder myBg">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed myBg text-light" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#faq2">
+                            ¿Cuánto cuesta la entrada?
+                        </button>
+                    </h3>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body faq-body" style="padding: 15px;">
+                            Math & Beer es completamente gratuito. Solo necesitas traer las ganas de aprender y, si quieres, la cerveza corre por tu cuenta.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item myBorder myBg">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed myBg text-light" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#faq3">
+                            ¿Cuándo es el próximo evento?
+                        </button>
+                    </h3>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body faq-body" style="padding: 15px;">
+                            Nos reunimos mensualmente. Suscríbete a nuestro newsletter o síguenos en Instagram <a href="https://www.instagram.com/math_and_beer/" target="_blank" class="faq-link">@math_and_beer</a> para enterarte primero.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item myBorder myBg">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed myBg text-light" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#faq4">
+                            ¿Puedo ser speaker en Math & Beer?
+                        </button>
+                    </h3>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body faq-body" style="padding: 15px;">
+                            ¡Claro! Si tienes un tema de matemáticas, ciencia o algo que conecte con el mundo que te rodea, escríbenos. No importa si eres estudiante, docente o profesional: buscamos pasión más que títulos.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item myBorder myBg">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed myBg text-light" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#faq5">
+                            ¿Pueden llevar Math & Beer a mi empresa o universidad?
+                        </button>
+                    </h3>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body faq-body" style="padding: 15px;">
+                            Sí. Llevamos el formato a instituciones educativas y empresas en todo Colombia. Contáctanos por WhatsApp o correo y diseñamos una sesión a la medida.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
     </main>
 
-    <div class="menu-toggle">
-        <a class="mail"
-            href="mailto:mate.et.cerv@gmail.com?subject=Math and Beer en mi ciudad🍻&body=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre..."
-            aria-label="Enviar correo"><i class="fa-solid fa-envelope"></i></a>
-        <a class="instagram" href="https://www.instagram.com/math_and_beer/#"><i class="fa-brands fa-instagram"></i></a>
-        <a class="whatsapp" href="https://wa.me/+573115709293"><i class="fa-brands fa-whatsapp"></i></a>
-    </div>
-
-    <button class="contact"><i class="fa-solid fa-chevron-up"></i></button>
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-social">
+            <a href="https://www.instagram.com/math_and_beer/" target="_blank" rel="noopener noreferrer"
+                class="footer-social-btn footer-ig" aria-label="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+                <span>Instagram</span>
+            </a>
+            <a href="https://wa.me/+573115709293" target="_blank" rel="noopener noreferrer"
+                class="footer-social-btn footer-wa" aria-label="WhatsApp">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>WhatsApp</span>
+            </a>
+            <a href="mailto:mate.et.cerv@gmail.com?subject=Math and Beer🍻&body=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre..."
+                class="footer-social-btn footer-mail" aria-label="Email">
+                <i class="fa-solid fa-envelope"></i>
+                <span>Correo</span>
+            </a>
+        </div>
+        <p class="footer-copy">© {{ n_anos + 2022 }} Math &amp; Beer · Bogotá, Colombia</p>
+    </footer>
     <script src="../static/scripts/utils.js"></script>
     <script src="../static/scripts/main.js"></script>
     <script src="../static/scripts/new_events.js"></script>
@@ -415,6 +557,11 @@
                 track.appendChild(clone);
             });
         }
+        // Integración de Behold (feed de Instagram)
+        (() => {
+            const d=document,s=d.createElement("script");s.type="module";
+            s.src="https://w.behold.so/widget.js";d.head.append(s);
+        })();
     </script>
 </body>
 

@@ -133,9 +133,9 @@
 }
 
 .myPersonalInfo {
-    min-height: calc(56vh - 14vw) !important;
+    min-height: 62vh !important;
     padding: 3%;
-    width: 85%;
+    width: 90%;
 }
 
 .myImgWidth {
@@ -183,5 +183,198 @@
     .about-img {
         width: 100%;
         margin: 0;
+    }
+}
+
+.social-section {
+    padding: 48px 16px;
+}
+
+/* ── Partners / Presente en ──────────────────────────────── */
+.partners-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin: 32px auto 8px;
+    width: 90%;
+    max-width: 860px;
+}
+
+.partners-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.partners-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+}
+
+.partner-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--myBg);
+    border: 1px solid var(--myBorder);
+    border-radius: 999px;
+    padding: 8px 20px;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.partner-chip:hover {
+    border-color: var(--accent-beer);
+    transform: translateY(-2px);
+}
+
+.partner-name {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.partner-logo {
+    height: 28px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.partner-chip:hover .partner-logo {
+    opacity: 1;
+}
+
+/* ====== FAQ SECTION ====== */
+.faq-section {
+    width: 100%;
+    max-width: 720px;
+    padding: 2rem 1rem 3rem;
+    align-items: center;
+}
+
+.faq-accordion {
+    width: 100%;
+}
+
+.faq-accordion .accordion-item {
+    background: var(--myBg);
+    border: 1px solid var(--myBorder);
+    border-radius: 12px !important;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.faq-accordion .accordion-button {
+    background: var(--myBg);
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 12px !important;
+    box-shadow: none;
+}
+
+.faq-accordion .accordion-button:not(.collapsed) {
+    background: rgba(255, 183, 0, 0.1);
+    color: var(--accent-beer);
+    box-shadow: none;
+}
+
+.faq-accordion .accordion-button::after {
+    filter: invert(1);
+}
+
+.faq-accordion .accordion-button:not(.collapsed)::after {
+    filter: invert(1) sepia(1) saturate(3) hue-rotate(5deg);
+}
+
+.faq-accordion .accordion-collapse {
+    background: transparent;
+}
+
+.faq-accordion .accordion-body {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    padding-top: 0;
+}
+
+.faq-link {
+    color: var(--accent-beer);
+    text-decoration: none;
+}
+
+.faq-link:hover {
+    text-decoration: underline;
+}
+
+/* ====== SITE FOOTER ====== */
+.site-footer {
+    width: 100%;
+    border-top: 1px solid var(--myBorder);
+    padding: 2.5rem 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.footer-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.footer-social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: #fff;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.footer-social-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+    color: #fff;
+}
+
+.footer-ig {
+    background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+
+.footer-wa {
+    background: #25d366;
+}
+
+.footer-mail {
+    background: linear-gradient(135deg, var(--accent-math), #0099cc);
+}
+
+.footer-copy {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: 0;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .footer-social-btn {
+        padding: 9px 16px;
+        font-size: 0.82rem;
     }
 }

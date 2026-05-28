@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/about.css">
+    <link rel="stylesheet" href="../static/css/blog_articles.css">
+    <link rel="icon" type="image/png" href="../static/images/logos/favicon.png">
+    <title>Blog — Math & Beer</title>
+    <meta name="description" content="Artículos de divulgación matemática, ciencia y cultura de Math & Beer.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.mathandbeer.com/blog">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.mathandbeer.com/blog">
+    <meta property="og:title" content="Blog — Math & Beer">
+    <meta property="og:description" content="Artículos de divulgación matemática, ciencia y cultura.">
+    <meta property="og:image" content="https://www.mathandbeer.com/static/images/logos/logo_M&B.png">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg menu">
+            <div class="container-fluid">
+                <button onclick="window.location.href='/'" class="navbar-brand">
+                    <div class="logo"></div>
+                </button>
+                <button class="navbar-toggler menuHamb" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars fa-2xl" style="color: #b6bde7;"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="/profile" class="nav-link active"><i class="fa-solid fa-user"></i> Mi Perfil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/menu_games" class="nav-link active"><i class="fa-solid fa-gamepad"></i> Juegos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/daily" class="nav-link active"><i class="fa-solid fa-crosshairs"></i> Reto Diario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/leaderboards" class="nav-link active"><i class="fa-solid fa-ranking-star"></i> Rankings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/blog" class="nav-link active" id="nav-active"><i class="fa-solid fa-newspaper"></i> Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/" class="nav-link active"><i class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="blog-main displayColumn">
+        <section class="blog-hero displayColumn">
+            <span class="hero-badge">📰 Divulgación · Ideas · Ciencia</span>
+            <h1 class="hero-title">Blog <em class="hero-accent">Math & Beer</em></h1>
+            <p class="hero-subtitle" style="max-width: 560px;">Matemáticas fuera del aula: historias, ideas y conexiones
+                inesperadas entre la ciencia y el mundo que te rodea.</p>
+        </section>
+
+        <section class="blog-grid-section displayColumn">
+            {% if articles %}
+            <div class="blog-article-grid">
+                {% for a in articles %}
+                <a href="/blog/{{ a.slug }}" class="blog-article-card myBg myBorder">
+                    {% if a.cover_image %}
+                    <img src="{{ a.cover_image }}" alt="{{ a.title }}" class="article-cover" loading="lazy">
+                    {% else %}
+                    <div class="article-cover-placeholder">
+                        <i class="fa-solid fa-flask-vial"></i>
+                    </div>
+                    {% endif %}
+                    <div class="article-card-body">
+                        <div class="article-tags">
+                            {% for tag in a.tags %}
+                            <span class="article-tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        <h2 class="article-title">{{ a.title }}</h2>
+                        <p class="article-summary">{{ a.summary }}</p>
+                        <div class="article-meta">
+                            <span><i class="fa-regular fa-calendar me-1"></i>{{ a.published_at }}</span>
+                            <span><i class="fa-regular fa-clock me-1"></i>{{ a.read_time }} min</span>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-muted text-center mt-5">No hay artículos publicados aún.</p>
+            {% endif %}
+        </section>
+    </main>
+
+
+    <script src="../static/scripts/utils.js"></script>
+    <script src="../static/scripts/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

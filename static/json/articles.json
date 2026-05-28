@@ -1,0 +1,36 @@
+[
+    {
+        "slug": "por-que-las-matematicas-no-son-aburridas",
+        "title": "¿Por qué las matemáticas no son aburridas?",
+        "summary": "La percepción de las matemáticas como algo tedioso es un mito cultural. Te contamos cómo Math & Beer nació para romperlo.",
+        "content": [
+            "Pocas materias generan una reacción tan polarizada como las matemáticas. Para unos son el lenguaje del universo; para otros, el recuerdo más oscuro del colegio. Pero, ¿y si el problema nunca fueron las matemáticas, sino la forma en que las enseñamos?",
+            "En Math & Beer partimos de una premisa simple: la curiosidad es contagiosa. Cuando alguien explica un concepto con pasión —sin pizarrones intimidantes ni exámenes de por medio— la audiencia no solo entiende, sino que quiere más.",
+            "Cada charla que organizamos es una prueba de esto. Hemos visto a personas que juran odiar las matemáticas quedarse hasta las 11 de la noche discutiendo sobre topología o números primos con una cerveza en la mano. El secreto no está en simplificar: está en contextualizar.",
+            "Las matemáticas están en la música que escuchas, en la forma en que tu GPS calcula la ruta más corta, en el algoritmo que te recomienda la próxima serie. Son la columna vertebral invisible de casi todo lo que tocas. Solo hace falta alguien que te lo muestre de la forma correcta.",
+            "Eso es lo que intentamos hacer en cada sesión: no enseñar, sino encender."
+        ],
+        "author": "Equipo Math & Beer",
+        "published_at": "2024-03-10",
+        "tags": ["divulgación", "educación", "cultura"],
+        "cover_image": null,
+        "read_time": 3
+    },
+    {
+        "slug": "matematicas-en-la-cerveza",
+        "title": "La matemática oculta en tu cerveza",
+        "summary": "Desde la fermentación hasta la espuma perfecta: las ecuaciones que hacen posible tu pinta favorita.",
+        "content": [
+            "Cada vez que alzas una pinta y observas esa espuma perfecta en la parte superior, estás mirando física de fluidos en acción. La formación de burbujas, su tamaño y la velocidad con que ascienden siguen leyes matemáticas precisas descritas por la ecuación de Stokes.",
+            "Pero el vínculo entre matemáticas y cerveza va mucho más allá de la espuma. El proceso de fermentación es, en esencia, un problema de crecimiento exponencial: las levaduras se reproducen siguiendo curvas que cualquier estudiante de cálculo reconocería al instante.",
+            "El maestro cervecero también es, sin saberlo, un experto en optimización. Decidir la proporción exacta de malta, lúpulo y levadura para obtener el sabor deseado es un problema de múltiples variables con restricciones. Una receta perfecta es, matemáticamente hablando, un punto óptimo en un espacio de alta dimensión.",
+            "Incluso el color de la cerveza —medido en la escala EBC (European Brewery Convention)— se calcula con fórmulas que relacionan la absorbancia de luz con la concentración de pigmentos. La próxima vez que pidas una stout o una lager, recuerda: hay décadas de matemática aplicada en ese vaso.",
+            "Y nosotros lo celebramos con una cerveza, claro."
+        ],
+        "author": "Equipo Math & Beer",
+        "published_at": "2024-05-22",
+        "tags": ["ciencia", "cotidianidad", "física"],
+        "cover_image": null,
+        "read_time": 4
+    }
+]
