@@ -42,26 +42,59 @@
 }
 
 .yearBox {
-    background: rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(400px, auto)) !important;
-    gap: 4vh;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+    gap: 10px;
     width: 100%;
-    justify-content: center;
-    align-items: center;
+    padding: 12px;
     margin: 0 auto;
 }
 
-.myCard {
-    max-width: 540px;
-    max-height: 300px;
+.charla-card {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 3.8 / 3;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.myCardBody {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: center;
+.charla-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.charla-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.46);
+}
+
+.charla-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, transparent 100%);
+    padding: 10px 10px 8px;
+}
+
+.charla-card-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 2px;
+    line-height: 1.3;
+}
+
+.charla-card-speaker {
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0;
+    line-height: 1.2;
 }
 
 .modalContent {

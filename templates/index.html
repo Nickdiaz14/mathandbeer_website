@@ -190,25 +190,13 @@
                         data-bs-parent="#accordionExample">
                         <div class="accordion-body yearBox">
                             {% for c in lista %}
-                            <div class="card mb-3 myCard">
-                                <div class="row g-0">
-                                    <div class="col-xxl-4 w-50">
-                                        <img src="/static/images/events/{{ c.id }}.webp"
-                                            class="img-fluid rounded-start" alt="{{ c.title }}" loading="lazy">
-                                    </div>
-                                    <div class="col-xxl-8 w-50 myCardBody">
-                                        <div class="card-body myCardBody">
-                                            <h2 class="card-title fs-7">{{ c.title }}</h2>
-                                            <p class="card-text"><small class="text-muted">{{ c.speaker }}</small></p>
-                                        </div>
-                                        <div class="card-footer displayColumn">
-                                            <button class="btn btn-outline-info btn-sm mt-auto w-100"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#modal{{ loop.index }}{{ year }}">
-                                                Ver detalles
-                                            </button>
-                                        </div>
-                                    </div>
+                            <div class="charla-card" data-bs-toggle="modal"
+                                data-bs-target="#modal{{ loop.index }}{{ year }}">
+                                <img src="/static/images/events/{{ c.id }}.webp"
+                                    alt="{{ c.title }}" loading="lazy" class="charla-card-img">
+                                <div class="charla-card-overlay">
+                                    <p class="charla-card-title">{{ c.title }}</p>
+                                    <p class="charla-card-speaker">{{ c.speaker }}</p>
                                 </div>
                             </div>
                             <div class="modal fade" id="modal{{ loop.index }}{{ year }}" tabindex="-1"
@@ -526,17 +514,14 @@
             <a href="https://www.instagram.com/math_and_beer/" target="_blank" rel="noopener noreferrer"
                 class="footer-social-btn footer-ig" aria-label="Instagram">
                 <i class="fa-brands fa-instagram"></i>
-                <span>Instagram</span>
             </a>
             <a href="https://wa.me/+573115709293" target="_blank" rel="noopener noreferrer"
                 class="footer-social-btn footer-wa" aria-label="WhatsApp">
                 <i class="fa-brands fa-whatsapp"></i>
-                <span>WhatsApp</span>
             </a>
             <a href="mailto:mate.et.cerv@gmail.com?subject=Math and Beer🍻&body=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre..."
                 class="footer-social-btn footer-mail" aria-label="Email">
                 <i class="fa-solid fa-envelope"></i>
-                <span>Correo</span>
             </a>
         </div>
         <p class="footer-copy">© {{ n_anos + 2022 }} Math &amp; Beer · Bogotá, Colombia</p>
