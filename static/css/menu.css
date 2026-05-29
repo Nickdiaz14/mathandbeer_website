@@ -35,7 +35,7 @@
 .game_text {
   color: white;
   font-weight: 600;
-  font-size: 30px;
+  font-size: 22px;
   position: absolute;
   transition: all 0.4s ease;
 }
@@ -44,7 +44,7 @@
   opacity: 0;
   color: var(--accent-beer);
   font-weight: 600;
-  font-size: 45px;
+  font-size: 28px;
   left: -200px;
   right: none;
   transition: all 0.4s ease;

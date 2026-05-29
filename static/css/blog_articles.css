@@ -142,14 +142,14 @@
 }
 
 .article-main-title {
-    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-size: clamp(1.3rem, 5vw, 2.2rem);
     font-weight: 800;
     line-height: 1.2;
     color: var(--text-main);
 }
 
 .article-lead {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     color: var(--text-muted);
     line-height: 1.65;
     border-left: 3px solid var(--accent-beer);

@@ -12,7 +12,7 @@
     color: white;
     font-family: 'Inter', sans-serif;
     font-weight: 700;
-    font-size: 200%;
+    font-size: 165%;
     margin-top: 4vh;
     margin-bottom: 2vh;
 }
@@ -133,9 +133,13 @@
 }
 
 .myPersonalInfo {
-    min-height: 62vh !important;
+    min-height: 55vh !important;
     padding: 3%;
     width: 90%;
+}
+
+.myPersonalInfo p {
+    max-width: 92%;
 }
 
 .myImgWidth {
