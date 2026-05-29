@@ -31,7 +31,7 @@
     cursor: pointer;
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
-    min-width: 200px;
+    min-width: 250px;
 }
 
 .game_select:hover,
@@ -81,6 +81,7 @@
     text-align: center;
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
+    min-width: 100px;
 }
 
 .leaderboard th {
