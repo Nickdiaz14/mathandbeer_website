@@ -243,22 +243,25 @@ def add_comment():
         release_connection(connection)
     return jsonify({'success': True, 'id': row[0], 'nickname': nick_row[0], 'created_at': row[1].isoformat()})
 
-@api_bp.route('/api/reactions/<int:event_id>', methods=['GET'])
-def get_reactions(event_id):
+@api_bp.route('/api/reactions', methods=['GET'])
+def get_all_reactions():
     user_id = request.args.get('userid', '')
     connection = get_connection()
     try:
         cursor = connection.cursor()
-        cursor.execute("SELECT COUNT(*) FROM reactions WHERE event_id = %s;", (event_id,))
-        total = cursor.fetchone()[0]
-        reacted = False
-        if user_id:
-            cursor.execute("SELECT 1 FROM reactions WHERE event_id = %s AND userid = %s;", (event_id, user_id))
-            reacted = cursor.fetchone() is not None
+        cursor.execute("""
+            SELECT
+                event_id,
+                COUNT(*) AS total,
+                COUNT(*) FILTER (WHERE userid = %s) > 0 AS reacted
+            FROM reactions
+            GROUP BY event_id;
+        """, (user_id or None,))
+        rows = cursor.fetchall()
     finally:
         cursor.close()
         release_connection(connection)
-    return jsonify({'total': total, 'reacted': reacted})
+    return jsonify({row[0]: {'total': row[1], 'reacted': bool(row[2])} for row in rows})
 
 @api_bp.route('/api/reactions/toggle', methods=['POST'])
 def toggle_reaction():

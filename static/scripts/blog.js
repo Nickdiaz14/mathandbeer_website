@@ -5,6 +5,19 @@
 
 const userId = localStorage.getItem('userId');
 
+// ─── Reactions cache (todas las reacciones en una sola query) ─
+let _reactionsCache = null;
+
+async function preloadReactions() {
+    const url = userId ? `/api/reactions?userid=${userId}` : '/api/reactions';
+    try {
+        const res = await fetch(url);
+        _reactionsCache = await res.json();
+    } catch {
+        _reactionsCache = {};
+    }
+}
+
 // ─── Badge cache ──────────────────────────────────────────────
 let _badgesCache = null;
 async function getUserBadges() {
@@ -77,16 +90,12 @@ async function loadComments(eventId, container) {
   }
 }
 
-// ─── Carga de reacciones ───────────────────────────────────
-async function loadReactions(eventId, btn) {
-  try {
-    const url = userId ? `/api/reactions/${eventId}?userid=${userId}` : `/api/reactions/${eventId}`;
-    const res = await fetch(url);
-    const data = await res.json();
+// ─── Carga de reacciones (desde caché pre-cargado) ─────────
+function loadReactions(eventId, btn) {
+    const data = _reactionsCache?.[eventId] ?? { total: 0, reacted: false };
     btn.dataset.reacted = data.reacted ? '1' : '0';
     btn.querySelector('.blog-react-count').textContent = data.total;
     btn.classList.toggle('blog-reacted', data.reacted);
-  } catch { /* silencioso */ }
 }
 
 // ─── Toggle Reacción ──────────────────────────────────────
@@ -103,6 +112,7 @@ async function toggleReaction(eventId, btn) {
     });
     const data = await res.json();
     if (data.success) {
+      if (_reactionsCache) _reactionsCache[eventId] = { total: data.total, reacted: data.reacted };
       btn.dataset.reacted = data.reacted ? '1' : '0';
       btn.querySelector('.blog-react-count').textContent = data.total;
       btn.classList.toggle('blog-reacted', data.reacted);
@@ -284,7 +294,8 @@ function showBlogToast(msg) {
 }
 
 // ─── Init: adjuntar listeners ──────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  await preloadReactions();
 
   // Suscripción
   const subForm = document.getElementById('subscribe-form');

@@ -1,5 +1,4 @@
 User-agent: *
-Allow: /$
-Disallow: /
+Allow: /
 
 Sitemap: https://www.mathandbeer.com/sitemap.xml
