@@ -1,4 +1,3 @@
-
 * {
   -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
@@ -73,8 +72,8 @@ header .navbar {
 }
 
 .logo {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   float: left;
   background: var(--primary-gradient-text);
   -webkit-mask-image: url('/static/images/logos/logo_M&B_b.png');
@@ -121,7 +120,7 @@ main section {
 
 .menu a,
 .menu button {
-  color: #b6bde7 !important;
+  color: var(--text-muted) !important;
   background: none;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -132,7 +131,7 @@ main section {
 
 .menu a:hover,
 .menu button:hover {
-  color: #ffc800 !important;
+  color: var(--accent-beer) !important;
   border: none;
   font-size: 20px;
   transition: all 0.3s ease;
@@ -191,13 +190,42 @@ main section {
     grid-template-columns: repeat(6, 1fr);
     max-width: 900px;
   }
-  .menu_games .game:nth-child(1) { grid-column: span 2; } /* 0h-h1        */
-  .menu_games .game:nth-child(2) { grid-column: span 2; } /* Contrarreloj */
-  .menu_games .game:nth-child(3) { grid-column: span 2; } /* Salto Real   */
-  .menu_games .game:nth-child(4) { grid-column: span 3; } /* Secuenzo     */
-  .menu_games .game:nth-child(5) { grid-column: span 3; } /* CuentaManía  */
-  .menu_games .game:nth-child(6) { grid-column: span 2; } /* 0h-n0        */
-  .menu_games .game:nth-child(7) { grid-column: span 4; } /* Nerdle       */
+
+  .menu_games .game:nth-child(1) {
+    grid-column: span 2;
+  }
+
+  /* 0h-h1        */
+  .menu_games .game:nth-child(2) {
+    grid-column: span 2;
+  }
+
+  /* Contrarreloj */
+  .menu_games .game:nth-child(3) {
+    grid-column: span 2;
+  }
+
+  /* Salto Real   */
+  .menu_games .game:nth-child(4) {
+    grid-column: span 3;
+  }
+
+  /* Secuenzo     */
+  .menu_games .game:nth-child(5) {
+    grid-column: span 3;
+  }
+
+  /* CuentaManía  */
+  .menu_games .game:nth-child(6) {
+    grid-column: span 2;
+  }
+
+  /* 0h-n0        */
+  .menu_games .game:nth-child(7) {
+    grid-column: span 4;
+  }
+
+  /* Nerdle       */
 }
 
 .menu_games button {
@@ -746,4 +774,16 @@ hr {
 #global-toast.toast-info {
   border-color: var(--accent-beer);
   background: rgba(32, 9, 40, 0.95);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

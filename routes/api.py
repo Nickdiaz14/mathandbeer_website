@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime, date, timedelta
+import ast
 import pytz
 import random
 import hashlib
@@ -59,7 +60,7 @@ def get_cond_ini():
     with open(f'static/boards/aleatorios{n}.txt', 'r', encoding='utf-8') as file:
         lineas = file.readlines()
         linea_especifica = lineas[random.randint(0, len(lineas)-1)].strip()
-    return jsonify({'matrix': eval(linea_especifica)})
+    return jsonify({'matrix': ast.literal_eval(linea_especifica)})
 
 @api_bp.route('/0h_n0/play', methods=['POST'])
 def get_cond_ini_0h_n0():
@@ -67,7 +68,7 @@ def get_cond_ini_0h_n0():
     with open(f'static/boards/aleatorios_ohno{n}.txt', 'r', encoding='utf-8') as file:
         lineas = file.readlines()
         linea_especifica = lineas[random.randint(0, len(lineas)-1)].strip()
-    return jsonify({'matrix': eval(linea_especifica)})
+    return jsonify({'matrix': ast.literal_eval(linea_especifica)})
 
 @api_bp.route('/nerdle/play', methods=['POST'])
 def get_cond_ini_nerdle():

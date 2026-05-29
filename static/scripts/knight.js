@@ -13,19 +13,7 @@ const movements = document.getElementById('movements');
 const overlay = document.getElementById('countdown-overlay');
 
 document.addEventListener('DOMContentLoaded', function () {
-    back.addEventListener('click', () => {
-        window.history.back();
-    });
-
-    recharge.addEventListener('click', () => {
-        window.location.reload();
-    });
-
-    window.addEventListener('pageshow', (e) => {
-        if (e.persisted) {
-            window.location.reload();
-        }
-    });
+    setupGameControls();
     const matrix = document.getElementById('matrix');
     for (let i = 0; i < n; i++) {
         const mtr = document.createElement('tr')
@@ -44,23 +32,16 @@ document.addEventListener('DOMContentLoaded', function () {
     startGame();
 })
 
-function updateTimerDisplay() {
-    const minutes = Math.floor(centisecondsElapsed / 6000).toString().padStart(2, '0');
-    const seconds = Math.floor((centisecondsElapsed % 6000) / 100).toString().padStart(2, '0');
-    const milliseconds = (centisecondsElapsed % 100).toString().padStart(2, '0');
-    timer.textContent = `${minutes}:${seconds}.${milliseconds}`;
-}
-
 function start_timer() {
     if (timerInterval !== null) return;
 
     centisecondsElapsed = 0;
-    updateTimerDisplay();
+    updateTimerDisplay(centisecondsElapsed, timer);
 
     timerInterval = setInterval(() => {
-        centisecondsElapsed++; // Incrementar tiempo
-        updateTimerDisplay();
-    }, 10); // Actualizar cada 10 ms (centésima de segundo)
+        centisecondsElapsed++;
+        updateTimerDisplay(centisecondsElapsed, timer);
+    }, 10);
 }
 
 function stop_timer() {
@@ -147,7 +128,7 @@ function getSpots(max) {
 }
 
 async function startGame() {
-    const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
+    const isDaily = isDailyMode();
     const userId = localStorage.getItem('userId');
     let spots = null;
 
@@ -198,7 +179,7 @@ function valid_solution() {
 }
 
 function sendRecord() {
-    const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
+    const isDaily = isDailyMode();
     const submitUrl = isDaily ? '/api/daily/submit' : '/leaderboard/submit';
     const recordVal = 100000.0 / (((centisecondsElapsed / 100) + 1) * (moves + 1));
 

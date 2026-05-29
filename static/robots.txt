@@ -1,4 +1,5 @@
 User-agent: *
-Allow: /
+Allow: /$
+Disallow: /
 
-Sitemap: https://math-and-beer.onrender.com/sitemap.xml
+Sitemap: https://www.mathandbeer.com/sitemap.xml

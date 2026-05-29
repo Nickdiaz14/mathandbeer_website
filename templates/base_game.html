@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -8,21 +8,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <meta name="google-site-verification" content="prMhJRzxbzY-OPF8pAc3w72jFMuNqcPC9nxMkH_9rQU" />
-    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=0.7, minimum-scale=0.7, maximum-scale=0.7, height=device-height, user-scalable=no">
     <link rel="stylesheet" href="../static/css/main.css">
-    <link rel="stylesheet" href="../static/css/menu.css">
+    <link rel="stylesheet" href="../static/css/games.css">
+    {% block extra_css %}{% endblock %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/1eceecb241.js" crossorigin="anonymous"></script>
     <link rel="icon" type="image/png" href="../static/images/logos/favicon.png">
-    <title>Juegos | Math and Beer</title>
-    <meta name="description"
-        content="Descubre juegos matemáticos interactivos de lógica, números y estrategia en Math & Beer. Reta tu mente, mejora tus habilidades y juega con amigos mientras te diviertes aprendiendo.">
+    <title>{% block page_title %}Math and Beer{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
     <meta name="robots" content="noindex">
-    <meta name="canonical" href="https://mathandbeer.com/register">
 </head>
 
-<body data-m="{{ m }}">
+<body {% block body_attrs %}{% endblock %}>
     <header>
         <nav class="navbar navbar-expand-lg menu">
             <div class="container-fluid">
@@ -45,10 +45,6 @@
                                     class="fa-solid fa-gamepad"></i> Juegos</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/daily" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-crosshairs"></i> Reto Diario</a>
-                        </li>
-                        <li class="nav-item">
                             <a href="/leaderboards" class="nav-link active" aria-current="page"><i
                                     class="fa-solid fa-ranking-star"></i> Rankings</a>
                         </li>
@@ -61,25 +57,15 @@
             </div>
         </nav>
     </header>
+
     <main>
-        <h1 class="title" style="margin-top: 20vh">¡Bienvenido a Math & Beer!</h1>
-        <h2 class="title fs-4">Ingresa un nombre o apodo</h2>
-        <input type="text" id="nickname" required>
-        <button id="start" class="game"><span class="title" style="font-size: 25px;">¡Jugar!</span></button>
-
-        <div class="register-divider">
-            <span>o</span>
-        </div>
-
-        <p class="register-restore-label">¿Ya tienes cuenta en otro dispositivo?</p>
-        <input type="text" id="restore-userid" placeholder="Pega tu ID de usuario aquí" autocomplete="off"
-            spellcheck="false">
-        <button id="restore-btn" class="game"><span class="title" style="font-size: 20px;">Restaurar
-                cuenta</span></button>
-        <p id="restore-error" class="register-restore-error" style="display:none;"></p>
+        {% block game_content %}{% endblock %}
     </main>
+
     <script src="../static/scripts/utils.js"></script>
-    <script src="../static/scripts/register.js"></script>
+    <script src="../static/scripts/main.js"></script>
+    <script src="../static/scripts/game_info.js"></script>
+    {% block game_scripts %}{% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>

@@ -44,6 +44,36 @@ function showAnimatedCountdown(overlay, instruction, onComplete) {
 }
 
 /**
+ * Formatea y actualiza el display del cronómetro.
+ * @param {number} centiseconds - Tiempo en centésimas de segundo
+ * @param {HTMLElement} timerEl - Elemento del DOM donde mostrar el tiempo
+ */
+function updateTimerDisplay(centiseconds, timerEl) {
+    const minutes = Math.floor(centiseconds / 6000).toString().padStart(2, '0');
+    const seconds = Math.floor((centiseconds % 6000) / 100).toString().padStart(2, '0');
+    const milliseconds = (centiseconds % 100).toString().padStart(2, '0');
+    timerEl.textContent = `${minutes}:${seconds}.${milliseconds}`;
+}
+
+/**
+ * Retorna true si la URL tiene el parámetro ?daily=true.
+ */
+function isDailyMode() {
+    return new URLSearchParams(window.location.search).get('daily') === 'true';
+}
+
+/**
+ * Configura los controles comunes de todos los juegos:
+ * botón volver, botón recargar y el handler de pageshow para bfcache.
+ */
+function setupGameControls() {
+    document.getElementById('back').addEventListener('click', () => window.history.back());
+    const recharge = document.getElementById('recharge');
+    if (recharge) recharge.addEventListener('click', () => window.location.reload());
+    window.addEventListener('pageshow', (e) => { if (e.persisted) window.location.reload(); });
+}
+
+/**
  * Sistema global de notificaciones (Toasts) para Math & Beer Games.
  * Proporciona notificaciones efímeras consistentes en todo el sitio.
  */

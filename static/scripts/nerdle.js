@@ -12,26 +12,13 @@ const timer = document.getElementById('timer');
 const title = document.getElementById('title');
 const subtitle = document.getElementById('subtitle');
 const back = document.getElementById('back');
-const recharge = document.getElementById('recharge');
 const overlay = document.getElementById('countdown-overlay');
 const inputsTable = document.getElementById('inputs');
 const matrix = document.getElementById('matrix');
 
 document.addEventListener('DOMContentLoaded', function () {
     n = Number(document.body.dataset.n)
-    back.addEventListener('click', () => {
-        window.history.back();
-    });
-
-    recharge.addEventListener('click', () => {
-        window.location.reload();
-    });
-
-    window.addEventListener('pageshow', (e) => {
-        if (e.persisted) {
-            window.location.reload();
-        }
-    });
+    setupGameControls();
     cell_size = n === 6 ? 'z-6' : n === 8 ? 'z-8' : 'z-10';
     const mtr = document.createElement('tr')
     for (let j = 0; j < n; j++) {
@@ -80,23 +67,16 @@ document.addEventListener('DOMContentLoaded', function () {
     startGame()
 })
 
-function updateTimerDisplay() {
-    const minutes = Math.floor(centisecondsElapsed / 6000).toString().padStart(2, '0');
-    const seconds = Math.floor((centisecondsElapsed % 6000) / 100).toString().padStart(2, '0');
-    const milliseconds = (centisecondsElapsed % 100).toString().padStart(2, '0');
-    timer.textContent = `${minutes}:${seconds}.${milliseconds}`;
-}
-
 function start_timer() {
     if (timerInterval !== null) return;
 
     centisecondsElapsed = 0;
-    updateTimerDisplay();
+    updateTimerDisplay(centisecondsElapsed, timer);
 
     timerInterval = setInterval(() => {
-        centisecondsElapsed++; // Incrementar tiempo
-        updateTimerDisplay();
-    }, 10); // Actualizar cada 10 ms (centésima de segundo)
+        centisecondsElapsed++;
+        updateTimerDisplay(centisecondsElapsed, timer);
+    }, 10);
 }
 
 function stop_timer() {
@@ -109,13 +89,13 @@ function stop_timer() {
 function send(action) {
     if (action == 'Eliminar') {
         for (let j = 0; j < n; j++) {
-            cell = document.getElementById(`cell-${guess_row}-${j}`)
+            let cell = document.getElementById(`cell-${guess_row}-${j}`)
             cell.innerText = '';
         }
     }
     else if (action == 'Borrar') {
         for (let j = n - 1; j > -1; j--) {
-            cell = document.getElementById(`cell-${guess_row}-${j}`)
+            let cell = document.getElementById(`cell-${guess_row}-${j}`)
             if (cell.innerText !== '') {
                 cell.innerText = '';
                 break;
@@ -123,16 +103,16 @@ function send(action) {
         }
     }
     else if (action == 'Enviar') {
-        expression = '';
+        let expression = '';
         for (let j = 0; j < n; j++) {
-            cell = document.getElementById(`cell-${guess_row}-${j}`)
+            let cell = document.getElementById(`cell-${guess_row}-${j}`)
             if (cell.innerText === '') {
                 subtitle.innerText = '¡Escribe una expresión válida!';
                 return;
             }
             expression += cell.innerText;
         }
-        valid = validate_guess(expression);
+        const valid = validate_guess(expression);
         set_colors(valid);
         if (valid) {
             solved = true;
@@ -146,7 +126,7 @@ function keyboard(value) {
     subtitle.innerText = '¡Adivina la ecuación!';
     if (solved) return;
     for (let j = 0; j < n; j++) {
-        cell = document.getElementById(`cell-${guess_row}-${j}`)
+        let cell = document.getElementById(`cell-${guess_row}-${j}`)
         if (cell.innerText === '') {
             cell.innerText = value;
             break;
@@ -155,7 +135,7 @@ function keyboard(value) {
 }
 
 function startGame() {
-    const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
+    const isDaily = isDailyMode();
     const userId = localStorage.getItem('userId');
     const fetchUrl = isDaily ? `/api/daily?userid=${userId}` : '/nerdle/play';
     const fetchBody = isDaily ? null : JSON.stringify({ n: n });
@@ -182,6 +162,11 @@ function startGame() {
         })
 }
 
+function safeEvalMath(expr) {
+    if (!/^[\d+\-*/().]+$/.test(expr)) throw new Error('Expresión inválida');
+    return Function('"use strict"; return (' + expr + ')')();
+}
+
 function validate_guess(expression) {
     const parts = expression.split('=');
     if (parts.length !== 2) {
@@ -195,8 +180,8 @@ function validate_guess(expression) {
         return false;
     }
     try {
-        const left_value = eval(left_part);
-        const right_value = eval(right_part);
+        const left_value = safeEvalMath(left_part);
+        const right_value = safeEvalMath(right_part);
         if (left_value !== right_value) {
             subtitle.innerText = '¡La ecuación no es válida!';
             return false;
@@ -271,10 +256,9 @@ function set_colors(correct) {
 }
 
 function sendRecord() {
-    const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
+    const isDaily = isDailyMode();
     const submitUrl = isDaily ? '/api/daily/submit' : '/leaderboard/submit';
     const recordVal = 100000.0 / (((centisecondsElapsed / 100) + 1) * (guess_row + 1));
-    console.log(recordVal)
 
     fetch(submitUrl, {
         method: 'POST',
@@ -290,7 +274,7 @@ function sendRecord() {
             if (isDaily) {
                 window.location.href = '/daily';
             } else {
-                let game_name = n == 6 ? 'Mini-Nerdle' : n == 8 ? 'Nerdle' : 'Maxi-Nerdle';
+                const game_name = n == 6 ? 'Mini-Nerdle' : n == 8 ? 'Nerdle' : 'Maxi-Nerdle';
                 window.location.href = `/leaderboard?game=NRD${n}&name=${game_name}&better=${data.better}&type=2&record=${recordVal}`
             }
         })

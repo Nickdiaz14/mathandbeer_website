@@ -15,7 +15,7 @@
 }
 
 .select-label {
-    color: #b6bde7;
+    color: var(--text-muted);
     font-size: 0.9rem;
     font-weight: 600;
     font-family: 'Inter', sans-serif;
@@ -23,7 +23,7 @@
 
 .game_select {
     background: rgba(255, 255, 255, 0.1);
-    color: white;
+    color: var(--text-main);
     padding: 10px 20px;
     font-size: 1rem;
     border-radius: 12px;
@@ -44,7 +44,7 @@
 
 .game_select option {
     background: #2a1b3d;
-    color: white;
+    color: var(--text-main);
 }
 
 .leaderboard {
@@ -77,10 +77,9 @@
 .leaderboard th,
 .leaderboard td {
     padding: 12px;
-    text-align: left;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     text-align: center;
-    color: white;
+    color: var(--text-main);
     font-family: 'Inter', sans-serif;
 }
 
@@ -95,7 +94,7 @@
 }
 
 .record_count {
-    color: white;
+    color: var(--text-main);
     font-family: 'Inter', sans-serif;
     font-size: .8rem;
     text-align: center;

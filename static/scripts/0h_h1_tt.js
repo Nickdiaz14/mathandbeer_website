@@ -26,24 +26,11 @@ const messages = [
 const timer = document.getElementById('timer');
 const title = document.getElementById('title');
 const back = document.getElementById('back');
-const recharge = document.getElementById('recharge');
 const s_boards = document.getElementById('s_boards');
 const overlay = document.getElementById('countdown-overlay');
 
 document.addEventListener('DOMContentLoaded', function () {
-    back.addEventListener('click', () => {
-        window.history.back();
-    });
-
-    recharge.addEventListener('click', () => {
-        window.location.reload();
-    });
-
-    window.addEventListener('pageshow', (e) => {
-        if (e.persisted) {
-            window.location.reload();
-        }
-    });
+    setupGameControls();
     const matrix = document.getElementById('matrix')
     for (let i = 0; i < n; i++) {
         const mtr = document.createElement('tr')
@@ -61,28 +48,21 @@ document.addEventListener('DOMContentLoaded', function () {
     startGame();
 })
 
-function updateTimerDisplay() {
-    const minutes = Math.floor(centisecondsElapsed / 6000).toString().padStart(2, '0');
-    const seconds = Math.floor((centisecondsElapsed % 6000) / 100).toString().padStart(2, '0');
-    const milliseconds = (centisecondsElapsed % 100).toString().padStart(2, '0');
-    timer.textContent = `${minutes}:${seconds}.${milliseconds}`;
-}
-
 function start_timer() {
     if (timerInterval !== null) return;
 
     centisecondsElapsed = 4500;
-    updateTimerDisplay();
+    updateTimerDisplay(centisecondsElapsed, timer);
 
     timerInterval = setInterval(() => {
-        centisecondsElapsed--; // Incrementar tiempo
+        centisecondsElapsed--;
         if (centisecondsElapsed >= 0) {
-            updateTimerDisplay();
+            updateTimerDisplay(centisecondsElapsed, timer);
         } else {
             stop_timer();
             sendRecord();
         }
-    }, 10); // Actualizar cada 10 ms (centésima de segundo)
+    }, 10);
 }
 
 function stop_timer() {

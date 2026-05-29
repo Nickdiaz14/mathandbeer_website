@@ -7,6 +7,10 @@ from datetime import datetime
 
 pages_bp = Blueprint('pages', __name__)
 
+def _load_reglas():
+    with open("static/json/reglas.json", "r", encoding="utf-8") as f:
+        return json.load(f)[0]
+
 @pages_bp.before_request
 def redireccion_permanente():
     # Si el usuario entra por la URL de Render...
@@ -119,9 +123,8 @@ def page_about():
         testimonials = fallback_testimonials
 
     n_anos = datetime.now().year - 2022
-    if len(proxima) > 0:
-        return render_template("index.html", charlas=grouped, miembros=equipo, partners=partners, n_charlas=len(charlas), proxima=json.dumps(proxima), n_anos=n_anos, testimonials=testimonials, fotos=fotos, avg_asistentes=avg_asistentes)
-    return render_template("index.html", charlas=grouped, miembros=equipo, partners=partners, n_charlas=len(charlas), n_anos=n_anos, testimonials=testimonials, fotos=fotos, avg_asistentes=avg_asistentes)
+    proxima_json = json.dumps(proxima) if proxima else None
+    return render_template("index.html", charlas=grouped, miembros=equipo, partners=partners, n_charlas=len(charlas), proxima=proxima_json, n_anos=n_anos, testimonials=testimonials, fotos=fotos, avg_asistentes=avg_asistentes)
 
 @pages_bp.route('/leaderboards')
 def page_leaderboards():
@@ -148,24 +151,17 @@ def page_forms():
 
 @pages_bp.route('/register')
 def page_register():
-    try:
-        m = request.args.get('m')
-        return render_template('register.html', m=m)
-    except:
-        return render_template('register.html')
+    m = request.args.get('m')
+    return render_template('register.html', m=m)
 
 @pages_bp.route('/0h_h1')
 def page_0hh1():
     n = request.args.get('n')
-    with open("static/json/reglas.json", "r", encoding="utf-8") as f:
-        reglas = json.load(f)
-    return render_template('0h_h1.html', n=n, c=reglas[0]["0h-h1"])
+    return render_template('0h_h1.html', n=n, c=_load_reglas()["0h-h1"])
 
 @pages_bp.route('/0h_h1_tt')
 def page_0hh1_tt():
-    with open("static/json/reglas.json", "r", encoding="utf-8") as f:
-        reglas = json.load(f)
-    return render_template('0h_h1_tt.html', c=reglas[0]["0h-h1"])
+    return render_template('0h_h1_tt.html', c=_load_reglas()["0h-h1"])
 
 @pages_bp.route('/tutorial_0h_h1')
 def page_tutorial_0hh1():
@@ -173,30 +169,23 @@ def page_tutorial_0hh1():
 
 @pages_bp.route('/knight')
 def page_knight():
-    with open("static/json/reglas.json", "r", encoding="utf-8") as f:
-        reglas = json.load(f)
-    return render_template('knight.html', c=reglas[0]["knight"])
+    return render_template('knight.html', c=_load_reglas()["knight"])
 
 @pages_bp.route('/secuenzo')
 def page_secuenzo():
     n = int(request.args.get('n'))
-    with open("static/json/reglas.json", "r", encoding="utf-8") as f:
-        reglas = json.load(f)
-    return render_template('secuenzo.html', n=n, c=reglas[0]["unicolor"] if n == 6 else reglas[0]["bicolor"])
+    reglas = _load_reglas()
+    return render_template('secuenzo.html', n=n, c=reglas["unicolor"] if n == 6 else reglas["bicolor"])
 
 @pages_bp.route('/cuentamania')
 def page_cuentamania():
     n = int(request.args.get('n'))
-    with open("static/json/reglas.json", "r", encoding="utf-8") as f:
-        reglas = json.load(f)
-    return render_template('cuentamania.html', c=reglas[0]["cuentamania"], n=n)
+    return render_template('cuentamania.html', c=_load_reglas()["cuentamania"], n=n)
 
 @pages_bp.route('/0h_n0')
 def page_0h_n0():
     n = int(request.args.get('n'))
-    with open("static/json/reglas.json", "r", encoding="utf-8") as f:
-        reglas = json.load(f)
-    return render_template('0h_n0.html', c=reglas[0]["0h-n0"], n=n)
+    return render_template('0h_n0.html', c=_load_reglas()["0h-n0"], n=n)
 
 @pages_bp.route('/tutorial_0h_n0')
 def page_tutorial_0h_n0():
@@ -205,9 +194,7 @@ def page_tutorial_0h_n0():
 @pages_bp.route('/nerdle')
 def page_nerdle():
     n = int(request.args.get('n'))
-    with open("static/json/reglas.json", "r", encoding="utf-8") as f:
-        reglas = json.load(f)
-    return render_template('nerdle.html', c=reglas[0]["Nerdle"], n=n)
+    return render_template('nerdle.html', c=_load_reglas()["Nerdle"], n=n)
 
 @pages_bp.route('/leaderboard')
 def page_leaderboard():

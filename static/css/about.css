@@ -133,7 +133,7 @@
 
 .liveButton:hover,
 .closeButton:hover {
-    background: #ffc800;
+    background: var(--accent-beer);
     color: black;
     transform: translateY(-2px);
     cursor: pointer;

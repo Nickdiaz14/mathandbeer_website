@@ -24,24 +24,11 @@ const messages = [
 const timer = document.getElementById('timer');
 const title = document.getElementById('title');
 const back = document.getElementById('back');
-const recharge = document.getElementById('recharge');
 const overlay = document.getElementById('countdown-overlay');
 
 document.addEventListener('DOMContentLoaded', function () {
     n = Number(document.body.dataset.n)
-    back.addEventListener('click', () => {
-        window.history.back();
-    });
-
-    recharge.addEventListener('click', () => {
-        window.location.reload();
-    });
-
-    window.addEventListener('pageshow', (e) => {
-        if (e.persisted) {
-            window.location.reload();
-        }
-    });
+    setupGameControls();
     const cell_size = n === 4 ? 'grey' : 'z-5';
     const matrix = document.getElementById('matrix');
     for (let i = 0; i < n; i++) {
@@ -61,23 +48,16 @@ document.addEventListener('DOMContentLoaded', function () {
     startGame()
 })
 
-function updateTimerDisplay() {
-    const minutes = Math.floor(centisecondsElapsed / 6000).toString().padStart(2, '0');
-    const seconds = Math.floor((centisecondsElapsed % 6000) / 100).toString().padStart(2, '0');
-    const milliseconds = (centisecondsElapsed % 100).toString().padStart(2, '0');
-    timer.textContent = `${minutes}:${seconds}.${milliseconds}`;
-}
-
 function start_timer() {
     if (timerInterval !== null) return;
 
     centisecondsElapsed = 0;
-    updateTimerDisplay();
+    updateTimerDisplay(centisecondsElapsed, timer);
 
     timerInterval = setInterval(() => {
-        centisecondsElapsed++; // Incrementar tiempo
-        updateTimerDisplay();
-    }, 10); // Actualizar cada 10 ms (centésima de segundo)
+        centisecondsElapsed++;
+        updateTimerDisplay(centisecondsElapsed, timer);
+    }, 10);
 }
 
 function stop_timer() {
@@ -109,7 +89,7 @@ function toggle_color(row, col, td) {
 }
 
 function startGame() {
-    const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
+    const isDaily = isDailyMode();
     const userId = localStorage.getItem('userId');
     const fetchUrl = isDaily ? `/api/daily?userid=${userId}` : '/0h_n0/play';
     const fetchBody = isDaily ? null : JSON.stringify({ n: n });
@@ -186,7 +166,7 @@ function valid_solution() {
                 }
                 valid_matrix[i][j] = viewedCells;
                 if (game_matrix[i][j] > 0) {
-                    control = viewedCells == game_matrix[i][j]? true:false;
+                    const control = viewedCells === game_matrix[i][j];
                     if (!control && game_matrix[i][j] > 0) {
                         document.getElementById(`cell-${i}-${j}`).classList.add('cell_alert');
                         if (viewedCells < game_matrix[i][j]) {
@@ -217,7 +197,7 @@ function valid_solution() {
 }
 
 function sendRecord() {
-    const isDaily = new URLSearchParams(window.location.search).get('daily') === 'true';
+    const isDaily = isDailyMode();
     const submitUrl = isDaily ? '/api/daily/submit' : '/leaderboard/submit';
 
     fetch(submitUrl, {
