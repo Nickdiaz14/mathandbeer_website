@@ -44,34 +44,32 @@ document.addEventListener("DOMContentLoaded", () => {
   reveals.forEach(reveal => revealObserver.observe(reveal));
 
   const counters = document.querySelectorAll('.counter');
-  const speed = 100; // Velocidad del contador (menor es más rápido)
+  const COUNTER_DURATION = 900; // ms — siempre igual sin importar el FPS del dispositivo
 
   const counterObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const counter = entry.target;
-        // Extraemos solo los números por si tienes signos como "+"
-        const target = +counter.innerText.replace(/\D/g, '');
-        let count = 0;
-        const inc = target / speed;
+      if (!entry.isIntersecting) return;
+      const counter = entry.target;
+      const target = +counter.innerText.replace(/\D/g, '');
+      observer.unobserve(counter);
 
-        const updateCount = () => {
-          count += inc;
-          if (count < target) {
-            counter.innerText = Math.ceil(count);
-            requestAnimationFrame(updateCount);
-          } else {
-            // Aseguramos que termine en el número exacto
-            counter.innerText = target;
-          }
-        };
-
-        // Iniciamos la animación
-        updateCount();
-        observer.unobserve(counter);
+      // Dispositivos con preferencia de movimiento reducido: mostrar número directo
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        counter.innerText = target;
+        return;
       }
+
+      const startTime = performance.now();
+      const animate = (now) => {
+        const progress = Math.min((now - startTime) / COUNTER_DURATION, 1);
+        // Ease-out cúbico: empieza rápido, desacelera al final
+        const eased = 1 - Math.pow(1 - progress, 3);
+        counter.innerText = Math.ceil(eased * target);
+        if (progress < 1) requestAnimationFrame(animate);
+      };
+      requestAnimationFrame(animate);
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.3 });
 
   counters.forEach(counter => counterObserver.observe(counter));
 });
