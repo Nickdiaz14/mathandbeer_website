@@ -55,7 +55,6 @@
     -webkit-backdrop-filter: blur(9.5px);
     border-radius: 20px;
     padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .leaderboard h2 {
@@ -71,34 +70,51 @@
 
 .leaderboard table {
     width: 100%;
-    border-collapse: collapse;
-}
-
-.leaderboard th,
-.leaderboard td {
-    padding: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    text-align: center;
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
-    min-width: 100px;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+    table-layout: fixed;
 }
 
 .leaderboard th {
-    background: rgba(255, 255, 255, 0.2);
+    padding: 12px 5px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
 }
 
-.leaderboard tr:hover {
-    background: rgba(255, 255, 255, 0.1);
-    cursor: pointer;
+.leaderboard td {
+    padding: 15px 5px;
+    font-size: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+}
+
+.leaderboard th:nth-child(1), .leaderboard td:nth-child(1) { width: 15%; }
+.leaderboard th:nth-child(2), .leaderboard td:nth-child(2) { width: 50%; }
+.leaderboard th:nth-child(3), .leaderboard td:nth-child(3) { width: 35%; }
+
+.leaderboard tbody tr {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.leaderboard td:first-child { border-radius: 10px 0 0 10px; }
+.leaderboard td:last-child { border-radius: 0 10px 10px 0; }
+
+.my-row {
+    background: rgba(255, 183, 0, 0.1) !important;
+    border: 1px solid var(--accent-beer);
 }
 
 .record_count {
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
-    font-size: .8rem;
     text-align: center;
-    margin: 0;
-    float: left;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
 }

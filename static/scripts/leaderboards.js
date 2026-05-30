@@ -92,11 +92,7 @@ function updateLeaderboard() {
                 }
 
                 if (localStorage.getItem('userId') === register[3]) {
-                    mtr.style.borderLeft = "3px solid var(--accent-math)";
-                    mtr.style.borderRight = "3px solid var(--accent-math)";
-                    mtd_position.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
-                    mtd_name.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
-                    mtd_record.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
+                    mtr.classList.add('my-row');
                 }
 
                 mtd_position.style.color = colorClass;
@@ -117,11 +113,11 @@ function updateLeaderboard() {
                 const mtd_name = document.createElement('td');
                 const mtd_record = document.createElement('td');
 
-                // register es el array [posición, nombre, record]
                 mtd_position.textContent = data.personal_ranking[0];
                 mtd_name.textContent = data.personal_ranking[1];
                 mtd_record.textContent = data.personal_ranking[2];
 
+                mtr.classList.add('my-row');
                 mtr.appendChild(mtd_position);
                 mtr.appendChild(mtd_name);
                 mtr.appendChild(mtd_record);
