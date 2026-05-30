@@ -3,6 +3,24 @@ let records;
 let game_name;
 let timerInterval;
 
+const MEDALS = ['🥇', '🥈', '🥉'];
+
+function showSkeletonRows(tbodyEl, count) {
+    tbodyEl.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+        const tr = document.createElement('tr');
+        tr.classList.add('skeleton-row');
+        for (let j = 0; j < 3; j++) {
+            const td = document.createElement('td');
+            const span = document.createElement('span');
+            span.classList.add('skeleton-cell');
+            td.appendChild(span);
+            tr.appendChild(td);
+        }
+        tbodyEl.appendChild(tr);
+    }
+}
+
 const back = document.getElementById('back');
 const title = document.getElementById('title');
 const leader = document.getElementById('ranking');
@@ -50,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function updateLeaderboard() {
     game_name = document.body.dataset.game || document.getElementById('select').value;
     const userid = localStorage.getItem('userId');
+    showSkeletonRows(leader, records || 10);
     fetch('/leaderboard/consult', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -78,11 +97,6 @@ function updateLeaderboard() {
                 const mtd_name = document.createElement('td');
                 const mtd_record = document.createElement('td');
 
-                // register es el array [posición, nombre, record]
-                mtd_position.textContent = register[0];
-                mtd_name.textContent = register[1];
-                mtd_record.textContent = register[2];
-
                 if (index === 0) {
                     colorClass = "#f1c40f";
                 } else if (index === 1) {
@@ -91,13 +105,24 @@ function updateLeaderboard() {
                     colorClass = "#bd6104";
                 }
 
+                // Medalla para top 3, número para el resto
+                if (index < 3 && register[0] !== '-') {
+                    mtd_position.innerHTML = `<span class="rank-medal">${MEDALS[index]}</span>`;
+                } else {
+                    mtd_position.textContent = register[0];
+                    mtd_position.style.color = colorClass;
+                }
+                mtd_name.textContent = register[1];
+                mtd_record.textContent = register[2];
+                mtd_name.style.color = colorClass;
+                mtd_record.style.color = colorClass;
+
                 if (localStorage.getItem('userId') === register[3]) {
                     mtr.classList.add('my-row');
                 }
 
-                mtd_position.style.color = colorClass;
-                mtd_name.style.color = colorClass;
-                mtd_record.style.color = colorClass;
+                mtr.classList.add('leaderboard-row-enter');
+                mtr.style.animationDelay = `${index * 45}ms`;
 
                 mtr.appendChild(mtd_position);
                 mtr.appendChild(mtd_name);

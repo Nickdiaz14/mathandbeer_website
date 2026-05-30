@@ -63,10 +63,26 @@
     </header>
 
     <main>
-        <!-- Loading -->
+        <!-- Loading: skeleton -->
         <div id="daily-loading" class="daily-loading">
-            <i class="fa-solid fa-spinner fa-spin fa-2x" style="color: var(--accent-beer);"></i>
-            <p class="mt-2">Cargando reto del día...</p>
+            <div class="daily-game-card skel-daily-card">
+                <div class="skel-daily-date skeleton"></div>
+                <div class="skel-daily-title skeleton"></div>
+                <div class="skel-daily-badge skeleton"></div>
+                <div class="daily-streak-row">
+                    <div class="daily-streak-card rounded-4 skel-daily-streak skeleton"></div>
+                    <div class="daily-streak-card rounded-4 skel-daily-streak skeleton"></div>
+                </div>
+                <div class="skel-daily-btn skeleton"></div>
+            </div>
+            <div class="daily-leaderboard-card skel-daily-lb-card">
+                <div class="skel-daily-lb-title skeleton"></div>
+                <div class="skel-daily-lb-row skeleton"></div>
+                <div class="skel-daily-lb-row skeleton"></div>
+                <div class="skel-daily-lb-row skeleton"></div>
+                <div class="skel-daily-lb-row skeleton"></div>
+                <div class="skel-daily-lb-row skeleton"></div>
+            </div>
         </div>
 
         <!-- Content -->

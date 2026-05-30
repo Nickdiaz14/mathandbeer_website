@@ -55,6 +55,7 @@
     -webkit-backdrop-filter: blur(9.5px);
     border-radius: 20px;
     padding: 20px;
+    border: 1px solid rgba(255, 183, 0, 0.12);
 }
 
 .leaderboard h2 {
@@ -94,9 +95,20 @@
     font-family: 'Inter', sans-serif;
 }
 
-.leaderboard th:nth-child(1), .leaderboard td:nth-child(1) { width: 15%; }
-.leaderboard th:nth-child(2), .leaderboard td:nth-child(2) { width: 50%; }
-.leaderboard th:nth-child(3), .leaderboard td:nth-child(3) { width: 35%; }
+.leaderboard th:nth-child(1),
+.leaderboard td:nth-child(1) {
+    width: 25%;
+}
+
+.leaderboard th:nth-child(2),
+.leaderboard td:nth-child(2) {
+    width: 50%;
+}
+
+.leaderboard th:nth-child(3),
+.leaderboard td:nth-child(3) {
+    width: 25%;
+}
 
 .leaderboard tbody tr {
     background: rgba(255, 255, 255, 0.03);
@@ -104,12 +116,82 @@
     transition: transform 0.2s, background 0.2s;
 }
 
-.leaderboard td:first-child { border-radius: 10px 0 0 10px; }
-.leaderboard td:last-child { border-radius: 0 10px 10px 0; }
+.leaderboard tbody tr:hover {
+    background: rgba(255, 255, 255, 0.07);
+    transform: translateY(-1px);
+}
+
+.leaderboard td:first-child {
+    border-radius: 10px 0 0 10px;
+}
+
+.leaderboard td:last-child {
+    border-radius: 0 10px 10px 0;
+}
 
 .my-row {
     background: rgba(255, 183, 0, 0.1) !important;
     border: 1px solid var(--accent-beer);
+}
+
+/* ── Entrada escalonada ── */
+@keyframes rowSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.leaderboard-row-enter {
+    animation: rowSlideIn 0.3s ease both;
+}
+
+/* ── Skeleton shimmer ── */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.skeleton-cell {
+    display: block;
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.04) 25%,
+            rgba(255, 255, 255, 0.10) 50%,
+            rgba(255, 255, 255, 0.04) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    margin: 0 auto;
+}
+
+.skeleton-row td:nth-child(1) .skeleton-cell {
+    width: 26px;
+}
+
+.skeleton-row td:nth-child(2) .skeleton-cell {
+    width: 72%;
+}
+
+.skeleton-row td:nth-child(3) .skeleton-cell {
+    width: 52%;
+}
+
+/* ── Medalla top 3 ── */
+.rank-medal {
+    font-size: 1.25rem;
+    line-height: 1;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.4));
 }
 
 .record_count {

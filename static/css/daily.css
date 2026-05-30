@@ -2,10 +2,38 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 100px 20px;
-    color: var(--text-muted);
+    gap: 16px;
+    padding: 32px 16px 48px;
+    width: 100%;
+    align-self: flex-start;
 }
+
+/* ── Skeleton del daily ── */
+.skel-daily-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 28px !important;
+}
+
+.skel-daily-date  { width: 120px; height: 14px; border-radius: 7px !important; }
+.skel-daily-title { width: 60%;   height: 28px; border-radius: 10px !important; }
+.skel-daily-badge { width: 140px; height: 34px; border-radius: 50px !important; }
+.skel-daily-streak { height: 64px; flex: 1; }
+.skel-daily-btn   { width: 100%; max-width: 280px; height: 52px; border-radius: 12px !important; }
+
+.skel-daily-lb-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+}
+
+.skel-daily-lb-title { width: 50%; height: 16px; border-radius: 8px !important; margin-bottom: 4px; }
+.skel-daily-lb-row   { width: 100%; height: 40px; border-radius: 10px !important; }
 
 .daily-streak-row {
     display: flex;

@@ -62,10 +62,24 @@
         </nav>
     </header>
     <main>
-        <!-- Loading state -->
+        <!-- Loading state: skeleton -->
         <div id="profile-loading" class="profile-loading">
-            <i class="fa-solid fa-spinner fa-spin fa-2x" style="color: var(--accent-beer);"></i>
-            <p class="mt-2">Cargando tu perfil...</p>
+            <div class="skel-profile-card">
+                <div class="skel-avatar skeleton"></div>
+                <div class="skel-name skeleton"></div>
+                <div class="skel-edit skeleton"></div>
+            </div>
+            <div class="skel-stats-row">
+                <div class="skel-stat skeleton"></div>
+                <div class="skel-stat skeleton"></div>
+                <div class="skel-stat skeleton"></div>
+            </div>
+            <div class="skel-section">
+                <div class="skel-section-title skeleton"></div>
+                <div class="skel-record skeleton"></div>
+                <div class="skel-record skeleton"></div>
+                <div class="skel-record skeleton"></div>
+            </div>
         </div>
 
         <!-- No account state -->
