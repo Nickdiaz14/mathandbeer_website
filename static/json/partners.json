@@ -16,5 +16,11 @@
         "logo": "static/images/logos/logo_bosque.png",
         "url": "https://www.unbosque.edu.co/",
         "tipo": "universidad"
+    },
+    {
+        "name": "PuntoJar",
+        "logo": "static/images/logos/logo_puntojar.png",
+        "url": "https://www.instagram.com/punto.jar/",
+        "tipo": "aplicacion"
     }
 ]
