@@ -1,7 +1,7 @@
 const userId = localStorage.getItem('userId');
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (!userId){
+    if (!userId) {
         window.location.href = '/register?m=Para jugar necesitas un registro previo';
     } else {
         fetch(`/api/profile/${userId}`)

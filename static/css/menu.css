@@ -93,9 +93,9 @@
 }
 
 .game:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: var(--accent-math);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 242, 255, 0.2);
+  background: rgba(255, 200, 0, 0.05);
+  border-color: var(--accent-beer);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 183, 0, 0.15);
   transform: translateY(-10px) rotateX(5deg);
   cursor: pointer;
 }
@@ -127,6 +127,72 @@
 .subGameBtn {
   background: rgba(255, 255, 255, 0.1) !important;
   width: 120px;
+}
+
+/* ── Size / Mode Selection Modals ───────────────── */
+.size-modal-content {
+  background: linear-gradient(135deg, rgba(20, 12, 40, 0.97) 0%, rgba(14, 10, 35, 0.97) 100%) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px !important;
+  padding-bottom: 8px;
+}
+
+.size-modal-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-align: center;
+  margin: 24px 0 4px;
+}
+
+.size-modal-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding: 12px 24px 24px;
+}
+
+.size-modal-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  padding: 18px 24px;
+  min-width: 86px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.size-modal-btn small {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.size-modal-btn:hover {
+  background: rgba(255, 183, 0, 0.12);
+  border-color: var(--accent-beer);
+  color: var(--accent-beer);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.size-modal-btn:hover small {
+  color: var(--accent-beer);
+  opacity: 0.7;
 }
 
 @media (min-width: 768px) {

@@ -415,3 +415,34 @@
         font-size: 0.82rem;
     }
 }
+
+/* ── Hero stat numbers — gradient gold→cyan ─────── */
+.hero-stat-number {
+    background: linear-gradient(135deg, var(--accent-beer), var(--accent-math));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ── Testimonial cards — hover lift + accent border */
+.testimonial-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 2px solid var(--accent-beer) !important;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.45), 0 0 22px rgba(255,183,0,0.1);
+}
+
+/* ── Partner chips — glow on hover ─────────────── */
+.partner-chip:hover {
+    box-shadow: 0 0 18px rgba(255,183,0,0.2);
+}
+
+/* ── Accordion active item — gold left border ───── */
+.accordion-item .accordion-button:not(.collapsed) {
+    border-left: 3px solid var(--accent-beer);
+    padding-left: 13px;
+}
+

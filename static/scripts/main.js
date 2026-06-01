@@ -73,3 +73,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   counters.forEach(counter => counterObserver.observe(counter));
 });
+
+// ── Floating Math Particles ──────────────────────
+(function () {
+  const container = document.querySelector('.math-particles');
+  if (!container || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const symbols = ['∑','π','∞','√','∫','Δ','θ','λ','φ','±','∂','ℕ','ℝ','×','∈'];
+  const colors  = [
+    'rgba(0,242,255,0.55)',
+    'rgba(255,183,0,0.48)',
+    'rgba(182,189,231,0.42)',
+  ];
+  const n = 15;
+  for (let i = 0; i < n; i++) {
+    const el = document.createElement('span');
+    el.className = 'math-particle';
+    el.textContent = symbols[i % symbols.length];
+    const left     = ((i / n) * 95 + (i % 5)).toFixed(1);
+    const size     = (1.1 + (i % 4) * 0.45).toFixed(1);
+    const duration = 14 + (i % 5) * 5;
+    const delay    = i % 2 === 0 ? -(i * 1.8).toFixed(1) : (i * 0.9).toFixed(1);
+    el.style.cssText = `left:${left}%;color:${colors[i % colors.length]};font-size:${size}rem;animation-duration:${duration}s;animation-delay:${delay}s`;
+    container.appendChild(el);
+  }
+})();

@@ -1,66 +1,94 @@
-# Math and Beer Games 🍻🎲
+# Math & Beer — Plataforma de Divulgación Matemática 🍺🔢
 
-Una aplicación web desarrollada en **Python con Flask** que ofrece una colección de juegos interactivos de lógica y matemáticas (como `0h_h1`, `Knight`, `Secuenzo` y `Cuentamania`). Además, incluye funcionalidades como tablas de clasificación globales, registro de usuarios, perfiles y asistencias a distintos eventos.
+Plataforma web de **divulgación matemática** para la comunidad **Math & Beer** en Colombia. Combina juegos interactivos de lógica y matemáticas con gestión de eventos, leaderboards globales y reto diario.
 
-## 🚀 Características Principales
+## 🚀 Características
 
-*   **Mini-Juegos Interactivos:** Disfruta de juegos como 0h h1, Secuenzo, Knight, Cuentamania, modalidades aleatorias y contrarreloj.
-*   **Leaderboards (Ranking):** Sistema de records con tablas de clasificación dependiendo del tipo de juego (por puntos o por tiempo).
-*   **Gestión de Eventos y Asistencias:** Sistema para registrar datos de los jugadores y sus asistencias a próximos eventos.
-*   **Integración con Base de Datos:** Los registros de jugadores, líderes, y puntajes están centralizados de manera segura usando PostgreSQL.
+### Juegos interactivos
+- **0h-h1** — Rellena cuadrículas con rojos y azules respetando restricciones de balance y unicidad (4×4 a 10×10)
+- **0h-h1 Contrarreloj** — Variante por tiempo del 0h-h1
+- **Salto Real** — Mueve un caballo de ajedrez para capturar 5 celdas objetivo en el menor número de movimientos
+- **Secuenzo** — Memoriza y replica patrones de color antes de que se agote el tiempo (Unicolor 6×6 / Bicolor 5×5)
+- **CuentaManía** — Selecciona números en orden ascendente lo más rápido posible (S/M/L)
+- **0h-n0** — Puzzle de restricciones numéricas sobre cuadrículas (4×4 / 5×5)
+- **Nerdle** — Adivina la ecuación matemática oculta (Mini / Estándar / Maxi)
 
-## 🛠️ Tecnologías Utilizadas
+### Comunidad y eventos
+- **Reto Diario** — Un juego diferente cada día con leaderboard propio y sistema de rachas
+- **Leaderboards globales** — Rankings por juego con posición personal
+- **Perfil de usuario** — Estadísticas, récords, badges y actividad
+- **Gestión de eventos** — RSVP, comentarios, reacciones (brindis) y preguntas para ponentes
+- **Newsletter** — Suscripción para avisos de próximas charlas
+- **Blog** — Artículos de divulgación matemática
 
-*   **Backend:** Python y Flask
-*   **Base de Datos:** PostgreSQL (con librería `psycopg2`)
-*   **Frontend:** HTML5, CSS3, JavaScript. 
-*   **Otros:** Variables de Entorno (`python-dotenv`), Servidor SSL Adhoc, y Json para configuración.
+### Diseño
+- Interfaz glassmorphism con gradiente morado/negro, acento dorado y cyan
+- Partículas matemáticas flotantes (∑ π ∞ √ …) en el hero
+- Divisores SVG wave entre secciones
+- Modales de selección de modo/tamaño con estilo propio
+- Animaciones de entrada, skeleton loading y countdown antes de cada juego
 
-## 📋 Prerrequisitos
+## 🛠️ Stack
 
-Para ejecutar el proyecto necesitas tener instalados en tu computadora:
-*   [Python 3.x](https://www.python.org/downloads/)
-*   Un servidor o instancia de PostgreSQL.
+| Capa | Tecnología |
+|---|---|
+| Backend | Python 3 · Flask 3.1 · Gunicorn |
+| Base de datos | PostgreSQL · psycopg2 (connection pool) |
+| Frontend | HTML5 · CSS3 · JavaScript (vanilla) |
+| UI | Bootstrap 5.3 · Font Awesome 6 · Inter (Google Fonts) |
+| Analytics | Google Tag Manager |
+| Deploy | Render.com |
 
-## 💻 Instalación y Ejecución
+## 📋 Requisitos previos
 
-Sigue estos pasos para correr el proyecto localmente de forma rápida:
+- Python 3.10+
+- PostgreSQL
 
-1. **Clona el repositorio:**
-   ```bash
-   git clone https://github.com/Nickdiaz14/math_and_beer_games.git
-   cd math_and_beer_games
-   ```
+## 💻 Instalación local
 
-2. **Crea y activa un entorno virtual (recomendado):**
-   ```bash
-   python -m venv venv
-   # Activa el entorno virtual en Windows:
-   venv\Scripts\activate
-   # Activa el entorno virtual en Linux/Mac:
-   source venv/bin/activate
-   ```
+```bash
+# 1. Clonar
+git clone https://github.com/Nickdiaz14/mathandbeer_website.git
+cd mathandbeer_website
 
-3. **Instala las dependencias necesarias:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+# 2. Entorno virtual
+python -m venv venv
+venv\Scripts\activate        # Windows
+# source venv/bin/activate   # Linux/Mac
 
-4. **Configura el Entorno (.env):**
-   Crea un archivo llamado `.env` en la raíz del proyecto. Este archivo debe contener la configuración a tu base de datos:
-   ```env
-   DB_HOST=localhost
-   DB_NAME=nombre_de_tu_bd
-   DB_USER=tu_usuario
-   DB_PASSWORD=tu_contraseña
-   ```
+# 3. Dependencias
+pip install -r requirements.txt
 
-5. **Inicia el servidor Flask:**
-   ```bash
-   python app.py
-   ```
+# 4. Variables de entorno (.env)
+DB_HOST=localhost
+DB_NAME=nombre_bd
+DB_USER=usuario
+DB_PASSWORD=contraseña
+DB_PORT=5432
 
-   El sitio estará disponible gracias al servidor Flask en el archivo host `0.0.0.0` y el puerto `:5000` (`https://localhost:5000`).
+# 5. Ejecutar
+python main.py
+```
+
+El servidor queda en `http://localhost:5000`.
+
+## 📁 Estructura principal
+
+```
+├── app.py                  # App factory y registro de blueprints
+├── main.py                 # Entry point
+├── db.py                   # Pool de conexiones PostgreSQL
+├── routes/
+│   ├── pages.py            # Rutas HTML
+│   └── api.py              # API REST (juegos, leaderboards, daily, eventos)
+├── templates/              # Jinja2 templates
+├── static/
+│   ├── css/                # Estilos por sección/juego
+│   ├── scripts/            # JS por juego + utilidades compartidas
+│   ├── boards/             # Tableros pre-generados (.txt)
+│   └── json/               # Reglas, equipo, partners, artículos
+└── requirements.txt
+```
 
 ---
-✨ Construido para ejercitar la mente, disfrutar y competir.# mathandbeer_website
+Construido para que las matemáticas se disfruten con buena compañía. 🍻

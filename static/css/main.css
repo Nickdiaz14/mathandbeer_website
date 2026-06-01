@@ -184,50 +184,6 @@ main section {
 
 /* Nerdle       */
 
-/* Desktop: 6 columnas base → fila 1 muestra 3 tarjetas iguales */
-@media (min-width: 768px) {
-  .menu_games {
-    grid-template-columns: repeat(6, 1fr);
-    max-width: 900px;
-  }
-
-  .menu_games .game:nth-child(1) {
-    grid-column: span 2;
-  }
-
-  /* 0h-h1        */
-  .menu_games .game:nth-child(2) {
-    grid-column: span 2;
-  }
-
-  /* Contrarreloj */
-  .menu_games .game:nth-child(3) {
-    grid-column: span 2;
-  }
-
-  /* Salto Real   */
-  .menu_games .game:nth-child(4) {
-    grid-column: span 3;
-  }
-
-  /* Secuenzo     */
-  .menu_games .game:nth-child(5) {
-    grid-column: span 3;
-  }
-
-  /* CuentaManía  */
-  .menu_games .game:nth-child(6) {
-    grid-column: span 2;
-  }
-
-  /* 0h-n0        */
-  .menu_games .game:nth-child(7) {
-    grid-column: span 4;
-  }
-
-  /* Nerdle       */
-}
-
 .menu_games button {
   color: var(--text-muted) !important;
   background: var(--myBg);
@@ -790,17 +746,20 @@ hr {
 
 /* ── Skeleton shimmer (global) ── */
 @keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position:  200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.04) 25%,
-    rgba(255, 255, 255, 0.10) 50%,
-    rgba(255, 255, 255, 0.04) 75%
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.04) 25%,
+      rgba(255, 255, 255, 0.10) 50%,
+      rgba(255, 255, 255, 0.04) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite linear;
   border-radius: 8px;
@@ -822,4 +781,124 @@ hr {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.28);
+}
+
+/* ── Math Particles ─────────────────────────────── */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.math-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.math-particle {
+  position: absolute;
+  font-weight: 200;
+  user-select: none;
+  animation: math-float linear infinite;
+  bottom: -60px;
+}
+
+@keyframes math-float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translateY(-110vh) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+/* ── Wave SVG Dividers ──────────────────────────── */
+.wave-divider {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  display: block;
+}
+
+.wave-divider svg {
+  display: block;
+  width: 100%;
+  height: 10vh;
+}
+
+.wave-light-to-dark {
+  background: transparent;
+}
+
+/* ── Subtitle Glow ──────────────────────────────── */
+.subtitle {
+  text-shadow: 0 0 28px rgba(255, 183, 0, 0.45), 0 0 60px rgba(255, 183, 0, 0.18);
+}
+
+.light-section .subtitle {
+  text-shadow: 0 0 22px rgba(163, 91, 172, 0.4);
+}
+
+
+/* Desktop: 6 columnas base → fila 1 muestra 3 tarjetas iguales */
+@media (min-width: 768px) {
+  .menu_games {
+    grid-template-columns: repeat(6, 1fr);
+    max-width: 900px;
+  }
+
+  .menu_games .game:nth-child(1) {
+    grid-column: span 2;
+  }
+
+  /* 0h-h1        */
+  .menu_games .game:nth-child(2) {
+    grid-column: span 2;
+  }
+
+  /* Contrarreloj */
+  .menu_games .game:nth-child(3) {
+    grid-column: span 2;
+  }
+
+  /* Salto Real   */
+  .menu_games .game:nth-child(4) {
+    grid-column: span 3;
+  }
+
+  /* Secuenzo     */
+  .menu_games .game:nth-child(5) {
+    grid-column: span 3;
+  }
+
+  /* CuentaManía  */
+  .menu_games .game:nth-child(6) {
+    grid-column: span 2;
+  }
+
+  /* 0h-n0        */
+  .menu_games .game:nth-child(7) {
+    grid-column: span 4;
+  }
+
+  /* Nerdle       */
 }

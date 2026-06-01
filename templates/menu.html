@@ -136,76 +136,41 @@
 
         <!-- Modal 0h-h1 -->
         <div class="modal fade" id="0h-h1-size" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-                <div class="modal-content bg-dark text-light overflow-auto">
-                    <div class="modal-header displayColumn">Elige el tamaño del tablero</div>
-                    <div class="modal-body">
-                        <table class="displayColumn">
-                            <tr>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/0h_h1?n=4'">4x4</button></td>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/0h_h1?n=6'">6x6</button></td>
-                            </tr>
-                            <tr>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/0h_h1?n=8'">8x8</button></td>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/0h_h1?n=10'">10x10</button></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="modal-footer myButtons">
-                        <button type="button" class="btn btn-secondary closeButton"
-                            data-bs-dismiss="modal">Cerrar</button>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content size-modal-content">
+                    <p class="size-modal-title">Elige el tamaño</p>
+                    <div class="size-modal-btns">
+                        <button class="size-modal-btn" onclick="window.location.href='/0h_h1?n=4'">4×4</button>
+                        <button class="size-modal-btn" onclick="window.location.href='/0h_h1?n=6'">6×6</button>
+                        <button class="size-modal-btn" onclick="window.location.href='/0h_h1?n=8'">8×8</button>
+                        <button class="size-modal-btn" onclick="window.location.href='/0h_h1?n=10'">10×10</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Modal secuenzo -->
+        <!-- Modal Secuenzo -->
         <div class="modal fade" id="secuenzo-size" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-                <div class="modal-content bg-dark text-light overflow-auto">
-                    <div class="modal-header displayColumn">Elige un modo de juego</div>
-                    <div class="modal-body">
-                        <table class="displayColumn">
-                            <tr>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/secuenzo?n=6'">Unicolor</button></td>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/secuenzo?n=5'">Bicolor</button></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="modal-footer myButtons">
-                        <button type="button" class="btn btn-secondary closeButton"
-                            data-bs-dismiss="modal">Cerrar</button>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content size-modal-content">
+                    <p class="size-modal-title">Elige el modo</p>
+                    <div class="size-modal-btns">
+                        <button class="size-modal-btn" onclick="window.location.href='/secuenzo?n=6'">Unicolor<br><small>6×6</small></button>
+                        <button class="size-modal-btn" onclick="window.location.href='/secuenzo?n=5'">Bicolor<br><small>5×5</small></button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Modal Cuentamania -->
+        <!-- Modal CuentaManía -->
         <div class="modal fade" id="cuentamania-size" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-                <div class="modal-content bg-dark text-light overflow-auto">
-                    <div class="modal-header displayColumn">Elige el tamaño del tablero</div>
-                    <div class="modal-body">
-                        <table class="displayColumn">
-                            <tr>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/cuentamania?n=3'">S</button></td>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/cuentamania?n=4'">M</button></td>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/cuentamania?n=5'">L</button></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="modal-footer myButtons">
-                        <button type="button" class="btn btn-secondary closeButton"
-                            data-bs-dismiss="modal">Cerrar</button>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content size-modal-content">
+                    <p class="size-modal-title">Elige el tamaño</p>
+                    <div class="size-modal-btns">
+                        <button class="size-modal-btn" onclick="window.location.href='/cuentamania?n=3'">S<br><small>3×3</small></button>
+                        <button class="size-modal-btn" onclick="window.location.href='/cuentamania?n=4'">M<br><small>4×4</small></button>
+                        <button class="size-modal-btn" onclick="window.location.href='/cuentamania?n=5'">L<br><small>5×5</small></button>
                     </div>
                 </div>
             </div>
@@ -213,22 +178,12 @@
 
         <!-- Modal 0h-n0 -->
         <div class="modal fade" id="0h-n0-size" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-                <div class="modal-content bg-dark text-light overflow-auto">
-                    <div class="modal-header displayColumn">Elige el tamaño del tablero</div>
-                    <div class="modal-body">
-                        <table class="displayColumn">
-                            <tr>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/0h_n0?n=4'">4x4</button></td>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/0h_n0?n=5'">5x5</button></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="modal-footer myButtons">
-                        <button type="button" class="btn btn-secondary closeButton"
-                            data-bs-dismiss="modal">Cerrar</button>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content size-modal-content">
+                    <p class="size-modal-title">Elige el tamaño</p>
+                    <div class="size-modal-btns">
+                        <button class="size-modal-btn" onclick="window.location.href='/0h_n0?n=4'">4×4</button>
+                        <button class="size-modal-btn" onclick="window.location.href='/0h_n0?n=5'">5×5</button>
                     </div>
                 </div>
             </div>
@@ -236,24 +191,13 @@
 
         <!-- Modal Nerdle -->
         <div class="modal fade" id="nerdle-size" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-                <div class="modal-content bg-dark text-light overflow-auto">
-                    <div class="modal-header displayColumn">Elige el tamaño del tablero</div>
-                    <div class="modal-body">
-                        <table class="displayColumn">
-                            <tr>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/nerdle?n=6'">Mini</button></td>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/nerdle?n=8'">Std</button></td>
-                                <td><button class="btn btn-secondary btn-lg p-4 subGameBtn"
-                                        onclick="window.location.href='/nerdle?n=10'">Maxi</button></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="modal-footer myButtons">
-                        <button type="button" class="btn btn-secondary closeButton"
-                            data-bs-dismiss="modal">Cerrar</button>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content size-modal-content">
+                    <p class="size-modal-title">Elige el modo</p>
+                    <div class="size-modal-btns">
+                        <button class="size-modal-btn" onclick="window.location.href='/nerdle?n=6'">Mini<br><small>6 dígitos</small></button>
+                        <button class="size-modal-btn" onclick="window.location.href='/nerdle?n=8'">Estándar<br><small>8 dígitos</small></button>
+                        <button class="size-modal-btn" onclick="window.location.href='/nerdle?n=10'">Maxi<br><small>10 dígitos</small></button>
                     </div>
                 </div>
             </div>
