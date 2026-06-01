@@ -23,7 +23,7 @@ def init_db_pool():
     if _db_pool is None:
         try:
             _db_pool = psycopg2.pool.SimpleConnectionPool(
-                1, 20,
+                1, 40,
                 host=os.getenv("DB_HOST"),
                 database=os.getenv("DB_NAME"),
                 user=os.getenv("DB_USER"),
