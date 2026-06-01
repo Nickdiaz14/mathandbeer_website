@@ -2,9 +2,12 @@ from flask import Flask
 from dotenv import load_dotenv
 from db import init_db_pool
 
-# Centralized Blueprints
 from routes.pages import pages_bp
-from routes.api import api_bp
+from routes.games import games_bp
+from routes.daily import daily_bp
+from routes.users import users_bp
+from routes.events import events_bp
+from routes.attendance import attendance_bp
 
 def create_app():
     load_dotenv()
@@ -14,10 +17,14 @@ def create_app():
 
     # 2. Setup Flask
     app = Flask(__name__)
-    
+
     # 3. Register All Application Routes
     app.register_blueprint(pages_bp)
-    app.register_blueprint(api_bp)
+    app.register_blueprint(games_bp)
+    app.register_blueprint(daily_bp)
+    app.register_blueprint(users_bp)
+    app.register_blueprint(events_bp)
+    app.register_blueprint(attendance_bp)
 
     return app
 
