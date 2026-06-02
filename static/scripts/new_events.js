@@ -60,11 +60,15 @@ function construirTarjetas(eventos) {
                 Asistiré
             </button>
             <!-- Calendar buttons -->
-            <div class="calendar-btns">
-                <a href="${googleCalendarUrl(evento)}" target="_blank" rel="noopener" class="calendar-btn">
-                    <i class="fa-solid fa-calendar-plus me-1"></i>Google Calendar
-                </a>
-            </div>
+            ${(() => {
+                const diasHastaEvento = Math.floor((new Date(evento.date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                return diasHastaEvento <= 365 ? `
+                <div class="calendar-btns">
+                    <a href="${googleCalendarUrl(evento)}" target="_blank" rel="noopener" class="calendar-btn">
+                        <i class="fa-solid fa-calendar-plus me-1"></i>Google Calendar
+                    </a>
+                </div>` : '';
+            })()}
             <!-- Q&A -->
             <div class="qa-section">
                 <p class="qa-title"><i class="fa-solid fa-microphone me-1"></i>Pregúntale al ponente</p>
@@ -200,7 +204,11 @@ function iniciarCuentasAtras(eventos) {
 
             const restante = document.getElementById(`restante-${index}`);
             if (restante) {
-                restante.innerText = `${String(dias).padStart(2, '0')}d ${String(horas).padStart(2, '0')}h ${String(minutos).padStart(2, '0')}m ${String(segundos).padStart(2, '0')}s`;
+                if (dias > 365) {
+                    restante.innerText = 'Próximamente';
+                } else {
+                    restante.innerText = `${String(dias).padStart(2, '0')}d ${String(horas).padStart(2, '0')}h ${String(minutos).padStart(2, '0')}m ${String(segundos).padStart(2, '0')}s`;
+                }
             }
         });
     }, 1000);
