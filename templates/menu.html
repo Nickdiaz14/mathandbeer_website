@@ -84,6 +84,7 @@
             <div class="game skeleton-game"></div>
             <div class="game skeleton-game"></div>
             <div class="game skeleton-game"></div>
+            <div class="game skeleton-game"></div>
         </div>
     </div>
     <main id="no-loading" style="display:none;">
@@ -97,10 +98,10 @@
                 <span class="game_text">0h-h1</span>
             </button>
 
-            <button class="game" onclick="window.location.href='/0h_h1_tt'">
+            <button class="game" data-bs-toggle="modal" data-bs-target="#secuenzo-size">
                 <span class="game_text_out">¡Jugar!</span>
-                <img src="../static/images/games/0h-h1_tt.png" alt="" class="game_img" loading="lazy">
-                <span class="game_text">Contrarreloj</span>
+                <img src="../static/images/games/0h-h1.png" alt="" class="game_img" loading="lazy">
+                <span class="game_text">Secuenzo</span>
             </button>
 
             <button class="game" onclick="window.location.href='/knight'">
@@ -109,16 +110,16 @@
                 <span class="game_text">Salto Real</span>
             </button>
 
-            <button class="game" data-bs-toggle="modal" data-bs-target="#secuenzo-size">
-                <span class="game_text_out">¡Jugar!</span>
-                <img src="../static/images/games/0h-h1.png" alt="" class="game_img" loading="lazy">
-                <span class="game_text">Secuenzo</span>
-            </button>
-
             <button class="game" data-bs-toggle="modal" data-bs-target="#cuentamania-size">
                 <span class="game_text_out">¡Jugar!</span>
                 <img src="../static/images/games/cuentamania.png" alt="" class="game_img" loading="lazy">
                 <span class="game_text">CuentaManía</span>
+            </button>
+
+            <button class="game" onclick="window.location.href='/0h_h1_tt'">
+                <span class="game_text_out">¡Jugar!</span>
+                <img src="../static/images/games/time_trial.png" alt="" class="game_img" loading="lazy">
+                <span class="game_text">Contrarreloj 0h-h1</span>
             </button>
 
             <button class="game" data-bs-toggle="modal" data-bs-target="#0h-n0-size">
@@ -131,6 +132,12 @@
                 <span class="game_text_out">¡Jugar!</span>
                 <img src="../static/images/games/nerdle.png" alt="" class="game_img" loading="lazy">
                 <span class="game_text">Nerdle</span>
+            </button>
+
+            <button class="game" onclick="window.location.href='/knight_tt'">
+                <span class="game_text_out">¡Jugar!</span>
+                <img src="../static/images/games/time_trial.png" alt="" class="game_img" loading="lazy">
+                <span class="game_text">Contrarreloj Salto Real</span>
             </button>
         </div>
 

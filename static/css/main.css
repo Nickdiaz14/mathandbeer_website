@@ -183,6 +183,9 @@ main section {
 }
 
 /* Nerdle       */
+.menu_games .game:nth-child(8) {
+  grid-column: span 5;
+}
 
 .menu_games button {
   color: var(--text-muted) !important;
@@ -897,8 +900,11 @@ hr {
 
   /* 0h-n0        */
   .menu_games .game:nth-child(7) {
-    grid-column: span 4;
+    grid-column: span 2;
   }
 
   /* Nerdle       */
+  .menu_games .game:nth-child(8) {
+    grid-column: span 2;
+  }
 }

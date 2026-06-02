@@ -51,6 +51,16 @@
                 "r2": "Cada celda roja debe tener tantas celdas rojas como su número indica, sin ser interrumpidas por celdas azules en su misma fila y columna."
             }
         },
+        "knight_tt": {
+            "summary": "Captura tantas celdas rojas como puedas antes de que se acabe el tiempo. Cada celda capturada repone algo de tiempo, pero cada vez menos.",
+            "rules": {
+                "r1": "El caballo se mueve exclusivamente en 'L' (dos casillas en una dirección y una en perpendicular).",
+                "r2": "Siempre hay exactamente una celda roja visible en el tablero.",
+                "r3": "Cada celda roja aparece a distancia mínima de 5 casillas del caballo.",
+                "r4": "Al capturar la celda roja aparece una nueva y se repone un poco de tiempo (cada vez menos).",
+                "r5": "El juego empieza con 45 segundos. Tu puntuación es el número de celdas capturadas."
+            }
+        },
         "Nerdle": {
             "summary": "Acertar una ecuación matemática en el menor tiempo posible.",
             "rules": {

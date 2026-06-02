@@ -112,6 +112,18 @@
   filter: blur(4px);
 }
 
+.game_img_portrait {
+  width: 55%;
+  right: 5%;
+  left: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.game:hover .game_img_portrait {
+  transform: translateY(-50%) scale(1.4) rotate(-10deg);
+}
+
 .game:hover .game_text {
   opacity: 0.1;
   transform: translateX(20px);

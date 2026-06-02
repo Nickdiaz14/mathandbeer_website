@@ -38,12 +38,17 @@ def update_leaderboard():
 
     count_games = ['TContrareloj', 'TUnicolor', 'TBicolor', 'TProgresivo', 'TAleatorio']
     points_games = ['TCruzado', 'TKnight', 'NRD6', 'NRD8', 'NRD10']
+    cell_games = ['TKnightTT']
 
     connection = get_connection()
     try:
         cursor = connection.cursor()
 
-        if board in count_games:
+        if board in cell_games:
+            record = int(record_raw)
+            string_record = f'{record} celdas'
+            is_better = lambda new, old: new > old
+        elif board in count_games:
             record = int(record_raw)
             string_record = f'{record} tabs'
             is_better = lambda new, old: new > old
@@ -81,7 +86,7 @@ def update_leaderboard():
 def get_leaderboard():
     user_id = request.json['userid']
     board = request.json['game']
-    desc = ['TContrareloj', 'TUnicolor', 'TBicolor', 'TProgresivo', 'TAleatorio', 'TCruzado', 'TKnight', 'NRD6', 'NRD8', 'NRD10']
+    desc = ['TContrareloj', 'TUnicolor', 'TBicolor', 'TProgresivo', 'TAleatorio', 'TCruzado', 'TKnight', 'NRD6', 'NRD8', 'NRD10', 'TKnightTT']
     order_type = "DESC" if board in desc else ""
 
     connection = get_connection()

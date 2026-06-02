@@ -4,6 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Running the App
 
+Python 3.10+. No tests or linting tools are configured.
+
 ```bash
 # Install dependencies
 pip install -r requirements.txt
@@ -17,6 +19,8 @@ python main.py
 # Production server
 gunicorn main:app
 ```
+
+The GitHub Actions workflow ([.github/workflows/sync.yml](.github/workflows/sync.yml)) uses a separate [github_actions_requirements.txt](github_actions_requirements.txt) for the weekly photo sync job.
 
 ## Environment Variables
 
@@ -47,8 +51,10 @@ For Supabase (production), `DB_HOST` uses the pooler URL and `DB_USER` includes 
 
 **Database:**
 - [db.py](db.py) — `psycopg2` connection pool (min 1, max 40 connections); use `get_db_connection()` / `release_db_connection()` around every query
+- No ORM — all queries use raw SQL via `cursor.execute()`. No migration system; schema is managed externally in Supabase.
 
 **Frontend:**
+- HTML templates live in [templates/](templates/) (Jinja2)
 - Each game has its own JS file in [static/scripts/](static/scripts/) and CSS in [static/css/](static/css/)
 - [static/scripts/utils.js](static/scripts/utils.js) — shared helpers (API calls, localStorage user ID, etc.)
 - Pre-generated game boards are stored as `.txt` files in [static/boards/](static/boards/) and read at startup

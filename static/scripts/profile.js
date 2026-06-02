@@ -152,12 +152,18 @@ function getGameName(gameCode) {
     case "T10": return "0h-h1 - 10";
     case "TContrareloj": return "Contrareloj";
     case "TKnight": return "Salto Real";
+    case "TKnightTT": return "Salto Real Contrarreloj";
     case "TUnicolor": return "Unicolor";
     case "TBicolor": return "Bicolor";
     case "TS3": return "CuentaManía - S";
     case "TS4": return "CuentaManía - M";
     case "TS5": return "CuentaManía - L";
-    default: return gameCode.replace('T', ''); // Fallback por si no coincide
+    case "T04": return "0h-n0 - 4";
+    case "T05": return "0h-n0 - 5";
+    case "NRD6": return "Mini Nerdle";
+    case "NRD8": return "Nerdle";
+    case "NRD10": return "Maxi Nerdle";
+    default: return gameCode;
   }
 }
 

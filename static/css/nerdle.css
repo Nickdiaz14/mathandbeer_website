@@ -13,19 +13,84 @@
 }
 
 #inputs {
-    border-collapse: separate;
-    border-spacing: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 0;
 }
 
-#inputs td {
-    text-align: center;
-    height: 5rem;
-    width: 3.5rem;
+.keyboard-row {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.key {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.6rem;
+    min-width: 3rem;
+    padding: 0 10px;
+    border-radius: 8px;
+    background: #3a3a3c;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
     cursor: pointer;
+    user-select: none;
+    transition: background 0.1s, transform 0.08s, box-shadow 0.08s;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.55);
 }
 
-#inputs td i {
-    font-size: 1.6rem;
+.key:hover {
+    background: #505054;
+}
+
+.key:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+}
+
+.key i {
+    font-size: 1.3rem;
+}
+
+.key-operator {
+    background: #2a2a4a;
+    color: var(--accent-math);
+}
+
+.key-operator:hover {
+    background: #383860;
+}
+
+.key-action {
+    background: #505058;
+    min-width: 3.4rem;
+}
+
+.key-action:hover {
+    background: #606068;
+}
+
+.key-eliminar {
+    background: #7a2828;
+}
+
+.key-eliminar:hover {
+    background: #8c3434;
+}
+
+.key-enviar {
+    background: #1a6b30;
+    min-width: 4.5rem;
+}
+
+.key-enviar:hover {
+    background: #23863c;
 }
 
 .correct_place {

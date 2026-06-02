@@ -171,6 +171,10 @@ def page_tutorial_0hh1():
 def page_knight():
     return render_template('knight.html', c=_load_reglas()["knight"])
 
+@pages_bp.route('/knight_tt')
+def page_knight_tt():
+    return render_template('knight_tt.html', c=_load_reglas()["knight_tt"])
+
 @pages_bp.route('/secuenzo')
 def page_secuenzo():
     n = int(request.args.get('n'))
@@ -215,6 +219,9 @@ def page_leaderboard():
     elif types == 2:
         record = float(record_val)
         message = f'¡Hiciste {round(record, 2)} puntos, sigue así!'
+    elif types == 3:
+        record = int(record_val)
+        message = f'¡Capturaste {record} celda{"s" if record != 1 else ""}!'
     else:
         record = int(record_val)
         message = f'¡Hiciste {record} tablero(s), sigue así!'

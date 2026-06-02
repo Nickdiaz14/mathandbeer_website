@@ -1,21 +1,17 @@
 {% extends "base_game.html" %}
 
-{% block page_title %}Nerdle | Math and Beer{% endblock %}
-{% block meta_description %}Juega Nerdle y compite con tus amigos{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="../static/css/nerdle.css">{% endblock %}
-{% block body_attrs %}data-n="{{ n }}"{% endblock %}
+{% block page_title %}Salto Real Contrarreloj | Math and Beer{% endblock %}
+{% block meta_description %}Captura tantas celdas rojas como puedas en 60 segundos{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="../static/css/knight.css">{% endblock %}
 
 {% block game_content %}
     <div id="countdown-overlay"></div>
-    <h1 id="title" class="title first-row">Nerdle</h1>
-    <h2 id="subtitle" class="title fs-5">¡Adivina la ecuación!</h2>
-    <h2 id="timer" class="title fs-6">00:00.00</h2>
-    <div id="matrix-wrapper">
-        <table id="matrix">
-            <!-- Aquí js pone la matriz de juego-->
-        </table>
-    </div>
-    <div id="inputs"></div>
+    <h1 id="title" class="title first-row">Contrarreloj</h1>
+    <h2 id="score" class="title fs-6">Celdas: 0</h2>
+    <h2 id="timer" class="title fs-6">00:45.00</h2>
+    <table id="matrix">
+        <!-- Aquí js pone la matriz de juego-->
+    </table>
     <button id="back" class="back"><i class="fa-solid fa-arrow-left"></i></button>
     <button id="recharge" class="recharge"><i class="fa-solid fa-rotate-left"></i></button>
     <button class="game_info" data-bs-toggle="modal" data-bs-target="#modal-reglas"><i
@@ -24,7 +20,7 @@
     <div class="modal fade" id="modal-reglas" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content bg-dark text-light overflow-auto">
-                <div class="modal-header displayColumn title fs-3">Nerdle</div>
+                <div class="modal-header displayColumn title fs-3">Salto Real Contrarreloj</div>
                 <div class="modal-body">
                     <p class="modalContent">{{ c.summary }}</p>
                     <h3>Reglas:</h3>
@@ -44,5 +40,5 @@
 {% endblock %}
 
 {% block game_scripts %}
-    <script src="../static/scripts/nerdle.js"></script>
+    <script src="../static/scripts/knight_tt.js"></script>
 {% endblock %}

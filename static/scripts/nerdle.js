@@ -33,37 +33,53 @@ document.addEventListener('DOMContentLoaded', function () {
     matrix.classList.add('matrix')
     cells = document.querySelectorAll('td');
 
-    inputsTable.innerHTML = ''; // Limpiar contenido de la tabla de inputs existente
-    let values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+', '-', '*', '/', '='];
-    for (let i = 0; i < 3; i++) {
-        const row = document.createElement('tr');
-        for (let j = 0; j < 6; j++) {
-            const cell = document.createElement('td');
-            cell.className = 'grey'; // Clase inicial para todas las celdas
-            if (j === 5) {
-                if (i === 0) {
-                    cell.innerHTML = '<i class="fa-solid fa-delete-left"></i>';
-                    cell.onclick = () => send("Borrar");
-                    cell.id = 'inputs_borrar'
-                } else if (i === 1) {
-                    cell.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-                    cell.onclick = () => send("Eliminar");
-                    cell.id = 'inputs_eliminar'
-                } else {
-                    cell.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i>';
-                    cell.onclick = () => send("Enviar");
-                    cell.id = 'inputs_enviar'
-                }
-            }
-            else {
-                cell.innerText = values[i * 5 + j];
-                cell.id = `inputs_${values[i * 5 + j]}`
-                cell.onclick = () => keyboard(cell.innerText);
-            }
-            row.appendChild(cell);
-        }
-        inputsTable.appendChild(row);
+    inputsTable.innerHTML = '';
+
+    const kbRow1 = document.createElement('div');
+    kbRow1.className = 'keyboard-row';
+    for (const val of ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']) {
+        const key = document.createElement('div');
+        key.className = 'key';
+        key.innerText = val;
+        key.id = `inputs_${val}`;
+        key.onclick = () => keyboard(val);
+        kbRow1.appendChild(key);
     }
+    inputsTable.appendChild(kbRow1);
+
+    const kbRow2 = document.createElement('div');
+    kbRow2.className = 'keyboard-row';
+    for (const val of ['+', '-', '*', '/', '=']) {
+        const key = document.createElement('div');
+        key.className = 'key key-operator';
+        key.innerText = val;
+        key.id = `inputs_${val}`;
+        key.onclick = () => keyboard(val);
+        kbRow2.appendChild(key);
+    }
+
+    const borrarKey = document.createElement('div');
+    borrarKey.className = 'key key-action';
+    borrarKey.innerHTML = '<i class="fa-solid fa-delete-left"></i>';
+    borrarKey.id = 'inputs_borrar';
+    borrarKey.onclick = () => send('Borrar');
+    kbRow2.appendChild(borrarKey);
+
+    const eliminarKey = document.createElement('div');
+    eliminarKey.className = 'key key-action key-eliminar';
+    eliminarKey.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+    eliminarKey.id = 'inputs_eliminar';
+    eliminarKey.onclick = () => send('Eliminar');
+    kbRow2.appendChild(eliminarKey);
+
+    const enviarKey = document.createElement('div');
+    enviarKey.className = 'key key-action key-enviar';
+    enviarKey.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i>';
+    enviarKey.id = 'inputs_enviar';
+    enviarKey.onclick = () => send('Enviar');
+    kbRow2.appendChild(enviarKey);
+
+    inputsTable.appendChild(kbRow2);
     startGame()
 })
 
