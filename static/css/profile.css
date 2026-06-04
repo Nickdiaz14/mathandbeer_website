@@ -91,18 +91,36 @@
 
 /* ── Sección de entrada escalonada al cargar ── */
 @keyframes sectionFadeIn {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-#profile-content > * {
+#profile-content>* {
   animation: sectionFadeIn 0.45s ease both;
 }
 
-#profile-content > :nth-child(2) { animation-delay: 0.10s; }
-#profile-content > :nth-child(3) { animation-delay: 0.18s; }
-#profile-content > :nth-child(4) { animation-delay: 0.26s; }
-#profile-content > :nth-child(5) { animation-delay: 0.34s; }
+#profile-content> :nth-child(2) {
+  animation-delay: 0.10s;
+}
+
+#profile-content> :nth-child(3) {
+  animation-delay: 0.18s;
+}
+
+#profile-content> :nth-child(4) {
+  animation-delay: 0.26s;
+}
+
+#profile-content> :nth-child(5) {
+  animation-delay: 0.34s;
+}
 
 .profile-cta-btn {
   display: inline-block;
@@ -397,7 +415,6 @@
   cursor: pointer;
   transition: all 0.25s ease;
   font-family: 'Inter', sans-serif;
-  margin-top: 8px;
 }
 
 .rsvp-btn:hover {
@@ -562,7 +579,7 @@
 }
 
 .qa-input::placeholder {
-  color: rgba(11, 11, 11, 0.45);
+  color: rgba(223, 223, 223, 0.45);
 }
 
 .qa-send-btn {
@@ -587,8 +604,8 @@
 
 /* ── User ID copiable ── */
 .profile-userid-box {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 14px;
   padding: 10px 16px;
   display: flex;
@@ -615,7 +632,7 @@
 .profile-userid-value {
   font-family: 'Courier New', monospace;
   font-size: 0.72rem;
-  color: rgba(182,189,231,0.7);
+  color: rgba(182, 189, 231, 0.7);
   word-break: break-all;
   text-align: center;
   letter-spacing: 0.04em;
@@ -623,7 +640,7 @@
 
 .profile-copy-btn {
   background: none;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   color: var(--text-muted);
   width: 28px;
@@ -636,6 +653,7 @@
   flex-shrink: 0;
   transition: all 0.2s;
 }
+
 .profile-copy-btn:hover {
   border-color: var(--accent-beer);
   color: var(--accent-beer);
@@ -643,6 +661,6 @@
 
 .profile-userid-hint {
   font-size: 0.68rem;
-  color: rgba(182,189,231,0.4);
+  color: rgba(182, 189, 231, 0.4);
   margin: 0;
 }

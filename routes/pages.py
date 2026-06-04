@@ -68,12 +68,24 @@ def page_about():
             grouped.setdefault(int(year), []).append(c)
 
         cursor.execute("""
-            SELECT id, city, title, date
+            SELECT id, city, title, date, speaker, place, summary
             FROM events WHERE date > CURRENT_TIMESTAMP
+            ORDER BY date ASC
         """)
-        
+
         proxima = cursor.fetchall()
-        proxima = [{"id": evento[0], "city": evento[1], "title": evento[2], "date": evento[3].isoformat()} for evento in proxima]
+        proxima = [
+            {
+                "id": evento[0],
+                "city": evento[1],
+                "title": evento[2],
+                "date": evento[3].isoformat(),
+                "speaker": evento[4],
+                "place": evento[5],
+                "summary": evento[6],
+            }
+            for evento in proxima
+        ]
 
         # Fetch 3 random testimonials
         try:

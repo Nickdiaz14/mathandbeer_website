@@ -38,6 +38,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+function getSummaryTeaser(summary) {
+    if (!summary) return '';
+    const raw = typeof summary === 'string' ? JSON.parse(summary) : summary;
+    return Object.values(raw)[0] || '';
+}
+
+function formatEventDate(isoDate) {
+    const d = new Date(isoDate);
+    const days = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+    const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    const h = d.getHours(), m = d.getMinutes();
+    const time = h > 0 ? ` · ${h}:${String(m).padStart(2,'0')}` : '';
+    return `${days[d.getDay()]} ${d.getDate()} de ${months[d.getMonth()]}${time}`;
+}
+
 // Función para inyectar el HTML dinámicamente
 function construirTarjetas(eventos) {
     const contenedor = document.getElementById('contenedor-dinamico');
@@ -46,38 +61,56 @@ function construirTarjetas(eventos) {
     let htmlTarjetas = '';
 
     eventos.forEach((evento, index) => {
+        const diasHastaEvento = Math.floor((new Date(evento.date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+        const calendarBtn = diasHastaEvento <= 365
+            ? `<a href="${googleCalendarUrl(evento)}" target="_blank" rel="noopener" class="calendar-btn upcoming-action-btn">
+                <i class="fa-solid fa-calendar-plus me-1"></i>Agendar
+               </a>`
+            : '';
+        const teaser = getSummaryTeaser(evento.summary);
+        const dateStr = formatEventDate(evento.date);
+        const speakerHtml = evento.speaker
+            ? `<p class="upcoming-meta"><i class="fa-solid fa-user-tie me-2"></i>${evento.speaker}</p>`
+            : '';
+        const placeHtml = evento.place
+            ? `<p class="upcoming-meta"><i class="fa-solid fa-location-dot me-2"></i>${evento.place}</p>`
+            : '';
+        const summaryHtml = teaser
+            ? `<p class="upcoming-teaser">${teaser}</p>`
+            : '';
+
         htmlTarjetas += `
-        <div class="upcoming-card myBg myBorder rounded-4 shadow-sm p-3 mt-3" data-event-id="${evento.id}">
-            <h2 class="subtitle fs-5 mb-1">${evento.city}</h2>
-            <p class="title fs-5 mb-2">${evento.title}</p>
-            <div class="upcoming-countdown">
-                <i class="fa-solid fa-clock me-1" style="color:var(--accent-beer)"></i>
-                <span id="restante-${index}" class="upcoming-time">--d --h --m --s</span>
-            </div>
-            <button class="rsvp-btn" data-event-id="${evento.id}" data-attending="0">
-                <span>🍻</span>
-                <span class="rsvp-count">0</span>
-                Asistiré
-            </button>
-            <!-- Calendar buttons -->
-            ${(() => {
-                const diasHastaEvento = Math.floor((new Date(evento.date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-                return diasHastaEvento <= 365 ? `
-                <div class="calendar-btns">
-                    <a href="${googleCalendarUrl(evento)}" target="_blank" rel="noopener" class="calendar-btn">
-                        <i class="fa-solid fa-calendar-plus me-1"></i>Google Calendar
-                    </a>
-                </div>` : '';
-            })()}
-            <!-- Q&A -->
-            <div class="qa-section">
-                <p class="qa-title"><i class="fa-solid fa-microphone me-1"></i>Pregúntale al ponente</p>
-                <div class="qa-list" data-event-id="${evento.id}"></div>
-                <div class="qa-input-row">
-                    <textarea class="qa-input" rows="1" placeholder="Escribe tu pregunta..." data-event-id="${evento.id}"></textarea>
-                    <button class="qa-send-btn" data-event-id="${evento.id}"><i class="fa-solid fa-paper-plane"></i></button>
+        <div class="upcoming-card myBorder rounded-4 shadow-sm overflow-hidden" data-event-id="${evento.id}">
+            <div class="upcoming-body">
+                <div class="upcoming-countdown-bar">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                    <span id="restante-${index}" class="upcoming-time">--d --h --m --s</span>
                 </div>
-                <p class="blog-login-hint">Solo usuarios con <a href="/register" class="blog-nick-link">Nickname</a> pueden preguntar.</p>
+                <span class="upcoming-city-badge"><i class="fa-solid fa-map-marker-alt me-1"></i>${evento.city}</span>
+                <p class="upcoming-date"><i class="fa-regular fa-calendar me-1"></i>${dateStr}</p>
+                <h2 class="upcoming-title">${evento.title}</h2>
+                ${speakerHtml}
+                ${placeHtml}
+                ${summaryHtml}
+                <div class="upcoming-actions">
+                    <button class="rsvp-btn" data-event-id="${evento.id}" data-attending="0">
+                        <span>🍻</span>
+                        <span class="rsvp-count">0</span>
+                        Asistiré
+                    </button>
+                    ${calendarBtn}
+                </div>
+            </div>
+            <div class="upcoming-footer">
+                <p class="qa-footer-label"><i class="fa-solid fa-microphone me-1"></i>Pregúntale al ponente</p>
+                <div class="qa-section">
+                    <div class="qa-list" data-event-id="${evento.id}"></div>
+                    <div class="qa-input-row">
+                        <textarea class="qa-input" rows="1" placeholder="Escribe tu pregunta..." data-event-id="${evento.id}"></textarea>
+                        <button class="qa-send-btn" data-event-id="${evento.id}"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                    <p class="blog-login-hint">Solo usuarios con <a href="/register" class="blog-nick-link">Nickname</a> pueden preguntar.</p>
+                </div>
             </div>
         </div>
         `;

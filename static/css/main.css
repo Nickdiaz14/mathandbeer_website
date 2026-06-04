@@ -521,7 +521,6 @@ hr {
   background: var(--background-light);
 }
 
-.light-section .title,
 .light-section p,
 .light-section .hero-title,
 .light-section a,
@@ -539,7 +538,33 @@ hr {
 }
 
 .light-section .myBg {
-  background-color: #ffffff2f !important;
+  background-color: rgba(22, 8, 38, 0.96) !important;
+}
+
+/* Restore light text inside dark cards within light sections */
+.light-section .myBg p,
+.light-section .myBg a,
+.light-section .myBg h4,
+.light-section .myBg h2,
+.light-section .myBg h3,
+.light-section .myBg li,
+.light-section .myBg .title {
+  color: var(--text-muted) !important;
+}
+
+.light-section .myBg .subtitle {
+  color: var(--accent-beer) !important;
+}
+
+/* Subscribe form inputs on dark card background */
+.light-section .myBg .subscribe-inline-form input {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.light-section .myBg .subscribe-inline-form input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 @media (min-width: 768px) {
