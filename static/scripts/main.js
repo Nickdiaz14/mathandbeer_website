@@ -1,3 +1,30 @@
+// ── Menú hamburguesa: GPU-accelerated (opacity+transform, sin Bootstrap collapse) ──
+(function () {
+  const toggler = document.querySelector('.navbar-toggler');
+  const menu    = document.getElementById('navbarNavDropdown');
+  if (!toggler || !menu) return;
+
+  // Desconectar Bootstrap para que no interfiera con nuestra animación
+  toggler.removeAttribute('data-bs-toggle');
+  toggler.removeAttribute('data-bs-target');
+
+  const openMenu  = () => { menu.classList.add('nav-open');    toggler.setAttribute('aria-expanded', 'true');  };
+  const closeMenu = () => { menu.classList.remove('nav-open'); toggler.setAttribute('aria-expanded', 'false'); };
+  const toggleMenu = () => menu.classList.contains('nav-open') ? closeMenu() : openMenu();
+
+  toggler.addEventListener('click', toggleMenu);
+
+  // Cerrar al tocar un link del menú
+  menu.querySelectorAll('a.nav-link').forEach(a => a.addEventListener('click', closeMenu));
+
+  // Cerrar al tocar fuera del menú
+  document.addEventListener('click', e => {
+    if (menu.classList.contains('nav-open') && !menu.contains(e.target) && !toggler.contains(e.target)) {
+      closeMenu();
+    }
+  });
+})();
+
 // Smooth scroll for internal links
 document.addEventListener("DOMContentLoaded", () => {
   const navbar = document.querySelector(".navbar");
@@ -20,10 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
         behavior: "smooth"
       });
 
-      // Cierra el menú hamburguesa si está abierto
-      const collapse = document.querySelector(".navbar-collapse");
-      const bsCollapse = bootstrap.Collapse.getInstance(collapse);
-      if (bsCollapse) bsCollapse.hide();
+      // Cerrar menú si está abierto
+      document.getElementById('navbarNavDropdown')?.classList.remove('nav-open');
     });
   });
   const reveals = document.querySelectorAll('.about-img, .about_text, .reveal');

@@ -148,9 +148,49 @@ main section {
   transform: translateY(-2px);
 }
 
-/* Capa GPU dedicada para el menú hamburguesa en móvil */
-.navbar-collapse {
-  will-change: transform;
+/* ── Menú móvil: reemplaza la animación de Bootstrap (height→auto) ──
+   Bootstrap anima height:0→auto, lo que fuerza layout en cada frame.
+   Aquí lo bloqueamos y usamos opacity+transform (100% GPU, sin layout). */
+@media (max-width: 991.98px) {
+  /* Neutralizar la animación de Bootstrap por completo */
+  .navbar-collapse.collapsing {
+    height: auto !important;
+    transition: none !important;
+  }
+
+  #navbarNavDropdown {
+    display: block !important;      /* siempre en el DOM, nunca display:none */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(9, 2, 22, 0.97);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    will-change: opacity, transform;
+    /* cerrado: invisible pero en el DOM */
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    visibility: hidden;
+    /* visibility espera a que termine opacity antes de ocultarse */
+    transition: opacity 0.22s ease, transform 0.2s ease, visibility 0s linear 0.22s;
+  }
+
+  #navbarNavDropdown.nav-open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    visibility: visible;
+    transition: opacity 0.22s ease, transform 0.2s ease, visibility 0s linear 0s;
+  }
+
+  #navbarNavDropdown .navbar-nav {
+    padding: 8px 0 14px;
+  }
+
+  #navbarNavDropdown .nav-item {
+    padding: 2px 20px;
+  }
 }
 
 /* --- Menú de Juegos (Bento asimétrico) --- */
