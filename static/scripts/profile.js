@@ -135,6 +135,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // User ID
     setupUserIdCopy();
 
+    // Cerrar sesión
+    setupLogout();
+
     // Edit nickname
     setupNicknameEdit(profile.nickname);
 
@@ -198,6 +201,14 @@ function setupUserIdCopy() {
         btn.style.color = '';
       }, 2000);
     });
+  });
+}
+
+function setupLogout() {
+  document.getElementById('logout-btn')?.addEventListener('click', () => {
+    if (!confirm('¿Seguro que quieres cerrar sesión? Perderás el acceso a tu perfil en este dispositivo.')) return;
+    localStorage.removeItem('userId');
+    window.location.href = '/';
   });
 }
 
