@@ -58,12 +58,23 @@ header {
   width: 100%;
   background: var(--header-bg);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 1001;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  transform: translateZ(0);
+}
+
+/* backdrop-filter en pseudo-elemento propio para aislar el blur
+   en su propia capa GPU y no forzar re-composite en cada frame */
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: -1;
+  pointer-events: none;
 }
 
 header .navbar {
@@ -125,7 +136,7 @@ main section {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: min(4vw, 18px) !important;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease, transform 0.2s ease;
   border: none;
 }
 
@@ -133,9 +144,13 @@ main section {
 .menu button:hover {
   color: var(--accent-beer) !important;
   border: none;
-  font-size: 20px;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease, transform 0.2s ease;
   transform: translateY(-2px);
+}
+
+/* Capa GPU dedicada para el menú hamburguesa en móvil */
+.navbar-collapse {
+  will-change: transform;
 }
 
 /* --- Menú de Juegos (Bento asimétrico) --- */
