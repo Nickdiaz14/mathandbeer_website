@@ -1,33 +1,37 @@
 from flask import Blueprint, request, jsonify
-import ast
 import random
 from db import get_connection, release_connection
+from boards import BOARDS
 
 games_bp = Blueprint('games', __name__)
 
+_VALID_0HH1  = {4, 6, 8, 10}
+_VALID_0HN0  = {4, 5}
+_VALID_NERDLE = {6, 8, 10}
+
 @games_bp.route('/0h_h1/play', methods=['POST'])
 def get_cond_ini():
-    n = request.json['n']
-    with open(f'static/boards/aleatorios{n}.txt', 'r', encoding='utf-8') as file:
-        lineas = file.readlines()
-        linea_especifica = lineas[random.randint(0, len(lineas)-1)].strip()
-    return jsonify({'matrix': ast.literal_eval(linea_especifica)})
+    n = request.json.get('n')
+    if n not in _VALID_0HH1:
+        return jsonify({'error': 'Tamaño inválido'}), 400
+    boards = BOARDS[f'aleatorios{n}']
+    return jsonify({'matrix': boards[random.randint(0, len(boards) - 1)]})
 
 @games_bp.route('/0h_n0/play', methods=['POST'])
 def get_cond_ini_0h_n0():
-    n = request.json['n']
-    with open(f'static/boards/aleatorios_ohno{n}.txt', 'r', encoding='utf-8') as file:
-        lineas = file.readlines()
-        linea_especifica = lineas[random.randint(0, len(lineas)-1)].strip()
-    return jsonify({'matrix': ast.literal_eval(linea_especifica)})
+    n = request.json.get('n')
+    if n not in _VALID_0HN0:
+        return jsonify({'error': 'Tamaño inválido'}), 400
+    boards = BOARDS[f'ohno{n}']
+    return jsonify({'matrix': boards[random.randint(0, len(boards) - 1)]})
 
 @games_bp.route('/nerdle/play', methods=['POST'])
 def get_cond_ini_nerdle():
-    n = request.json['n']
-    with open(f'static/boards/igualdades{n}.txt', 'r', encoding='utf-8') as file:
-        lineas = file.readlines()
-        linea_especifica = lineas[random.randint(0, len(lineas)-1)].strip()
-    return jsonify({'equalities': linea_especifica})
+    n = request.json.get('n')
+    if n not in _VALID_NERDLE:
+        return jsonify({'error': 'Tamaño inválido'}), 400
+    boards = BOARDS[f'igualdades{n}']
+    return jsonify({'equalities': boards[random.randint(0, len(boards) - 1)]})
 
 @games_bp.route('/leaderboard/submit', methods=['POST'])
 def update_leaderboard():

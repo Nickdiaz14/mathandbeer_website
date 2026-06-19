@@ -2,7 +2,9 @@ from flask import Blueprint, request, jsonify
 from datetime import date, timedelta
 import hashlib
 import random
+import psycopg2
 from db import get_connection, release_connection
+from boards import BOARDS
 
 daily_bp = Blueprint('daily', __name__)
 
@@ -39,9 +41,8 @@ def _generate_daily_board(game_type, game_size, seed):
     rng = random.Random(seed)
 
     if game_type == '0hh1':
-        with open(f'static/boards/aleatorios{game_size}.txt', 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-        return eval(lines[seed % len(lines)].strip())
+        boards = BOARDS[f'aleatorios{game_size}']
+        return boards[seed % len(boards)]
 
     elif game_type == 'knight':
         spots = []
@@ -74,14 +75,12 @@ def _generate_daily_board(game_type, game_size, seed):
         return board
 
     elif game_type == '0hn0':
-        with open(f'static/boards/aleatorios_ohno{game_size}.txt', 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-        return eval(lines[seed % len(lines)].strip())
+        boards = BOARDS[f'ohno{game_size}']
+        return boards[seed % len(boards)]
 
     elif game_type == 'nerdle':
-        with open(f'static/boards/igualdades{game_size}.txt', 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-        return lines[seed % len(lines)].strip()
+        boards = BOARDS[f'igualdades{game_size}']
+        return boards[seed % len(boards)]
 
     return None
 
@@ -180,6 +179,8 @@ def submit_daily():
     game_type, game_size, game_name = _get_daily_game()
     today = date.today().isoformat()
 
+    record_val = float(record) if game_type in ('knight', 'nerdle') else int(record)
+
     connection = get_connection()
     try:
         cursor = connection.cursor()
@@ -190,13 +191,16 @@ def submit_daily():
         if cursor.fetchone():
             return jsonify({'success': False, 'message': 'Ya jugaste el reto de hoy'})
 
-        record_val = float(record) if game_type in ('knight', 'nerdle') else int(record)
-        cursor.execute(
-            """INSERT INTO daily_results (challenge_date, game_type, game_size, userid, record)
-               VALUES (%s, %s, %s, %s, %s);""",
-            (today, game_type, game_size, user_id, record_val)
-        )
-        connection.commit()
+        try:
+            cursor.execute(
+                """INSERT INTO daily_results (challenge_date, game_type, game_size, userid, record)
+                   VALUES (%s, %s, %s, %s, %s);""",
+                (today, game_type, game_size, user_id, record_val)
+            )
+            connection.commit()
+        except psycopg2.errors.UniqueViolation:
+            connection.rollback()
+            return jsonify({'success': False, 'message': 'Ya jugaste el reto de hoy'})
 
         if game_type in ('knight', 'nerdle'):
             cursor.execute(

@@ -159,24 +159,30 @@ def get_questions(event_id):
         cursor = connection.cursor()
         cursor.execute("""
             SELECT q.id, n.nickname, q.content, q.created_at,
-                   (SELECT COUNT(*) FROM question_votes WHERE question_id = q.id) AS votes
+                   COUNT(qv.id) AS votes
             FROM questions q
             JOIN nickname n ON n.userid = q.userid
+            LEFT JOIN question_votes qv ON qv.question_id = q.id
             WHERE q.event_id = %s
+            GROUP BY q.id, n.nickname, q.content, q.created_at
             ORDER BY votes DESC, q.created_at ASC;
         """, (event_id,))
         rows = cursor.fetchall()
 
-        questions = []
-        for r in rows:
-            voted = False
-            if user_id:
-                cursor.execute("SELECT 1 FROM question_votes WHERE question_id = %s AND userid = %s;", (r[0], user_id))
-                voted = cursor.fetchone() is not None
-            questions.append({
-                'id': r[0], 'nickname': r[1], 'content': r[2],
-                'created_at': r[3].isoformat(), 'votes': r[4], 'voted': voted
-            })
+        voted_set = set()
+        if user_id and rows:
+            cursor.execute("""
+                SELECT qv.question_id FROM question_votes qv
+                JOIN questions q ON q.id = qv.question_id
+                WHERE q.event_id = %s AND qv.userid = %s;
+            """, (event_id, user_id))
+            voted_set = {r[0] for r in cursor.fetchall()}
+
+        questions = [{
+            'id': r[0], 'nickname': r[1], 'content': r[2],
+            'created_at': r[3].isoformat(), 'votes': r[4],
+            'voted': r[0] in voted_set
+        } for r in rows]
     finally:
         cursor.close()
         release_connection(connection)
