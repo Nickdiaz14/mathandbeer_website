@@ -45,12 +45,13 @@
     border: 1px solid var(--myBorder);
     border-radius: 5px;
     color: #ffffff !important;
+    font-size: 0.6rem;
 }
 
 /*-----Matriz-----*/
 .matrix {
     border-collapse: separate;
-    border-spacing: 7px;
+    border-spacing: 5.5px;
 }
 
 .grey,
