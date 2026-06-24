@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     game_matrix = Array.from({ length: n }, () => Array(n).fill(0));
     user_matrix = Array.from({ length: n }, () => Array(n).fill(0));
     setupGameControls();
-    const cell_size = n === 3 ? 'z-3' : n === 5 ? 'grey' : 'z-5';
+    const cell_size = n === 3 ? 'z-3' : n === 4 ? 'grey' : 'z-5';
     matrix = document.getElementById('matrix');
     for (let i = 0; i < n; i++) {
         const mtr = document.createElement('tr')

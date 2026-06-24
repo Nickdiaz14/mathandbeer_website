@@ -83,8 +83,8 @@ header .navbar {
 }
 
 .logo {
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   float: left;
   background: var(--primary-gradient-text);
   -webkit-mask-image: url('/static/images/logos/logo_M&B_b.png');
@@ -152,6 +152,7 @@ main section {
    Bootstrap anima height:0→auto, lo que fuerza layout en cada frame.
    Aquí lo bloqueamos y usamos opacity+transform (100% GPU, sin layout). */
 @media (max-width: 991.98px) {
+
   /* Neutralizar la animación de Bootstrap por completo */
   .navbar-collapse.collapsing {
     height: auto !important;
@@ -159,7 +160,8 @@ main section {
   }
 
   #navbarNavDropdown {
-    display: block !important;      /* siempre en el DOM, nunca display:none */
+    display: block !important;
+    /* siempre en el DOM, nunca display:none */
     position: absolute;
     top: 100%;
     left: 0;
@@ -282,6 +284,16 @@ main section {
   font-weight: 670;
   font-size: clamp(1.6rem, 7vw, 3rem);
   padding: 2px 0;
+  text-align: center;
+  line-height: 1.1;
+}
+
+#timer,
+#movements,
+#s_boards,
+#subtitle {
+  font-weight: 35;
+  font-size: small;
   text-align: center;
   line-height: 1.1;
 }
