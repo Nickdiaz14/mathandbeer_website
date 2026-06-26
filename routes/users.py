@@ -98,7 +98,7 @@ def get_profile(userid):
         cursor.execute("""
             SELECT e.id, e.title, e.city, e.date
             FROM rsvp rv JOIN events e ON e.id = rv.event_id
-            WHERE rv.userid = %s AND e.date > CURRENT_TIMESTAMP ORDER BY e.date;
+            WHERE rv.userid = %s AND e.date > CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota' ORDER BY e.date;
         """, (userid,))
         rsvps = [{'id': r[0], 'title': r[1], 'city': r[2], 'date': r[3].isoformat()} for r in cursor.fetchall()]
 

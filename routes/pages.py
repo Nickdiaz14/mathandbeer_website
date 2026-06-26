@@ -56,7 +56,7 @@ def page_about():
     try:
         cursor = connection.cursor()
         
-        cursor.execute("SELECT *, ROW_NUMBER() OVER (ORDER BY date ASC) as row FROM events WHERE date < CURRENT_TIMESTAMP ORDER BY date ASC;")
+        cursor.execute("SELECT *, ROW_NUMBER() OVER (ORDER BY date ASC) as row FROM events WHERE date < CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota' ORDER BY date ASC;")
         charlas = cursor.fetchall()
         columnas = [col[0] for col in cursor.description]
 
@@ -69,7 +69,7 @@ def page_about():
 
         cursor.execute("""
             SELECT id, city, title, date, speaker, place, summary
-            FROM events WHERE date > CURRENT_TIMESTAMP
+            FROM events WHERE date > CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota'
             ORDER BY date ASC
         """)
 
