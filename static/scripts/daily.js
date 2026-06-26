@@ -45,6 +45,13 @@ async function loadDailyData() {
         document.getElementById('daily-date').textContent = formatDate(data.date);
         document.getElementById('daily-game-name').textContent = data.game_name;
 
+        // Update timer
+        updateTimerDisplay(data.time_until_reset);
+        setInterval(() => {
+            updateTimerDisplay(data.time_until_reset);
+            data.time_until_reset--;
+        }, 1000);
+
         if (data.already_played) {
             showResult(data);
         } else {
@@ -64,6 +71,20 @@ async function loadDailyData() {
 function formatDate(dateStr) {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateStr + 'T00:00:00').toLocaleDateString('es-ES', options);
+}
+
+function formatTimeRemaining(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+function updateTimerDisplay(secondsRemaining) {
+    const timerElement = document.getElementById('daily-timer');
+    if (timerElement) {
+        timerElement.textContent = formatTimeRemaining(secondsRemaining);
+    }
 }
 
 function showPlayButton(data) {

@@ -1,8 +1,9 @@
 from flask import Blueprint, request, jsonify
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 import hashlib
 import random
 import psycopg2
+import pytz
 from db import get_connection, release_connection
 from boards import BOARDS
 
@@ -27,8 +28,24 @@ DAILY_GAMES = [
 ]
 
 
+def _get_bogota_date():
+    """Get current date in America/Bogota timezone"""
+    timezone = pytz.timezone('America/Bogota')
+    return datetime.now(timezone).date()
+
+
+def _get_time_until_reset():
+    """Get seconds until the daily reset (midnight in Bogota)"""
+    timezone = pytz.timezone('America/Bogota')
+    now = datetime.now(timezone)
+    tomorrow = now.date() + timedelta(days=1)
+    reset_time = timezone.localize(datetime.combine(tomorrow, datetime.min.time()), is_dst=None)
+    seconds_left = (reset_time - now).total_seconds()
+    return max(0, int(seconds_left))
+
+
 def _get_daily_seed():
-    today = date.today().isoformat()
+    today = _get_bogota_date().isoformat()
     return int(hashlib.md5(today.encode()).hexdigest(), 16)
 
 
@@ -101,7 +118,7 @@ def _calculate_streak(userid):
     if not dates:
         return {'current': 0, 'best': 0, 'today': False}
 
-    today = date.today()
+    today = _get_bogota_date()
     today_played = dates[0] == today
 
     streak = 0
@@ -131,7 +148,8 @@ def get_daily():
     game_type, game_size, game_name = _get_daily_game()
     seed = _get_daily_seed()
     board_data = _generate_daily_board(game_type, game_size, seed)
-    today = date.today().isoformat()
+    today = _get_bogota_date().isoformat()
+    time_until_reset = _get_time_until_reset()
 
     already_played = False
     user_record = None
@@ -164,7 +182,8 @@ def get_daily():
         'already_played': already_played,
         'user_record': user_record,
         'board_data': board_data,
-        'record_type': record_type
+        'record_type': record_type,
+        'time_until_reset': time_until_reset
     })
 
 
@@ -177,7 +196,7 @@ def submit_daily():
         return jsonify({'success': False, 'message': 'Datos incompletos'}), 400
 
     game_type, game_size, game_name = _get_daily_game()
-    today = date.today().isoformat()
+    today = _get_bogota_date().isoformat()
 
     record_val = float(record) if game_type in ('knight', 'nerdle') else int(record)
 
@@ -223,7 +242,7 @@ def submit_daily():
 @daily_bp.route('/api/daily/leaderboard', methods=['GET'])
 def daily_leaderboard():
     user_id = request.args.get('userid', '')
-    today = date.today().isoformat()
+    today = _get_bogota_date().isoformat()
     game_type, game_size, game_name = _get_daily_game()
 
     order = 'DESC' if game_type in ('knight', 'nerdle') else 'ASC'
