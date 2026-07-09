@@ -1,5 +1,5 @@
 // Service Worker for Math & Beer PWA
-const CACHE_NAME = 'mathandbeer-static-v8';
+const CACHE_NAME = 'mathandbeer-static-v9';
 const PRECACHE_URLS = [
   '/',
   '/manifest.json',

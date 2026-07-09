@@ -63,6 +63,48 @@ def _setup_schema():
             );
         """)
         
+        # Productos de la tienda
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS products (
+                id SERIAL PRIMARY KEY,
+                name TEXT NOT NULL,
+                description TEXT,
+                category TEXT NOT NULL CHECK (category IN ('pin', 'forro', 'buso')),
+                price INTEGER NOT NULL,
+                image_url TEXT,
+                variations JSONB DEFAULT '{}',
+                active BOOLEAN DEFAULT TRUE
+            );
+        """)
+
+        # Pedidos
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS orders (
+                id SERIAL PRIMARY KEY,
+                customer_name TEXT NOT NULL,
+                customer_phone TEXT NOT NULL,
+                customer_email TEXT,
+                shipping_address TEXT NOT NULL,
+                city TEXT NOT NULL,
+                total_price INTEGER NOT NULL,
+                status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'shipped', 'completed', 'cancelled')),
+                created_at TIMESTAMP DEFAULT (NOW() AT TIME ZONE 'America/Bogota'),
+                notes TEXT
+            );
+        """)
+
+        # Items de cada pedido
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS order_items (
+                id SERIAL PRIMARY KEY,
+                order_id INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+                product_id INTEGER NOT NULL REFERENCES products(id),
+                quantity INTEGER NOT NULL DEFAULT 1,
+                price_at_purchase INTEGER NOT NULL,
+                variation_selected TEXT
+            );
+        """)
+
         conn.commit()
         print("[OK] Base de datos estructurada con éxito.")
     except Exception as e:

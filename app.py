@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from dotenv import load_dotenv
 from db import init_db_pool
 
@@ -8,6 +8,7 @@ from routes.daily import daily_bp
 from routes.users import users_bp
 from routes.events import events_bp
 from routes.attendance import attendance_bp
+from routes.store import store_bp
 # Auth blueprint removed (email auth no longer used)
 
 def create_app():
@@ -19,6 +20,14 @@ def create_app():
     # 2. Setup Flask
     app = Flask(__name__)
 
+    @app.after_request
+    def add_no_store_headers(response):
+        if request.path.startswith('/static/') or request.path in ['/sw.js', '/manifest.json']:
+            response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+            response.headers['Pragma'] = 'no-cache'
+            response.headers['Expires'] = '0'
+        return response
+
     # 3. Register All Application Routes
     app.register_blueprint(pages_bp)
     app.register_blueprint(games_bp)
@@ -26,6 +35,7 @@ def create_app():
     app.register_blueprint(users_bp)
     app.register_blueprint(events_bp)
     app.register_blueprint(attendance_bp)
+    app.register_blueprint(store_bp)
     # Blueprint registration removed
 
     return app
