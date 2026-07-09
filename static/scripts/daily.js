@@ -41,6 +41,14 @@ async function loadDailyData() {
             document.getElementById('streak-icon').classList.add('fire-active');
         }
 
+        // Escudos de racha
+        const freezesContainer = document.getElementById('freezes-container');
+        const freezesCountEl = document.getElementById('freezes-count');
+        if (freezesContainer && freezesCountEl && streakData.freezes_count !== undefined) {
+            freezesContainer.style.display = 'block';
+            freezesCountEl.textContent = streakData.freezes_count;
+        }
+
         // Update Game Info
         document.getElementById('daily-date').textContent = formatDate(data.date);
         document.getElementById('daily-game-name').textContent = data.game_name;

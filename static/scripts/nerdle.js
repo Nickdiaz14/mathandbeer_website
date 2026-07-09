@@ -35,51 +35,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
     inputsTable.innerHTML = '';
 
+    const createKey = (val, specialClass = '', idPrefix = 'inputs_', isHTML = false, action = null) => {
+        const key = document.createElement('div');
+        key.className = `key ${specialClass}`;
+        if (isHTML) key.innerHTML = val;
+        else key.innerText = val;
+        key.id = `${idPrefix}${action || val}`;
+        key.onclick = () => {
+            if (action) send(action);
+            else keyboard(val);
+        };
+        return key;
+    };
+
+    const row1Vals = ['1', '2', '3', '4', '5', '6', '7'];
     const kbRow1 = document.createElement('div');
     kbRow1.className = 'keyboard-row';
-    for (const val of ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']) {
-        const key = document.createElement('div');
-        key.className = 'key';
-        key.innerText = val;
-        key.id = `inputs_${val}`;
-        key.onclick = () => keyboard(val);
-        kbRow1.appendChild(key);
-    }
+    row1Vals.forEach(v => kbRow1.appendChild(createKey(v)));
     inputsTable.appendChild(kbRow1);
 
+    const row2Vals = ['8', '9', '0', '+', '-', '*', '/'];
     const kbRow2 = document.createElement('div');
     kbRow2.className = 'keyboard-row';
-    for (const val of ['+', '-', '*', '/', '=']) {
-        const key = document.createElement('div');
-        key.className = 'key key-operator';
-        key.innerText = val;
-        key.id = `inputs_${val}`;
-        key.onclick = () => keyboard(val);
-        kbRow2.appendChild(key);
-    }
-
-    const borrarKey = document.createElement('div');
-    borrarKey.className = 'key key-action';
-    borrarKey.innerHTML = '<i class="fa-solid fa-delete-left"></i>';
-    borrarKey.id = 'inputs_borrar';
-    borrarKey.onclick = () => send('Borrar');
-    kbRow2.appendChild(borrarKey);
-
-    const eliminarKey = document.createElement('div');
-    eliminarKey.className = 'key key-action key-eliminar';
-    eliminarKey.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-    eliminarKey.id = 'inputs_eliminar';
-    eliminarKey.onclick = () => send('Eliminar');
-    kbRow2.appendChild(eliminarKey);
-
-    const enviarKey = document.createElement('div');
-    enviarKey.className = 'key key-action key-enviar';
-    enviarKey.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i>';
-    enviarKey.id = 'inputs_enviar';
-    enviarKey.onclick = () => send('Enviar');
-    kbRow2.appendChild(enviarKey);
-
+    row2Vals.forEach(v => {
+        if (['+','-','*','/'].includes(v)) kbRow2.appendChild(createKey(v, 'key-operator'));
+        else kbRow2.appendChild(createKey(v));
+    });
     inputsTable.appendChild(kbRow2);
+
+    const kbRow3 = document.createElement('div');
+    kbRow3.className = 'keyboard-row';
+    kbRow3.appendChild(createKey('=', 'key-operator'));
+    kbRow3.appendChild(createKey('<i class="fa-solid fa-delete-left"></i>', 'key-action', 'inputs_', true, 'Borrar'));
+    kbRow3.appendChild(createKey('<i class="fa-solid fa-trash-can"></i>', 'key-action key-eliminar', 'inputs_', true, 'Eliminar'));
+    kbRow3.appendChild(createKey('<i class="fa-solid fa-arrow-right-to-bracket"></i>', 'key-action key-enviar', 'inputs_', true, 'Enviar'));
+    inputsTable.appendChild(kbRow3);
     startGame()
 })
 

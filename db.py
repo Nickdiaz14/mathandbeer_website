@@ -30,9 +30,47 @@ def init_db_pool():
                 password=os.getenv("DB_PASSWORD"),
                 port="5432"
             )
-            print("✅ Postgres Connection Pool Creado Exitosamente")
+            print("[OK] Postgres Connection Pool Creado Exitosamente")
+            _setup_schema()
         except Exception as e:
-            print("❌ Error al crear DB Pool:", str(e))
+            print("[ERROR] Error al crear DB Pool:", str(e))
+
+def _setup_schema():
+    """Crea las tablas necesarias para las mejoras si no existen."""
+    conn = get_connection()
+    try:
+        cursor = conn.cursor()
+        
+        # Tabla de credenciales removida (autenticación por email eliminada)
+        # Se omite la creación de user_credentials.
+
+        
+        # Streak freezes disponibles
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS streak_freezes (
+                userid TEXT PRIMARY KEY REFERENCES nickname(userid) ON DELETE CASCADE,
+                freezes_count INT NOT NULL DEFAULT 0 CHECK (freezes_count BETWEEN 0 AND 2)
+            );
+        """)
+        
+        # Streak freezes usados
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS streak_freezes_used (
+                id SERIAL PRIMARY KEY,
+                userid TEXT NOT NULL REFERENCES nickname(userid) ON DELETE CASCADE,
+                freeze_date DATE NOT NULL,
+                UNIQUE (userid, freeze_date)
+            );
+        """)
+        
+        conn.commit()
+        print("[OK] Base de datos estructurada con éxito.")
+    except Exception as e:
+        conn.rollback()
+        print("[ERROR] Error configurando el esquema de BD:", e)
+    finally:
+        cursor.close()
+        release_connection(conn)
 
 def get_connection():
     """Obtiene una conexión limpia y rápida del pool."""

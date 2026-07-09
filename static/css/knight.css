@@ -1,33 +1,68 @@
+/* ── Salto Real — casillas de ajedrez ── */
 .black {
-    background: linear-gradient(135deg, #2e2b2a 0%, #000000 100%);
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    color: #ffffff;
 }
 
 .white {
-    background: linear-gradient(135deg, #fefefe 0%, #e2d7b5 100%);
+    background: linear-gradient(135deg, #e8dfc8 0%, #c9b99a 100%);
+    border: 1px solid rgba(180, 150, 90, 0.4) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    color: #1a0a00;
 }
 
+/* Celda donde puede moverse el caballo */
+.can-move {
+    outline: 2px solid rgba(255, 183, 0, 0.7) !important;
+    outline-offset: -2px;
+    box-shadow: 0 0 12px rgba(255, 183, 0, 0.35) !important;
+}
+
+.can-move:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(255, 183, 0, 0.55) !important;
+}
+
+/* Celda roja — objetivo a capturar */
+.red.target-cell {
+    animation: pulse-target 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-target {
+    0%, 100% { box-shadow: 0 2px 8px rgba(188, 33, 17, 0.4); }
+    50%       { box-shadow: 0 4px 20px rgba(220, 60, 30, 0.7); }
+}
+
+/* Timer overlay sobre celda */
 .cell-timer {
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
-    font-weight: bold;
+    font-size: clamp(0.6rem, 2.5vw, 1rem);
+    font-weight: 700;
     color: white;
     pointer-events: none;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
     z-index: 1;
 }
 
+/* Pieza del caballo */
 .horse::after {
     content: "";
     position: absolute;
     inset: 0;
     background-image: url("../images/in game/knight.png");
-    background-size: 90%;
+    background-size: 80%;
     background-repeat: no-repeat;
     background-position: center;
-    opacity: 1;
     pointer-events: none;
+    transition: transform 0.15s ease;
+}
+
+.horse:hover::after {
+    transform: scale(1.05);
 }

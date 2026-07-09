@@ -1,0 +1,150 @@
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.grid-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin: 20px 0;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.kenken-grid {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+/* Distribuir filas uniformemente según el tamaño de la cuadrícula */
+.kenken-grid tr {
+    height: calc(100% / var(--kenken-size));
+}
+
+/* Size classes to set CSS variable */
+.size-4 { --kenken-size: 4; }
+.size-5 { --kenken-size: 5; }
+.size-6 { --kenken-size: 6; }
+
+.kenken-grid td {
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    font-size: calc(1.5rem + 1vw);
+    font-weight: 700;
+    color: #ffffff;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+    overflow: hidden;
+    /* Bordes por defecto delgados, se engrosarán con JS para marcar las jaulas */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+
+/* Etiquetas de jaula (ej. 12x, 3-) en la esquina superior izquierda de cada jaula */
+.cage-label {
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    font-size: calc(0.55rem + 0.35vw);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Valor numérico centrado en la celda */
+.cell-value {
+    display: block;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 1;
+}
+
+
+.kenken-grid td.selected {
+    background-color: rgba(255, 215, 0, 0.25) !important; /* Resaltado dorado */
+    box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.kenken-grid td.conflict {
+    background-color: rgba(220, 53, 69, 0.3) !important; /* Rojo traslúcido para errores */
+}
+
+/* Teclado numérico */
+.kenken-keypad {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.keypad-btn {
+    flex: 1;
+    max-width: 60px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.keypad-btn:active, .keypad-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.keypad-btn.btn-erase {
+    background: rgba(220, 53, 69, 0.2);
+    border-color: rgba(220, 53, 69, 0.3);
+}
+
+.keypad-btn.btn-erase:hover {
+    background: rgba(220, 53, 69, 0.4);
+}
+
+/* Estilos de botones de control */
+.controls-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Bordes gruesos de jaula aplicados mediante clases dynamically */
+.border-top-thick { border-top: 3px solid #ffffff !important; }
+.border-bottom-thick { border-bottom: 3px solid #ffffff !important; }
+.border-left-thick { border-left: 3px solid #ffffff !important; }
+.border-right-thick { border-right: 3px solid #ffffff !important; }
+
+/* Animación de error (shake) */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+}
+
+.shake-grid {
+    animation: shake 0.4s ease-in-out;
+}

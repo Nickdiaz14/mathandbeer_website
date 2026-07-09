@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
+
     // Badges
     renderBadges(badgesData.badges);
 
@@ -141,6 +142,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Edit nickname
     setupNicknameEdit(profile.nickname);
 
+
+    // Cargar gráfica de rendimiento
+    loadPerformanceChart();
+
   } catch (err) {
     console.error('Error loading profile:', err);
     document.getElementById('profile-loading').innerHTML = '<p class="text-danger">Error al cargar el perfil</p>';
@@ -149,6 +154,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function getGameName(gameCode) {
   switch (gameCode) {
+    case "KK4": return "KenKen 4×4";
+    case "KK5": return "KenKen 5×5";
     case "T4": return "0h-h1 - 4";
     case "T6": return "0h-h1 - 6";
     case "T8": return "0h-h1 - 8";
@@ -270,4 +277,57 @@ function setupNicknameEdit(currentNick) {
 
   saveBtn.addEventListener('click', doSave);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') doSave(); });
+}
+
+
+async function loadPerformanceChart() {
+  try {
+    const res = await fetch(`/api/profile/${userId}/performance`);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.performance || data.performance.length === 0) return;
+
+    document.getElementById('performance-section').style.display = 'block';
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    
+    const dates = data.performance.map(p => p.date);
+    const values = data.performance.map(p => p.value);
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [{
+          data: values,
+          borderColor: '#ffd700',
+          backgroundColor: 'rgba(255, 215, 0, 0.05)',
+          borderWidth: 2,
+          tension: 0.3,
+          fill: true,
+          pointBackgroundColor: '#ffd700',
+          pointRadius: 4,
+          pointHoverRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+            ticks: { color: '#b6bde7', font: { family: 'Inter' } }
+          },
+          y: {
+            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+            ticks: { color: '#b6bde7', font: { family: 'Inter' } }
+          }
+        }
+      }
+    });
+  } catch (err) {
+    console.error('Error drawing chart:', err);
+  }
 }

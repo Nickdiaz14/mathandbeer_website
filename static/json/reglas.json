@@ -71,6 +71,16 @@
                 "r5": "Los números y operadores pueden repetirse en la solución.",
                 "r6": "La solución puede ser negativa."
             }
+        },
+        "kenken": {
+            "summary": "Completa la cuadrícula con números del 1 al N de forma que se cumplan las restricciones matemáticas de cada jaula y no se repitan números en filas o columnas.",
+            "rules": {
+                "r1": "En una cuadrícula de tamaño N×N, debes colocar números del 1 al N.",
+                "r2": "Ningún número puede repetirse en la misma fila o columna.",
+                "r3": "El tablero está dividido en jaulas (regiones delineadas por bordes gruesos). Cada jaula tiene un número objetivo y un operador (+, -, ×, ÷) en su esquina superior izquierda.",
+                "r4": "Los números dentro de cada jaula deben producir el valor objetivo al aplicar la operación matemática indicada (en cualquier orden).",
+                "r5": "Las jaulas de una sola celda no requieren operador; simplemente se rellena con el valor objetivo."
+            }
         }
     }
 ]

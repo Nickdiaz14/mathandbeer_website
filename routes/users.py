@@ -59,6 +59,12 @@ def get_profile(userid):
         nick_row = cursor.fetchone()
         nickname = nick_row[0] if nick_row else None
 
+        # Verificar si la cuenta está vinculada (Mejora 1)
+        cursor.execute("SELECT email FROM user_credentials WHERE userid = %s;", (userid,))
+        email_row = cursor.fetchone()
+        is_linked = email_row is not None
+        linked_email = email_row[0] if is_linked else None
+
         cursor.execute("SELECT COUNT(*) FROM comments WHERE userid = %s;", (userid,))
         total_comments = cursor.fetchone()[0]
 
@@ -161,6 +167,8 @@ def get_profile(userid):
 
     return jsonify({
         'nickname': nickname,
+        'is_linked': is_linked,
+        'email': linked_email,
         'stats': {'comments': total_comments, 'brindis': total_brindis, 'games': games_played},
         'records': records,
         'liked_talks': liked_talks,
@@ -237,3 +245,44 @@ def get_badges(userid):
         cursor.close()
         release_connection(connection)
     return jsonify({'badges': badges})
+
+
+@users_bp.route('/api/profile/<userid>/performance', methods=['GET'])
+def get_user_performance(userid):
+    connection = get_connection()
+    try:
+        cursor = connection.cursor()
+        # Obtener los últimos 15 resultados del reto diario del usuario ordenados por fecha
+        cursor.execute("""
+            SELECT challenge_date, record, game_type
+            FROM daily_results
+            WHERE userid = %s
+            ORDER BY challenge_date ASC
+            LIMIT 15;
+        """, (userid,))
+        rows = cursor.fetchall()
+        
+        performance = []
+        for r in rows:
+            c_date = r[0].strftime("%d/%m")
+            record_raw = r[1]
+            g_type = r[2]
+            
+            # Para juegos de tiempo (0hh1, 0hn0, cuentamania, kenken), convertir centisegundos a segundos
+            if g_type in ('knight', 'nerdle'):
+                val = float(record_raw)
+            else:
+                val = round(float(record_raw) / 100.0, 2)  # segundos
+                
+            performance.append({
+                'date': c_date,
+                'value': val,
+                'game': g_type
+            })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        cursor.close()
+        release_connection(connection)
+        
+    return jsonify({'performance': performance})

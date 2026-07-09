@@ -1,0 +1,66 @@
+{% extends "base_game.html" %}
+
+{% block page_title %}KenKen | Math and Beer{% endblock %}
+{% block meta_description %}Juega KenKen y compite con tus amigos resolviendo restricciones matemáticas{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="../static/css/kenken.css">
+{% endblock %}
+
+{% block body_attrs %}data-n="{{ n }}"{% endblock %}
+
+{% block game_content %}
+    <div id="countdown-overlay"></div>
+    
+    <div class="game-container">
+        <h1 id="title" class="title first-row">KenKen</h1>
+        <h2 id="timer" class="title small">00:00.00</h2>
+        
+        <!-- Tablero del KenKen -->
+        <div class="grid-wrapper">
+            <table id="kenken-grid" class="kenken-grid size-{{ n }}">
+                <!-- Se genera dinámicamente con JS -->
+            </table>
+        </div>
+        
+        <!-- Teclado en pantalla para jugar cómodamente en móviles o computadores -->
+        <div class="kenken-keypad">
+            {% for i in range(1, n + 1) %}
+            <button class="keypad-btn" data-value="{{ i }}">{{ i }}</button>
+            {% endfor %}
+            <button class="keypad-btn btn-erase" data-value="clear"><i class="fa-solid fa-eraser"></i></button>
+        </div>
+        
+        <div class="controls-group">
+            <button id="back" class="back"><i class="fa-solid fa-arrow-left"></i></button>
+            <button id="recharge" class="recharge"><i class="fa-solid fa-rotate-left"></i></button>
+            <button class="game_info" data-bs-toggle="modal" data-bs-target="#modal-reglas"><i class="fa-solid fa-info"></i></button>
+        </div>
+    </div>
+
+    <!-- Modal de Reglas -->
+    <div class="modal fade" id="modal-reglas" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-dark text-light overflow-auto">
+                <div class="modal-header displayColumn title fs-3">KenKen</div>
+                <div class="modal-body">
+                    <p class="modalContent">{{ c.summary }}</p>
+                    <h3>Reglas:</h3>
+                    <ul>
+                        {% for ndx, rule in c.rules.items() %}
+                        <li class="modalContent">{{ rule }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="modal-footer myButtons">
+                    <button type="button" class="btn btn-secondary" onclick="bootstrap.Modal.getInstance(document.getElementById('modal-reglas')).hide()">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/tutorial_kenken'">Tutorial</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block game_scripts %}
+    <script src="../static/scripts/kenken.js"></script>
+{% endblock %}

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -27,6 +27,7 @@
     <title>Mi Perfil | Math & Beer</title>
     <meta name="description" content="Edita tu perfil y compite con tus amigos.">
     <meta name="robots" content="noindex, nofollow">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
 
 <body>
@@ -135,6 +136,10 @@
                     <p class="profile-userid-hint">Úsalo para acceder desde otro dispositivo</p>
                 </div>
 
+
+
+
+
                 <!-- Cerrar sesión -->
                 <button id="logout-btn" class="profile-logout-btn" title="Cerrar sesión">
                     <i class="fa-solid fa-right-from-bracket me-1"></i>Cerrar sesión
@@ -159,6 +164,12 @@
                     <span class="profile-stat-num" id="stat-streak">0</span>
                     <span class="profile-stat-label streak-fire"><i class="fa-solid fa-fire me-1"></i>Racha</span>
                 </div>
+            </div>
+
+            <!-- Rendimiento -->
+            <div class="profile-section rounded-4 p-4 shadow-sm" id="performance-section" style="display:none;">
+                <h3 class="profile-section-title"><i class="fa-solid fa-chart-line me-2"></i>Mi Rendimiento (Reto Diario)</h3>
+                <canvas id="performanceChart" style="width:100%; max-height:250px;"></canvas>
             </div>
 
             <!-- Records -->

@@ -24,7 +24,9 @@ DAILY_GAMES = [
     ('0hn0', 5, '0h-n0 5×5'),
     ('nerdle', 6, 'Nerdle Mini'),
     ('nerdle', 8, 'Nerdle Standard'),
-    ('nerdle', 10, 'Nerdle Maxi')
+    ('nerdle', 10, 'Nerdle Maxi'),
+    ('kenken', 4, 'KenKen 4×4'),
+    ('kenken', 5, 'KenKen 5×5')
 ]
 
 
@@ -99,47 +101,65 @@ def _generate_daily_board(game_type, game_size, seed):
         boards = BOARDS[f'igualdades{game_size}']
         return boards[seed % len(boards)]
 
+    elif game_type == 'kenken':
+        from routes.games import generate_kenken
+        return generate_kenken(game_size, seed)
+
     return None
 
 
-def _calculate_streak(userid):
-    connection = get_connection()
-    try:
-        cursor = connection.cursor()
-        cursor.execute("""
-            SELECT DISTINCT challenge_date FROM daily_results
-            WHERE userid = %s ORDER BY challenge_date DESC;
-        """, (userid,))
-        dates = [row[0] for row in cursor.fetchall()]
-    finally:
-        cursor.close()
-        release_connection(connection)
+def _calculate_streak_with_cursor(cursor, userid):
+    """Calcula la racha combinando las fechas jugadas y los escudos de racha usados."""
+    cursor.execute("""
+        SELECT DISTINCT challenge_date FROM daily_results
+        WHERE userid = %s;
+    """, (userid,))
+    played_dates = {row[0] for row in cursor.fetchall()}
 
-    if not dates:
+    cursor.execute("""
+        SELECT DISTINCT freeze_date FROM streak_freezes_used
+        WHERE userid = %s;
+    """, (userid,))
+    freeze_dates = {row[0] for row in cursor.fetchall()}
+
+    all_dates = sorted(played_dates.union(freeze_dates), reverse=True)
+
+    if not all_dates:
         return {'current': 0, 'best': 0, 'today': False}
 
     today = _get_bogota_date()
-    today_played = dates[0] == today
+    today_played = today in played_dates
 
     streak = 0
-    check_date = today if today_played else today - timedelta(days=1)
-    for d in dates:
+    # La racha está activa si jugó hoy o si se usó un escudo/jugó ayer
+    check_date = today if (today in played_dates or today in freeze_dates) else today - timedelta(days=1)
+    for d in all_dates:
         if d == check_date:
             streak += 1
             check_date -= timedelta(days=1)
         elif d < check_date:
             break
 
-    best = 1 if dates else 0
+    best = 1 if all_dates else 0
     current_run = 1
-    for i in range(1, len(dates)):
-        if dates[i - 1] - dates[i] == timedelta(days=1):
+    for i in range(1, len(all_dates)):
+        if all_dates[i - 1] - all_dates[i] == timedelta(days=1):
             current_run += 1
             best = max(best, current_run)
         else:
             current_run = 1
 
     return {'current': streak, 'best': max(best, streak), 'today': today_played}
+
+def _calculate_streak(userid):
+    connection = get_connection()
+    try:
+        cursor = connection.cursor()
+        res = _calculate_streak_with_cursor(cursor, userid)
+    finally:
+        cursor.close()
+        release_connection(connection)
+    return res
 
 
 @daily_bp.route('/api/daily', methods=['GET'])
@@ -201,6 +221,10 @@ def submit_daily():
     record_val = float(record) if game_type in ('knight', 'nerdle') else int(record)
 
     connection = get_connection()
+    consumed_freeze = False
+    earned_freeze = False
+    new_streak = 0
+
     try:
         cursor = connection.cursor()
         cursor.execute(
@@ -210,16 +234,68 @@ def submit_daily():
         if cursor.fetchone():
             return jsonify({'success': False, 'message': 'Ya jugaste el reto de hoy'})
 
+        # Verificar si corresponde consumir un escudo de racha (Streak Freeze)
+        today_date = _get_bogota_date()
+        yesterday = today_date - timedelta(days=1)
+        day_before = today_date - timedelta(days=2)
+
+        cursor.execute("SELECT 1 FROM daily_results WHERE challenge_date = %s AND userid = %s;", (yesterday, user_id))
+        played_yesterday = cursor.fetchone() is not None
+
+        cursor.execute("SELECT 1 FROM streak_freezes_used WHERE freeze_date = %s AND userid = %s;", (yesterday, user_id))
+        frozen_yesterday = cursor.fetchone() is not None
+
+        if not played_yesterday and not frozen_yesterday:
+            # Ayer no jugó ni se usó escudo. Verificar si tenía racha activa anteayer
+            cursor.execute("SELECT 1 FROM daily_results WHERE challenge_date = %s AND userid = %s;", (day_before, user_id))
+            played_day_before = cursor.fetchone() is not None
+            cursor.execute("SELECT 1 FROM streak_freezes_used WHERE freeze_date = %s AND userid = %s;", (day_before, user_id))
+            frozen_day_before = cursor.fetchone() is not None
+
+            if played_day_before or frozen_day_before:
+                # Tenía racha anteayer. Verificar si tiene escudos
+                cursor.execute("SELECT freezes_count FROM streak_freezes WHERE userid = %s;", (user_id,))
+                freeze_row = cursor.fetchone()
+                freezes_avail = freeze_row[0] if freeze_row else 0
+
+                if freezes_avail > 0:
+                    # Consumir un escudo
+                    cursor.execute("""
+                        UPDATE streak_freezes 
+                        SET freezes_count = freezes_count - 1 
+                        WHERE userid = %s;
+                    """, (user_id,))
+                    cursor.execute("""
+                        INSERT INTO streak_freezes_used (userid, freeze_date)
+                        VALUES (%s, %s)
+                        ON CONFLICT DO NOTHING;
+                    """, (user_id, yesterday))
+                    consumed_freeze = True
+
         try:
             cursor.execute(
                 """INSERT INTO daily_results (challenge_date, game_type, game_size, userid, record)
                    VALUES (%s, %s, %s, %s, %s);""",
                 (today, game_type, game_size, user_id, record_val)
             )
-            connection.commit()
         except psycopg2.errors.UniqueViolation:
             connection.rollback()
             return jsonify({'success': False, 'message': 'Ya jugaste el reto de hoy'})
+
+        # Calcular nueva racha y ver si gana un escudo
+        new_streak_info = _calculate_streak_with_cursor(cursor, user_id)
+        new_streak = new_streak_info['current']
+
+        if new_streak > 0 and new_streak % 7 == 0:
+            cursor.execute("""
+                INSERT INTO streak_freezes (userid, freezes_count)
+                VALUES (%s, 1)
+                ON CONFLICT (userid) DO UPDATE
+                SET freezes_count = LEAST(2, streak_freezes.freezes_count + 1);
+            """, (user_id,))
+            earned_freeze = True
+
+        connection.commit()
 
         if game_type in ('knight', 'nerdle'):
             cursor.execute(
@@ -232,11 +308,20 @@ def submit_daily():
                 (today, record_val)
             )
         position = cursor.fetchone()[0]
+    except Exception as e:
+        connection.rollback()
+        return jsonify({'success': False, 'message': f'Error al guardar resultado: {str(e)}'}), 500
     finally:
         cursor.close()
         release_connection(connection)
 
-    return jsonify({'success': True, 'position': position})
+    return jsonify({
+        'success': True,
+        'position': position,
+        'consumed_freeze': consumed_freeze,
+        'earned_freeze': earned_freeze,
+        'new_streak': new_streak
+    })
 
 
 @daily_bp.route('/api/daily/leaderboard', methods=['GET'])
@@ -325,4 +410,18 @@ def daily_leaderboard():
 
 @daily_bp.route('/api/streak/<userid>', methods=['GET'])
 def get_streak(userid):
-    return jsonify(_calculate_streak(userid))
+    res = _calculate_streak(userid)
+    connection = get_connection()
+    freezes_count = 0
+    try:
+        cursor = connection.cursor()
+        cursor.execute("SELECT freezes_count FROM streak_freezes WHERE userid = %s;", (userid,))
+        row = cursor.fetchone()
+        if row:
+            freezes_count = row[0]
+    finally:
+        cursor.close()
+        release_connection(connection)
+    
+    res['freezes_count'] = freezes_count
+    return jsonify(res)

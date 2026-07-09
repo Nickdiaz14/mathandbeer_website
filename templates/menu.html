@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -139,6 +139,12 @@
                 <img src="../static/images/games/time_trial.png" alt="" class="game_img" loading="lazy">
                 <span class="game_text">Contrarreloj Salto Real</span>
             </button>
+
+            <button class="game" data-bs-toggle="modal" data-bs-target="#kenken-size">
+                <span class="game_text_out">¡Jugar!</span>
+                <img src="../static/images/games/0h-h1.png" alt="" class="game_img" loading="lazy" onerror="this.src='../static/images/games/0h-h1.png'">
+                <span class="game_text">KenKen</span>
+            </button>
         </div>
 
         <!-- Modal 0h-h1 -->
@@ -205,6 +211,19 @@
                         <button class="size-modal-btn" onclick="window.location.href='/nerdle?n=6'">Mini<br><small>6 dígitos</small></button>
                         <button class="size-modal-btn" onclick="window.location.href='/nerdle?n=8'">Estándar<br><small>8 dígitos</small></button>
                         <button class="size-modal-btn" onclick="window.location.href='/nerdle?n=10'">Maxi<br><small>10 dígitos</small></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal KenKen -->
+        <div class="modal fade" id="kenken-size" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content size-modal-content">
+                    <p class="size-modal-title">Elige el tamaño</p>
+                    <div class="size-modal-btns">
+                        <button class="size-modal-btn" onclick="window.location.href='/kenken?n=4'">4×4</button>
+                        <button class="size-modal-btn" onclick="window.location.href='/kenken?n=5'">5×5</button>
                     </div>
                 </div>
             </div>

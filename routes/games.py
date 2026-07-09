@@ -8,6 +8,125 @@ games_bp = Blueprint('games', __name__)
 _VALID_0HH1  = {4, 6, 8, 10}
 _VALID_0HN0  = {4, 5}
 _VALID_NERDLE = {6, 8, 10}
+_VALID_KENKEN = {4, 5}
+
+def generate_kenken(size, seed_val):
+    """Generador procedural determinista de KenKen basado en Latin Squares."""
+    rng = random.Random(seed_val)
+    
+    # 1. Generar Latin Square base
+    base = list(range(1, size + 1))
+    grid = []
+    for i in range(size):
+        grid.append(base[i:] + base[:i])
+    
+    # Mezclar filas
+    rows = list(range(size))
+    rng.shuffle(rows)
+    grid = [grid[r] for r in rows]
+    
+    # Mezclar columnas
+    cols = list(range(size))
+    rng.shuffle(cols)
+    new_grid = []
+    for r in range(size):
+        new_row = [grid[r][c] for c in cols]
+        new_grid.append(new_row)
+    grid = new_grid
+    
+    # 2. Agrupar celdas en jaulas (cages) usando BFS/DFS aleatorio
+    cells = []
+    for r in range(size):
+        for c in range(size):
+            cells.append((r, c))
+            
+    visited = set()
+    cages = []
+    
+    def get_neighbors(r, c):
+        res = []
+        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < size and 0 <= nc < size:
+                res.append((nr, nc))
+        return res
+        
+    cage_id = 0
+    for r in range(size):
+        for c in range(size):
+            if (r, c) in visited:
+                continue
+                
+            cage_cells = [(r, c)]
+            visited.add((r, c))
+            
+            # Tamaño de jaula: 1 a 3 celdas (para mantenerlo divertido)
+            target_size = rng.choice([1, 2, 2, 3, 3])
+            
+            attempts = 0
+            while len(cage_cells) < target_size and attempts < 10:
+                attempts += 1
+                ref_cell = rng.choice(cage_cells)
+                neighbors = get_neighbors(*ref_cell)
+                unvisited = [n for n in neighbors if n not in visited]
+                if unvisited:
+                    next_cell = rng.choice(unvisited)
+                    cage_cells.append(next_cell)
+                    visited.add(next_cell)
+            
+            # Calcular operador y valor objetivo
+            cage_vals = [grid[cr][cc] for cr, cc in cage_cells]
+            if len(cage_cells) == 1:
+                op = ''
+                target = cage_vals[0]
+            elif len(cage_cells) == 2:
+                v1, v2 = cage_vals
+                ops = ['+', '*']
+                if abs(v1 - v2) > 0:
+                    ops.append('-')
+                if v1 % v2 == 0 or v2 % v1 == 0:
+                    ops.append('/')
+                
+                op = rng.choice(ops)
+                if op == '+':
+                    target = v1 + v2
+                elif op == '*':
+                    target = v1 * v2
+                elif op == '-':
+                    target = abs(v1 - v2)
+                elif op == '/':
+                    target = max(v1, v2) // min(v1, v2)
+            else:
+                op = rng.choice(['+', '*'])
+                if op == '+':
+                    target = sum(cage_vals)
+                else:
+                    prod = 1
+                    for val in cage_vals:
+                        prod *= val
+                    target = prod
+                    
+            cages.append({
+                'id': cage_id,
+                'cells': cage_cells,
+                'op': op,
+                'target': int(target)
+            })
+            cage_id += 1
+            
+    return {
+        'size': size,
+        'cages': cages,
+        'solution': grid
+    }
+
+@games_bp.route('/kenken/play', methods=['POST'])
+def get_cond_ini_kenken():
+    n = request.json.get('n')
+    if n not in _VALID_KENKEN:
+        return jsonify({'error': 'Tamaño inválido'}), 400
+    seed = random.randint(0, 1000000)
+    return jsonify(generate_kenken(n, seed))
 
 @games_bp.route('/0h_h1/play', methods=['POST'])
 def get_cond_ini():

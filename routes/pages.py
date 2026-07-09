@@ -27,6 +27,17 @@ def sitemap():
 def robots_txt():
     return current_app.send_static_file('robots.txt')
 
+@pages_bp.route('/sw.js')
+def service_worker():
+    response = current_app.send_static_file('sw.js')
+    # Añadir header para indicar que es un archivo JS de Service Worker
+    response.headers['Content-Type'] = 'application/javascript'
+    return response
+
+@pages_bp.route('/manifest.json')
+def manifest():
+    return current_app.send_static_file('manifest.json')
+
 @pages_bp.route('/')
 def page_about():
     with open("static/json/equipo.json", "r", encoding="utf-8") as f:
@@ -211,6 +222,15 @@ def page_tutorial_0h_n0():
 def page_nerdle():
     n = int(request.args.get('n'))
     return render_template('nerdle.html', c=_load_reglas()["Nerdle"], n=n)
+
+@pages_bp.route('/kenken')
+def page_kenken():
+    n = int(request.args.get('n'))
+    return render_template('kenken.html', c=_load_reglas()["kenken"], n=n)
+
+@pages_bp.route('/tutorial_kenken')
+def page_tutorial_kenken():
+    return render_template('tutorial_kenken.html')
 
 @pages_bp.route('/leaderboard')
 def page_leaderboard():

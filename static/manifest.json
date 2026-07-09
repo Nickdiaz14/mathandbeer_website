@@ -1,0 +1,22 @@
+{
+  "name": "Math & Beer Colombia",
+  "short_name": "Math & Beer",
+  "description": "Comunidad de divulgación matemática. Charlas mensuales, juegos lógicos interactivos y retos diarios.",
+  "start_url": "/menu_games",
+  "display": "standalone",
+  "background_color": "#0a0915",
+  "theme_color": "#0a0915",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/static/images/logos/favicon.webp",
+      "sizes": "64x64",
+      "type": "image/webp"
+    },
+    {
+      "src": "/static/images/logos/logo_M&B.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

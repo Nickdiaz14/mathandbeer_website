@@ -1,0 +1,153 @@
+{% extends "base_game.html" %}
+
+{% block page_title %}Tutorial KenKen | Math and Beer{% endblock %}
+{% block meta_description %}Aprende a resolver KenKen con este tutorial rápido.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .tutorial-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        color: #ffffff;
+    }
+    .tutorial-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        margin-bottom: 25px;
+    }
+    .tutorial-title {
+        color: #ffd700;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    .step-img-placeholder {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+        background: rgba(0,0,0,0.2);
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+    .grid-example {
+        display: grid;
+        grid-template-columns: repeat(3, 50px);
+        grid-template-rows: repeat(3, 50px);
+        gap: 0;
+        border: 3px solid #ffffff;
+        width: 156px;
+        margin: 0 auto;
+    }
+    .grid-example div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        border: 1px solid rgba(255,255,255,0.2);
+        position: relative;
+    }
+    .grid-example .t-top { border-top: 3px solid #ffffff; }
+    .grid-example .t-bottom { border-bottom: 3px solid #ffffff; }
+    .grid-example .t-left { border-left: 3px solid #ffffff; }
+    .grid-example .t-right { border-right: 3px solid #ffffff; }
+    
+    .grid-example .label {
+        position: absolute;
+        top: 2px;
+        left: 4px;
+        font-size: 0.6rem;
+        color: rgba(255,255,255,0.7);
+        line-height: 1;
+    }
+    
+    .btn-action {
+        background: #ffd700;
+        color: #111;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, background-color 0.2s;
+        text-align: center;
+        display: block;
+        margin: 30px auto 0;
+        width: fit-content;
+        text-decoration: none;
+    }
+    .btn-action:hover {
+        background: #ffea00;
+        transform: scale(1.05);
+        color: #111;
+    }
+</style>
+{% endblock %}
+
+{% block game_content %}
+<div class="tutorial-container">
+    <h1 class="title first-row">Cómo Jugar KenKen</h1>
+    
+    <div class="tutorial-card">
+        <h2 class="tutorial-title">1. El Tablero y los Números</h2>
+        <p>En un tablero de tamaño **N×N**, tu objetivo es rellenar las celdas vacías con números del **1 al N**.</p>
+        <p>Por ejemplo, en un KenKen de **4×4**, usarás los números **1, 2, 3 y 4**.</p>
+        <p>⚠️ **Regla de Oro**: Ningún número puede repetirse en la misma fila o en la misma columna (igual que en el Sudoku).</p>
+    </div>
+
+    <div class="tutorial-card">
+        <h2 class="tutorial-title">2. Las Jaulas y Operaciones</h2>
+        <p>El tablero está dividido en **jaulas** (grupos de celdas delimitadas por bordes gruesos).</p>
+        <p>Cada jaula tiene un **número objetivo** y un **operador aritmético** en su esquina superior izquierda (ej. `6+`, `2-`, `12×`, `2÷`).</p>
+        <p>Los números que coloques en esa jaula deben dar como resultado el número objetivo al aplicar la operación matemática.</p>
+        
+        <div class="step-img-placeholder">
+            <div style="text-align: center;">
+                <div class="grid-example">
+                    <!-- Jaula 1 (2 celdas verticales, 3+) -->
+                    <div class="t-top t-left t-right"><span class="label">3+</span>1</div>
+                    <div class="t-top t-left t-bottom"><span class="label">2-</span>3</div>
+                    <div class="t-top t-right t-left"><span class="label">1</span>1</div>
+                    
+                    <div class="t-bottom t-left t-right">2</div>
+                    <div class="t-bottom t-left t-top t-right"><span class="label">1-</span>2</div>
+                    <div class="t-bottom t-right t-left">3</div>
+                    
+                    <div class="t-top t-bottom t-left t-right"><span class="label">3</span>3</div>
+                    <div class="t-top t-bottom t-left t-right">1</div>
+                    <div class="t-top t-bottom t-right t-left">2</div>
+                </div>
+                <div style="font-size: 0.8rem; color: #aaa; margin-top: 8px;">Ejemplo de KenKen 3×3 Solucionado</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tutorial-card">
+        <h2 class="tutorial-title">3. Ejemplos Rápidos</h2>
+        <ul>
+            <li>**`3+` (Suma)**: Las celdas en la jaula deben sumar 3 (por ejemplo: `1 + 2 = 3`).</li>
+            <li>**`2-` (Resta)**: Las celdas deben restarse para dar 2 (por ejemplo: `3 - 1 = 2` o `4 - 2 = 2`). El orden no importa, siempre se resta el menor al mayor.</li>
+            <li>**`12×` (Multiplicación)**: Las celdas deben multiplicarse para dar 12 (por ejemplo en 3 celdas: `3 × 4 × 1 = 12`).</li>
+            <li>**`2÷` (División)**: Las celdas deben dividirse para dar 2 (por ejemplo: `4 ÷ 2 = 2`).</li>
+            <li>**Celdas Únicas sin operador (ej. `3`)**: Si la jaula es de una sola celda, simplemente coloca el número indicado (ej. `3`). ¡Es un regalo de inicio!</li>
+        </ul>
+    </div>
+
+    <a href="/kenken?n=4" class="btn-action">¡Comenzar a Jugar!</a>
+    
+    <div style="height: 50px;"></div>
+</div>
+{% endblock %}
+
+{% block game_scripts %}
+<script>
+    // Configurar el botón de retroceso estándar
+    setupGameControls();
+</script>
+{% endblock %}

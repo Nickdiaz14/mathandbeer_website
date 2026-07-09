@@ -8,6 +8,7 @@ from routes.daily import daily_bp
 from routes.users import users_bp
 from routes.events import events_bp
 from routes.attendance import attendance_bp
+# Auth blueprint removed (email auth no longer used)
 
 def create_app():
     load_dotenv()
@@ -25,6 +26,7 @@ def create_app():
     app.register_blueprint(users_bp)
     app.register_blueprint(events_bp)
     app.register_blueprint(attendance_bp)
+    # Blueprint registration removed
 
     return app
 
