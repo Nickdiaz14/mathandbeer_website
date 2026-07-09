@@ -1,5 +1,5 @@
 // Service Worker for Math & Beer PWA
-const CACHE_NAME = 'mathandbeer-static-v7';
+const CACHE_NAME = 'mathandbeer-static-v8';
 const PRECACHE_URLS = [
   '/',
   '/manifest.json',
@@ -32,6 +32,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
+
   // API calls – network first
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(
@@ -39,6 +40,21 @@ self.addEventListener('fetch', event => {
     );
     return;
   }
+
+  // Static assets – network first so deployments show the latest CSS/JS immediately
+  if (request.method === 'GET' && (url.pathname.startsWith('/static/') || url.pathname === '/manifest.json' || url.pathname === '/sw.js')) {
+    event.respondWith(
+      fetch(request)
+        .then(response => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+          return response;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
   // Other requests – cache first
   event.respondWith(
     caches.match(request).then(cached => cached || fetch(request))
