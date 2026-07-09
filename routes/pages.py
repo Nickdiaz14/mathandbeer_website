@@ -27,13 +27,6 @@ def sitemap():
 def robots_txt():
     return current_app.send_static_file('robots.txt')
 
-@pages_bp.route('/sw.js')
-def service_worker():
-    response = current_app.send_static_file('sw.js')
-    # Añadir header para indicar que es un archivo JS de Service Worker
-    response.headers['Content-Type'] = 'application/javascript'
-    return response
-
 @pages_bp.route('/manifest.json')
 def manifest():
     return current_app.send_static_file('manifest.json')
