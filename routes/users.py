@@ -59,11 +59,7 @@ def get_profile(userid):
         nick_row = cursor.fetchone()
         nickname = nick_row[0] if nick_row else None
 
-        # Verificar si la cuenta está vinculada (Mejora 1)
-        cursor.execute("SELECT email FROM user_credentials WHERE userid = %s;", (userid,))
-        email_row = cursor.fetchone()
-        is_linked = email_row is not None
-        linked_email = email_row[0] if is_linked else None
+        # La lógica de vinculación por correo ya no se usa.
 
         cursor.execute("SELECT COUNT(*) FROM comments WHERE userid = %s;", (userid,))
         total_comments = cursor.fetchone()[0]
@@ -167,8 +163,6 @@ def get_profile(userid):
 
     return jsonify({
         'nickname': nickname,
-        'is_linked': is_linked,
-        'email': linked_email,
         'stats': {'comments': total_comments, 'brindis': total_brindis, 'games': games_played},
         'records': records,
         'liked_talks': liked_talks,
