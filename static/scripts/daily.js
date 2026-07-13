@@ -111,6 +111,8 @@ function showPlayButton(data) {
             url = `/0h_n0?n=${data.game_size}&daily=true`;
         } else if (data.game_type === 'nerdle') {
             url = `/nerdle?n=${data.game_size}&daily=true`;
+        } else if (data.game_type === 'kenken') {
+            url = `/kenken?n=${data.game_size}&daily=true`;
         }
         window.location.href = url;
     };
@@ -122,7 +124,7 @@ function showResult(data) {
     const shareDiv = document.getElementById('daily-share');
 
     resultDiv.style.display = 'block';
-    
+
     if (data.record_type === 'points') {
         resultValue.textContent = `${data.user_record.toFixed(2)} pts`;
     } else {
@@ -145,53 +147,53 @@ async function loadLeaderboard() {
         tbody.innerHTML = '';
 
         data.ranking.forEach((register, index) => {
-                let colorClass = "#ffffff";
-                const mtr = document.createElement('tr');
-                const mtd_position = document.createElement('td');
-                const mtd_name = document.createElement('td');
-                const mtd_record = document.createElement('td');
-                const mtd_streak = document.createElement('td');
+            let colorClass = "#ffffff";
+            const mtr = document.createElement('tr');
+            const mtd_position = document.createElement('td');
+            const mtd_name = document.createElement('td');
+            const mtd_record = document.createElement('td');
+            const mtd_streak = document.createElement('td');
 
-                // register es el array [posición, nombre, record]
-                mtd_position.textContent = register[0];
-                mtd_name.textContent = register[1];
-                mtd_record.textContent = register[2];
-                mtd_streak.innerHTML = register[4] + ' <i class="fa-solid fa-fire me-1"></i>';
+            // register es el array [posición, nombre, record]
+            mtd_position.textContent = register[0];
+            mtd_name.textContent = register[1];
+            mtd_record.textContent = register[2];
+            mtd_streak.innerHTML = register[4] + ' <i class="fa-solid fa-fire me-1"></i>';
 
 
-                if (index === 0) {
-                    colorClass = "#f1c40f";
-                } else if (index === 1) {
-                    colorClass = "#7bafb9";
-                } else if (index === 2) {
-                    colorClass = "#bd6104";
-                }
+            if (index === 0) {
+                colorClass = "#f1c40f";
+            } else if (index === 1) {
+                colorClass = "#7bafb9";
+            } else if (index === 2) {
+                colorClass = "#bd6104";
+            }
 
-                if (localStorage.getItem('userId') === register[3]) {
-                    mtr.style.borderLeft = "3px solid var(--accent-math)";
-                    mtr.style.borderRight = "3px solid var(--accent-math)";
-                    mtd_position.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
-                    mtd_name.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
-                    mtd_record.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
-                    mtd_streak.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
-                }
+            if (localStorage.getItem('userId') === register[3]) {
+                mtr.style.borderLeft = "3px solid var(--accent-math)";
+                mtr.style.borderRight = "3px solid var(--accent-math)";
+                mtd_position.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
+                mtd_name.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
+                mtd_record.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
+                mtd_streak.style.backgroundColor = "color-mix(in srgb, var(--accent-math) 8%, transparent)";
+            }
 
-                mtd_position.style.color = colorClass;
-                mtd_name.style.color = colorClass;
-                mtd_record.style.color = colorClass;
-                mtd_streak.style.color = colorClass;
+            mtd_position.style.color = colorClass;
+            mtd_name.style.color = colorClass;
+            mtd_record.style.color = colorClass;
+            mtd_streak.style.color = colorClass;
 
-                mtr.appendChild(mtd_position);
-                mtr.appendChild(mtd_name);
-                mtr.appendChild(mtd_record);
-                mtr.appendChild(mtd_streak);
-                tbody.appendChild(mtr);
-            });
+            mtr.appendChild(mtd_position);
+            mtr.appendChild(mtd_name);
+            mtr.appendChild(mtd_record);
+            mtr.appendChild(mtd_streak);
+            tbody.appendChild(mtr);
+        });
 
         // If user not in top 10 but has played
         const extraLeaderboard = document.getElementById('extra_leaderboard');
         const extraRanking = document.getElementById('extra_ranking');
-        
+
         if (data.personal_ranking[0] !== '-' && parseInt(data.personal_ranking[0]) > 10) {
             extraLeaderboard.style.display = 'flex';
             extraRanking.innerHTML = '';
@@ -208,7 +210,7 @@ async function loadLeaderboard() {
         } else {
             extraLeaderboard.style.display = 'none';
         }
-        
+
         if (data.personal_ranking[0] !== '-') {
             document.getElementById('daily-result-pos').textContent = `Posición: ${data.personal_ranking[0]} de ${data.count_records}`;
         }
