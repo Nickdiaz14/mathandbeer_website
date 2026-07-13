@@ -143,7 +143,6 @@
             const baseImage = p.image_url || '../static/images/logos/logo_M&B.png';
             const defaultColor = (p.variations && p.variations.colores && p.variations.colores.find(c => /morado|purple|violeta/i.test(c))) || (p.variations && p.variations.colores && p.variations.colores[0]) || '';
             const initialImage = (p.category === 'buso' || p.category === 'pin' || p.category === 'forro') && defaultColor ? buildVariantImage(baseImage, defaultColor) : baseImage;
-            const needsFullSelection = p.category === 'buso';
 
             return `
                 <div class="product-card" style="--delay:${i}">
@@ -158,7 +157,6 @@
                         <p class="product-card__desc">${p.description || ''}</p>
                         <div class="product-card__price">${formatPrice(p.price)}</div>
                         ${variationHTML}
-                        ${needsFullSelection ? `<div class="product-card__hint">Elige color y talla para continuar</div>` : ''}
                         <button class="product-card__add-btn" data-product-id="${p.id}" ${p.category === 'buso' && variations.colores && variations.tallas ? 'disabled' : ''}>
                             <i class="fa-solid fa-cart-plus"></i> Agregar al carrito
                         </button>
