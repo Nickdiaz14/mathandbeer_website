@@ -31,6 +31,13 @@ def robots_txt():
 def manifest():
     return current_app.send_static_file('manifest.json')
 
+@pages_bp.route('/sw.js')
+def service_worker():
+    response = current_app.send_static_file('sw.js')
+    # Añadir header para indicar que es un archivo JS de Service Worker
+    response.headers['Content-Type'] = 'application/javascript'
+    return response
+
 @pages_bp.route('/')
 def page_about():
     with open("static/json/equipo.json", "r", encoding="utf-8") as f:
