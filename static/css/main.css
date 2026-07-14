@@ -586,6 +586,7 @@ hr {
 
 #nav-active {
   color: var(--accent-beer) !important;
+  pointer-events: none;
 }
 
 /* ── LIGHT SECTION ────────────────────────── */
