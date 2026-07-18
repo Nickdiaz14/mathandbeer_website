@@ -177,10 +177,6 @@ def page_register():
     m = request.args.get('m')
     return render_template('register.html', m=m)
 
-@pages_bp.route('/re-register')
-def page_re_register():
-    return render_template('re-register.html')
-
 @pages_bp.route('/0h_h1')
 def page_0hh1():
     n = request.args.get('n')
