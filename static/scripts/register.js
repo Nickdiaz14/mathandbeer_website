@@ -81,31 +81,29 @@ function generateUser() {
 }
 
 function validateUserId() {
-    // Si no hay UUID en localStorage, generar uno nuevo directamente
-    if (!user_id) {
-        localStorage.setItem('userId', crypto.randomUUID());
-        return;
-    }
-
-    // Si hay UUID, verificar si tiene nickname en la BD
     fetch('/seeUser', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: user_id })
+        body: JSON.stringify({
+            user_id: user_id
+        })
     })
         .then(response => response.json())
         .then(data => {
-            if (data.nickname) {
-                // UUID encontrado y tiene nickname → ir al menú
-                window.location.href = `/menu_games`;
-            } else {
-                // UUID existe en localStorage pero SIN nickname en la BD → re-register
-                window.location.href = `/re-register`;
+            if (data.valid) {
+                if (data.nickname) {
+                    // UUID encontrado y tiene nickname → ir al menú
+                    window.location.href = `/menu_games`;
+                } else {
+                    // UUID encontrado pero SIN nickname → ir a re-register
+                    window.location.href = `/re-register`;
+                }
+            }
+            else {
+                // UUID no existe en BD → generar uno nuevo
+                localStorage.setItem('userId', crypto.randomUUID());
             }
         })
-        .catch(() => {
-            // Error de red: dejar al usuario registrarse normalmente
-        });
 }
 
 validateUserId();
