@@ -6,6 +6,10 @@ const user_name = document.getElementById('nickname');
 const message_case = document.getElementById('case');
 
 document.addEventListener('DOMContentLoaded', function () {
+    if (user_id) {
+        const actualUUIDElement = document.getElementById('actual_UUID');
+        actualUUIDElement.textContent = `Tu ID de usuario actual es: ${user_id}`;
+    }
     message = document.body.dataset.m
     if (message) {
         if (message != 'None') {
@@ -87,9 +91,16 @@ function validateUserId() {
         .then(response => response.json())
         .then(data => {
             if (data.valid) {
-                window.location.href = `/menu_games`
+                if (data.nickname) {
+                    // UUID encontrado y tiene nickname → ir al menú
+                    window.location.href = `/menu_games`;
+                } else {
+                    // UUID encontrado pero SIN nickname → ir a re-register
+                    window.location.href = `/re-register`;
+                }
             }
             else {
+                // UUID no existe en BD → generar uno nuevo
                 localStorage.setItem('userId', crypto.randomUUID());
             }
         })

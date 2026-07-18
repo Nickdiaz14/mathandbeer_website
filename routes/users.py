@@ -24,7 +24,7 @@ def seeUserExistense():
     finally:
         cursor.close()
         release_connection(connection)
-    return jsonify({'valid': True if name else False})
+    return jsonify({'valid': True, 'nickname': name[0] if name else None})
 
 
 @users_bp.route('/generateUser', methods=['POST'])
