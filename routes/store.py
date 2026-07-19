@@ -268,6 +268,84 @@ def create_product():
         release_connection(connection)
 
 
+@store_bp.route('/api/admin/products/<int:product_id>', methods=['PUT'])
+def update_product(product_id):
+    data = request.get_json() or {}
+    userid = data.get('userid')
+    if userid not in ADMINS:
+        return jsonify({'error': 'No autorizado'}), 403
+
+    name = (data.get('name') or '').strip()
+    category = (data.get('category') or '').strip().lower()
+    price = data.get('price')
+    image_url = (data.get('image_url') or '').strip()
+    variations_raw = data.get('variations') or ''
+
+    if not name or not category or not price:
+        return jsonify({'error': 'Faltan datos obligatorios'}), 400
+    if category not in {'pin', 'forro', 'buso'}:
+        return jsonify({'error': 'Categoría inválida'}), 400
+
+    connection = get_connection()
+    try:
+        cursor = connection.cursor()
+        cursor.execute("""
+            UPDATE products
+            SET name = %s, category = %s, price = %s, image_url = %s, variations = %s
+            WHERE id = %s AND active = TRUE
+            RETURNING id;
+        """, (
+            name,
+            category,
+            int(price),
+            image_url or '../static/images/logos/logo_M&B.png',
+            json.dumps(_parse_variations(variations_raw, category)),
+            product_id
+        ))
+        row = cursor.fetchone()
+        if not row:
+            return jsonify({'error': 'Producto no encontrado'}), 404
+        connection.commit()
+        return jsonify({'success': True})
+    except Exception as e:
+        connection.rollback()
+        print('Error update_product:', e)
+        return jsonify({'error': 'Error al actualizar el producto'}), 500
+    finally:
+        cursor.close()
+        release_connection(connection)
+
+
+@store_bp.route('/api/admin/products/<int:product_id>', methods=['DELETE'])
+def delete_product(product_id):
+    data = request.get_json() or {}
+    userid = data.get('userid')
+    if userid not in ADMINS:
+        return jsonify({'error': 'No autorizado'}), 403
+
+    connection = get_connection()
+    try:
+        cursor = connection.cursor()
+        cursor.execute("""
+            UPDATE products
+            SET active = FALSE
+            WHERE id = %s
+            RETURNING id;
+        """, (product_id,))
+        row = cursor.fetchone()
+        if not row:
+            return jsonify({'error': 'Producto no encontrado'}), 404
+        connection.commit()
+        return jsonify({'success': True})
+    except Exception as e:
+        connection.rollback()
+        print('Error delete_product:', e)
+        return jsonify({'error': 'Error al eliminar el producto'}), 500
+    finally:
+        cursor.close()
+        release_connection(connection)
+
+
 @store_bp.route('/api/admin/orders')
 def admin_orders():
     userid = request.args.get('userid')

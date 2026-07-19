@@ -1,6 +1,6 @@
 /**
  * Math & Beer Store - Frontend Logic
- * Handles product catalog, cart, checkout, and admin order management.
+ * Handles product catalog, cart, checkout, search/sort, quick view, and admin management.
  */
 (function () {
     'use strict';
@@ -9,7 +9,10 @@
     let products = [];
     let cart = JSON.parse(localStorage.getItem('mb_cart') || '[]');
     let currentFilter = 'all';
+    let searchQuery = '';
+    let sortOrder = 'default';
     let isCheckoutMode = false;
+    let currentQuickViewProduct = null;
 
     // ── DOM Elements ───────────────────────────────────
     const grid = document.getElementById('store-grid');
@@ -31,6 +34,19 @@
     const adminOrdersList = document.getElementById('admin-orders-list');
     const productForm = document.getElementById('admin-product-form');
     const filterBtns = document.querySelectorAll('#store-filters .filter-btn');
+    
+    // New Elements
+    const searchInput = document.getElementById('search-input');
+    const sortSelect = document.getElementById('sort-select');
+    const quickViewModal = document.getElementById('quick-view-modal');
+    const quickViewClose = document.getElementById('quick-view-close');
+    const adminTabs = document.querySelectorAll('.admin-tab');
+    const adminOrdersTab = document.getElementById('admin-orders-tab');
+    const adminProductsTab = document.getElementById('admin-products-tab');
+    const adminProductsList = document.getElementById('admin-products-list');
+    const adminProductCancelBtn = document.getElementById('admin-product-cancel');
+    const adminProductSubmitBtn = document.getElementById('admin-product-submit');
+    const adminProductTitle = document.getElementById('admin-product-form-title');
 
     // ── Helpers ────────────────────────────────────────
     function formatPrice(price) {
@@ -65,6 +81,13 @@
         return `${baseImage.slice(0, lastDot)}_${cleanColor}${baseImage.slice(lastDot)}`;
     }
 
+    // Preload image helper
+    function preloadImage(url) {
+        if (!url) return;
+        const img = new Image();
+        img.src = url;
+    }
+
     function saveCart() {
         localStorage.setItem('mb_cart', JSON.stringify(cart));
         updateCartBadge();
@@ -86,6 +109,14 @@
                 countEl.textContent = products.length;
             }
             renderProducts();
+            if (adminPanel.style.display === 'block') {
+                renderAdminProducts();
+            }
+            
+            // Preload base images
+            products.forEach(p => {
+                if(p.image_url) preloadImage(p.image_url);
+            });
         } catch (err) {
             console.error('Error loading products:', err);
             grid.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:40px;">Error al cargar los productos</p>';
@@ -94,9 +125,21 @@
 
     // ── Render Products ────────────────────────────────
     function renderProducts() {
-        const filtered = currentFilter === 'all'
+        let filtered = currentFilter === 'all'
             ? products
             : products.filter(p => p.category === currentFilter);
+
+        if (searchQuery) {
+            const q = searchQuery.toLowerCase();
+            filtered = filtered.filter(p => p.name.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)));
+        }
+
+        // We make a copy of filtered to sort it without mutating original if it was just returning a reference
+        filtered = [...filtered]; 
+        
+        if (sortOrder === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+        else if (sortOrder === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+        else if (sortOrder === 'name-asc') filtered.sort((a, b) => a.name.localeCompare(b.name));
 
         if (filtered.length === 0) {
             grid.innerHTML = '';
@@ -146,7 +189,7 @@
 
             return `
                 <div class="product-card" style="--delay:${i}">
-                    <div class="product-card__image">
+                    <div class="product-card__image" style="cursor:pointer;" onclick="window.openQuickView(${p.id})">
                         <img src="${initialImage}" alt="${p.name}" loading="lazy" data-base-image="${baseImage}" data-fallback="../static/images/logos/logo_M&B.png" onerror="this.src === this.dataset.baseImage ? (this.src = this.dataset.fallback) : (this.src = this.dataset.baseImage)">
                     </div>
                     <div class="product-card__body">
@@ -164,22 +207,35 @@
                 </div>`;
         }).join('');
 
+        // Preload variant images on hover over the card to speed up switching
+        grid.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const chips = card.querySelectorAll('.variation-chip[data-variation-type="color"]');
+                const img = card.querySelector('.product-card__image img');
+                const baseImage = img ? (img.dataset.baseImage || '../static/images/logos/logo_M&B.png') : null;
+                if(baseImage) {
+                    chips.forEach(chip => {
+                        preloadImage(buildVariantImage(baseImage, chip.dataset.variation));
+                    });
+                }
+            }, {once: true}); // Only run once per card
+        });
+
         // Bind variation chip clicks
         grid.querySelectorAll('.variation-chip').forEach(chip => {
-            chip.addEventListener('click', function () {
+            chip.addEventListener('click', function (e) {
+                e.stopPropagation();
                 const chipsGroup = this.closest('.variation-chips');
                 const siblings = chipsGroup.querySelectorAll('.variation-chip');
                 siblings.forEach(s => s.classList.remove('selected'));
                 this.classList.add('selected');
 
-                const card = this.closest('.product-card');
-                const img = card.querySelector('.product-card__image img');
+                const card = this.closest('.product-card') || this.closest('.quick-view-content');
+                const img = card.querySelector('img');
                 const addBtn = card.querySelector('.product-card__add-btn');
                 const selectedVariation = this.dataset.variation;
                 const selectedType = this.dataset.variationType;
-                const selectedColor = card.querySelector('.variation-chip.selected[data-variation-type="color"]');
-                const selectedSize = card.querySelector('.variation-chip.selected[data-variation-type="size"]');
-
+                
                 if (selectedType === 'color' && img) {
                     const baseImage = img.dataset.baseImage || '../static/images/logos/logo_M&B.png';
                     const filename = buildVariantImage(baseImage, selectedVariation);
@@ -188,8 +244,12 @@
                     img.dataset.fallback = img.dataset.fallback || '../static/images/logos/logo_M&B.png';
                 }
 
+                // Check button state
+                const categoryEl = card.querySelector('.product-card__category');
+                const isBuso = categoryEl && categoryEl.textContent.toLowerCase().includes('buso');
                 const hasColor = !!card.querySelector('.variation-chip.selected[data-variation-type="color"]');
-                const hasSize = card.querySelector('.product-card__category').textContent === 'Buso' ? !!card.querySelector('.variation-chip.selected[data-variation-type="size"]') : true;
+                const hasSize = isBuso ? !!card.querySelector('.variation-chip.selected[data-variation-type="size"]') : true;
+                
                 if (card.querySelector('.product-card__variations') && hasColor && hasSize) {
                     addBtn.disabled = false;
                 } else {
@@ -200,44 +260,159 @@
 
         // Bind add-to-cart buttons
         grid.querySelectorAll('.product-card__add-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const productId = parseInt(this.dataset.productId);
-                const product = products.find(p => p.id === productId);
-                if (!product) return;
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                handleAddToCartClick(this);
+            });
+        });
+    }
 
-                let variation = '';
-                let color = '';
-                let size = '';
-                const card = this.closest('.product-card');
+    function handleAddToCartClick(btnElement) {
+        const productId = parseInt(btnElement.dataset.productId);
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
 
-                if (product.category === 'forro') {
-                    const input = card.querySelector('.variation-input');
-                    variation = input ? input.value.trim() : '';
-                    if (!variation) {
-                        showToast('Escribe el modelo de tu celular', 'error');
-                        input?.focus();
-                        return;
-                    }
-                } else {
-                    const selectedColor = card.querySelector('.variation-chip.selected[data-variation-type="color"]');
-                    const selectedSize = card.querySelector('.variation-chip.selected[data-variation-type="size"]');
-                    const selectedParts = [];
-                    if (selectedColor) {
-                        color = selectedColor.dataset.variation;
-                        selectedParts.push(color);
-                    }
-                    if (selectedSize) {
-                        size = selectedSize.dataset.variation;
-                        selectedParts.push(size);
-                    }
-                    variation = selectedParts.join(' / ');
+        let variation = '';
+        let color = '';
+        let size = '';
+        const card = btnElement.closest('.product-card') || btnElement.closest('.quick-view-content');
+
+        if (product.category === 'forro') {
+            const input = card.querySelector('.variation-input');
+            variation = input ? input.value.trim() : '';
+            if (!variation) {
+                showToast('Escribe el modelo de tu celular', 'error');
+                input?.focus();
+                return;
+            }
+        } else {
+            const selectedColor = card.querySelector('.variation-chip.selected[data-variation-type="color"]');
+            const selectedSize = card.querySelector('.variation-chip.selected[data-variation-type="size"]');
+            const selectedParts = [];
+            if (selectedColor) {
+                color = selectedColor.dataset.variation;
+                selectedParts.push(color);
+            }
+            if (selectedSize) {
+                size = selectedSize.dataset.variation;
+                selectedParts.push(size);
+            }
+            variation = selectedParts.join(' / ');
+        }
+
+        // capture the currently visible image for the selected variant (if any)
+        const img = card.querySelector('img');
+        const selectedImage = (img && (img.dataset.selectedImage || img.src)) || product.image_url;
+        addToCart(productId, variation, color, size, selectedImage);
+        
+        if (quickViewModal && quickViewModal.style.display === 'flex') {
+            closeQuickView();
+        }
+    }
+
+    // ── Quick View Logic ───────────────────────────────
+    window.openQuickView = function(productId) {
+        const product = products.find(p => p.id === productId);
+        if(!product) return;
+        currentQuickViewProduct = product;
+
+        document.getElementById('quick-view-name').textContent = product.name;
+        document.getElementById('quick-view-desc').textContent = product.description || '';
+        document.getElementById('quick-view-price').textContent = formatPrice(product.price);
+        document.getElementById('quick-view-category').innerHTML = `<i class="fa-solid ${getCategoryIcon(product.category)}"></i> ${getCategoryLabel(product.category)}`;
+        
+        const imgEl = document.getElementById('quick-view-image');
+        const baseImage = product.image_url || '../static/images/logos/logo_M&B.png';
+        imgEl.dataset.baseImage = baseImage;
+        imgEl.dataset.fallback = '../static/images/logos/logo_M&B.png';
+        
+        // Generate Variations HTML
+        const variations = product.variations || {};
+        let variationHTML = '';
+        let defaultColor = '';
+
+        if (product.category === 'buso') {
+            const colorOptions = variations.colores || [];
+            const sizeOptions = variations.tallas || [];
+            defaultColor = colorOptions.find(c => /morado|purple|violeta/i.test(c)) || colorOptions[0] || '';
+            const defaultSize = sizeOptions[0] || '';
+            variationHTML = `
+                ${colorOptions.length ? `<span class="variation-label">Color</span><div class="variation-chips variation-chips--colors">${colorOptions.map(c => `<button class="variation-chip${c === defaultColor ? ' selected' : ''}" data-variation="${c}" data-variation-type="color">${c}</button>`).join('')}</div>` : ''}
+                ${sizeOptions.length ? `<span class="variation-label">Talla</span><div class="variation-chips">${sizeOptions.map(t => `<button class="variation-chip${t === defaultSize ? ' selected' : ''}" data-variation="${t}" data-variation-type="size">${t}</button>`).join('')}</div>` : ''}
+            `;
+        } else if (product.category === 'pin' && variations.colores) {
+            const colorOptions = variations.colores || [];
+            defaultColor = colorOptions.find(c => /morado|purple|violeta/i.test(c)) || colorOptions[0] || '';
+            variationHTML = `
+                <span class="variation-label">Color</span>
+                <div class="variation-chips">
+                    ${colorOptions.map(c => `<button class="variation-chip${c === defaultColor ? ' selected' : ''}" data-variation="${c}" data-variation-type="color">${c}</button>`).join('')}
+                </div>
+            `;
+        } else if (product.category === 'forro') {
+            const colorOptions = variations.colores || [];
+            defaultColor = colorOptions.find(c => /morado|purple|violeta/i.test(c)) || colorOptions[0] || '';
+            variationHTML = `
+                ${colorOptions.length ? `<span class="variation-label">Color</span><div class="variation-chips">${colorOptions.map(c => `<button class="variation-chip${c === defaultColor ? ' selected' : ''}" data-variation="${c}" data-variation-type="color">${c}</button>`).join('')}</div>` : ''}
+                <span class="variation-label">Modelo de celular (por encargo)</span>
+                <input type="text" class="variation-input" placeholder="Ej: iPhone 15, Samsung S24..." data-product-id="${product.id}">
+            `;
+        }
+
+        document.getElementById('quick-view-variations').innerHTML = variationHTML;
+        
+        const initialImage = defaultColor ? buildVariantImage(baseImage, defaultColor) : baseImage;
+        imgEl.src = initialImage;
+        imgEl.dataset.selectedImage = initialImage;
+
+        const addBtn = document.getElementById('quick-view-add-btn');
+        addBtn.dataset.productId = product.id;
+        addBtn.disabled = (product.category === 'buso' && variations.colores && variations.tallas);
+
+        // Rebind chips inside modal
+        quickViewModal.querySelectorAll('.variation-chip').forEach(chip => {
+            chip.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const chipsGroup = this.closest('.variation-chips');
+                const siblings = chipsGroup.querySelectorAll('.variation-chip');
+                siblings.forEach(s => s.classList.remove('selected'));
+                this.classList.add('selected');
+
+                const selectedVariation = this.dataset.variation;
+                if (this.dataset.variationType === 'color') {
+                    const filename = buildVariantImage(baseImage, selectedVariation);
+                    imgEl.src = filename;
+                    imgEl.dataset.selectedImage = filename;
                 }
 
-                // capture the currently visible image for the selected variant (if any)
-                const img = card.querySelector('.product-card__image img');
-                const selectedImage = (img && (img.dataset.selectedImage || img.src)) || product.image_url;
-                addToCart(productId, variation, color, size, selectedImage);
+                const hasColor = !!quickViewModal.querySelector('.variation-chip.selected[data-variation-type="color"]');
+                const hasSize = product.category === 'buso' ? !!quickViewModal.querySelector('.variation-chip.selected[data-variation-type="size"]') : true;
+                
+                addBtn.disabled = !(hasColor && hasSize);
             });
+        });
+
+        quickViewModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    };
+
+    function closeQuickView() {
+        quickViewModal.style.display = 'none';
+        document.body.style.overflow = '';
+        currentQuickViewProduct = null;
+    }
+
+    if(quickViewClose) quickViewClose.addEventListener('click', closeQuickView);
+    if(quickViewModal) {
+        quickViewModal.addEventListener('click', function(e) {
+            if(e.target === quickViewModal) closeQuickView();
+        });
+    }
+    
+    const quickViewAddBtn = document.getElementById('quick-view-add-btn');
+    if(quickViewAddBtn) {
+        quickViewAddBtn.addEventListener('click', function() {
+            handleAddToCartClick(this);
         });
     }
 
@@ -449,15 +624,16 @@
             showToast('Error de conexión. Intenta de nuevo.', 'error');
         } finally {
             whatsappBtn.disabled = false;
-            whatsappBtn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Pedir por WhatsApp';
+            whatsappBtn.innerHTML = '<i class="brands fa-whatsapp"></i> Pedir por WhatsApp';
         }
     }
 
-    // ── Admin: Create product ─────────────────────────
+    // ── Admin: Create & Update Product ─────────────────────────
     if (productForm) {
         productForm.addEventListener('submit', async function (event) {
             event.preventDefault();
             const formData = new FormData(productForm);
+            const productId = document.getElementById('admin-product-id').value;
             const payload = {
                 userid: localStorage.getItem('userid'),
                 name: formData.get('name')?.toString().trim(),
@@ -469,25 +645,107 @@
             };
 
             try {
-                const res = await fetch('/api/admin/products', {
-                    method: 'POST',
+                let url = '/api/admin/products';
+                let method = 'POST';
+                if (productId) {
+                    url = `/api/admin/products/${productId}`;
+                    method = 'PUT';
+                }
+
+                const res = await fetch(url, {
+                    method: method,
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
                 const data = await res.json();
                 if (data.success) {
-                    productForm.reset();
-                    showToast('Diseño guardado correctamente', 'success');
+                    resetAdminForm();
+                    showToast(`Diseño ${productId ? 'actualizado' : 'guardado'} correctamente`, 'success');
                     loadProducts();
                 } else {
                     showToast(data.error || 'No se pudo guardar el diseño', 'error');
                 }
             } catch (err) {
-                console.error('Error creating product:', err);
+                console.error('Error saving product:', err);
                 showToast('Error de conexión al guardar el diseño', 'error');
             }
         });
+
+        if (adminProductCancelBtn) {
+            adminProductCancelBtn.addEventListener('click', resetAdminForm);
+        }
     }
+
+    function resetAdminForm() {
+        if(productForm) productForm.reset();
+        const idInput = document.getElementById('admin-product-id');
+        if(idInput) idInput.value = '';
+        if(adminProductTitle) adminProductTitle.textContent = 'Agregar un nuevo diseño';
+        if(adminProductSubmitBtn) adminProductSubmitBtn.textContent = 'Guardar diseño';
+        if(adminProductCancelBtn) adminProductCancelBtn.style.display = 'none';
+    }
+
+    function renderAdminProducts() {
+        if (!adminProductsList) return;
+        if (products.length === 0) {
+            adminProductsList.innerHTML = '<p style="color:var(--text-muted);">No hay productos.</p>';
+            return;
+        }
+
+        adminProductsList.innerHTML = products.map(p => `
+            <div class="admin-product-item">
+                <div>
+                    <strong>${p.name}</strong> - ${formatPrice(p.price)}
+                    <div style="font-size:0.8rem; color:var(--text-muted);">${getCategoryLabel(p.category)}</div>
+                </div>
+                <div class="admin-product-item-actions">
+                    <button class="edit" onclick="window.editAdminProduct(${p.id})"><i class="fa-solid fa-pen"></i> Editar</button>
+                    <button class="delete" onclick="window.deleteAdminProduct(${p.id})"><i class="fa-solid fa-trash"></i> Desactivar</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    window.editAdminProduct = function(id) {
+        const product = products.find(p => p.id === id);
+        if (!product) return;
+        document.getElementById('admin-product-id').value = product.id;
+        document.getElementById('admin-product-name').value = product.name;
+        document.getElementById('admin-product-image').value = product.image_url || '';
+        document.getElementById('admin-product-category').value = product.category;
+        document.getElementById('admin-product-price').value = product.price;
+        document.getElementById('admin-product-desc').value = product.description || '';
+        document.getElementById('admin-product-var').value = product.variations && Object.keys(product.variations).length > 0 ? JSON.stringify(product.variations) : '';
+        
+        adminProductTitle.textContent = `Editar diseño: ${product.name}`;
+        adminProductSubmitBtn.textContent = 'Actualizar diseño';
+        adminProductCancelBtn.style.display = 'inline-block';
+        
+        // Scroll to form
+        productForm.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    window.deleteAdminProduct = async function(id) {
+        if (!confirm('¿Estás seguro de que deseas desactivar este producto? Ya no aparecerá en la tienda.')) return;
+        const userid = localStorage.getItem('userid');
+        try {
+            const res = await fetch(`/api/admin/products/${id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userid: userid })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast('Producto desactivado', 'success');
+                loadProducts();
+            } else {
+                showToast(data.error || 'Error al desactivar', 'error');
+            }
+        } catch (err) {
+            showToast('Error de conexión', 'error');
+        }
+    };
+
 
     // ── Admin: Load Orders ─────────────────────────────
     async function loadAdminOrders(statusFilter = 'all') {
@@ -602,6 +860,7 @@
             if (data.is_admin) {
                 adminPanel.style.display = 'block';
                 loadAdminOrders();
+                renderAdminProducts();
 
                 // Admin status filter buttons
                 adminPanel.querySelectorAll('.filter-btn').forEach(btn => {
@@ -629,6 +888,37 @@
         });
     });
 
+    // Search and Sort
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderProducts();
+        });
+    }
+
+    if (sortSelect) {
+        sortSelect.addEventListener('change', (e) => {
+            sortOrder = e.target.value;
+            renderProducts();
+        });
+    }
+
+    // Admin Tabs
+    adminTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            adminTabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            const target = this.dataset.tab;
+            if (target === 'orders') {
+                adminOrdersTab.style.display = 'block';
+                adminProductsTab.style.display = 'none';
+            } else {
+                adminOrdersTab.style.display = 'none';
+                adminProductsTab.style.display = 'block';
+            }
+        });
+    });
+
     // Cart FAB
     cartFab.addEventListener('click', openCart);
 
@@ -651,10 +941,14 @@
     // WhatsApp submit
     whatsappBtn.addEventListener('click', submitOrder);
 
-    // Keyboard: Escape to close cart
+    // Keyboard: Escape to close cart or quick view
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && cartDrawer.classList.contains('cart-drawer--open')) {
-            closeCart();
+        if (e.key === 'Escape') {
+            if (cartDrawer.classList.contains('cart-drawer--open')) {
+                closeCart();
+            } else if (quickViewModal && quickViewModal.style.display === 'flex') {
+                closeQuickView();
+            }
         }
     });
 
