@@ -198,6 +198,7 @@ function valid_solution() {
 
 function sendRecord() {
     const isDaily = isDailyMode();
+    const groupId = getGroupId();
     const submitUrl = isDaily ? '/api/daily/submit' : '/leaderboard/submit';
 
     fetch(submitUrl, {
@@ -206,7 +207,8 @@ function sendRecord() {
         body: JSON.stringify({
             game: `T0${n}`,
             record: centisecondsElapsed,
-            userid: localStorage.getItem('userId')
+            userid: localStorage.getItem('userId'),
+            group_id: groupId
         })
     })
         .then(response => response.json())
@@ -214,7 +216,8 @@ function sendRecord() {
             if (isDaily) {
                 window.location.href = '/daily';
             } else {
-                window.location.href = `/leaderboard?game=T0${n}&name=0h-n0 - ${n}&better=${data.better}&type=1&record=${centisecondsElapsed}`
+                const groupParam = groupId !== 'default' ? `&group_id=${encodeURIComponent(groupId)}` : '';
+                window.location.href = `/leaderboard?game=T0${n}&name=0h-n0 - ${n}&better=${data.better}&type=1&record=${centisecondsElapsed}${groupParam}`;
             }
         })
 }

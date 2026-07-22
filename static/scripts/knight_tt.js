@@ -214,17 +214,20 @@ function endGame() {
     Object.keys(cellCountdowns).forEach(key => clearInterval(cellCountdowns[key]));
     cells.forEach(cell => cell.classList.add('locked'));
 
+    const groupId = getGroupId();
     fetch('/leaderboard/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             game: 'TKnightTT',
             record: score,
-            userid: localStorage.getItem('userId')
+            userid: localStorage.getItem('userId'),
+            group_id: groupId
         })
     })
         .then(response => response.json())
         .then(data => {
-            window.location.href = `/leaderboard?game=TKnightTT&name=Salto+Real+Contrarreloj&better=${data.better}&type=3&record=${score}`;
+            const groupParam = groupId !== 'default' ? `&group_id=${encodeURIComponent(groupId)}` : '';
+            window.location.href = `/leaderboard?game=TKnightTT&name=Salto+Real+Contrarreloj&better=${data.better}&type=3&record=${score}${groupParam}`;
         });
 }

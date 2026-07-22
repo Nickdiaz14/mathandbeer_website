@@ -314,6 +314,7 @@ function stopTimer() {
 function sendRecord() {
     stopTimer();
     const isDaily = isDailyMode();
+    const groupId = getGroupId();
     const gameName = `KenKen ${n}×${n}`;
     const boardCode = `KK${n}`;
 
@@ -325,7 +326,8 @@ function sendRecord() {
         body: JSON.stringify({
             game: boardCode,
             record: centisecondsElapsed,
-            userid: localStorage.getItem('userId')
+            userid: localStorage.getItem('userId'),
+            group_id: groupId
         })
     })
         .then(response => response.json())
@@ -342,7 +344,8 @@ function sendRecord() {
                     window.location.href = '/daily';
                 }, data.consumed_freeze || data.earned_freeze ? 2000 : 1000);
             } else {
-                window.location.href = `/leaderboard?game=${boardCode}&name=${gameName}&better=${data.better}&type=1&record=${centisecondsElapsed}`;
+                const groupParam = groupId !== 'default' ? `&group_id=${encodeURIComponent(groupId)}` : '';
+                window.location.href = `/leaderboard?game=${boardCode}&name=${gameName}&better=${data.better}&type=1&record=${centisecondsElapsed}${groupParam}`;
             }
         })
         .catch(err => {

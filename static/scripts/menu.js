@@ -1,6 +1,8 @@
 const userId = localStorage.getItem('userId');
 
 document.addEventListener('DOMContentLoaded', () => {
+    preserveGroupIdInLinks();
+
     if (!userId) {
         window.location.href = '/register?m=Para jugar necesitas un registro previo';
     } else {
@@ -12,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     const nickname = data.nickname;
                     const nicknameElement = document.getElementsByClassName('title');
-                    if (nicknameElement) {
+                    if (nicknameElement && nicknameElement.length > 0) {
                         nicknameElement[0].innerHTML = '¡Hola, ' + nickname + '! <br> Elige un juego';
                     }
                 }

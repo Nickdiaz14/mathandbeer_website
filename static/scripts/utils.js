@@ -63,6 +63,57 @@ function isDailyMode() {
 }
 
 /**
+ * Retorna el parámetro group_id de la URL o el almacenado en sesión, o 'default' si no existe.
+ */
+function getGroupId() {
+    const urlGroupId = new URLSearchParams(window.location.search).get('group_id');
+    if (urlGroupId) {
+        sessionStorage.setItem('group_id', urlGroupId);
+        return urlGroupId;
+    }
+    return sessionStorage.getItem('group_id') || 'default';
+}
+
+/**
+ * Recorre todos los enlaces internos y del menú de navegación para asegurar que conserven ?group_id=...
+ */
+function preserveGroupIdInLinks() {
+    const groupId = getGroupId();
+    if (groupId === 'default') return;
+
+    // Enlaces de navegación a, marcas/logos y botones con redirección
+    document.querySelectorAll('a[href], button[onclick*="location.href"]').forEach(el => {
+        if (el.tagName === 'A') {
+            const href = el.getAttribute('href');
+            if (href && !href.startsWith('#') && !href.startsWith('javascript:') && !href.startsWith('http://') && !href.startsWith('https://')) {
+                try {
+                    const targetUrl = new URL(href, window.location.origin);
+                    targetUrl.searchParams.set('group_id', groupId);
+                    el.setAttribute('href', `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`);
+                } catch (e) { /* ignorar URLs malformadas */ }
+            }
+        } else if (el.tagName === 'BUTTON') {
+            const currentOnclick = el.getAttribute('onclick');
+            const match = currentOnclick ? currentOnclick.match(/window\.location\.href=['"]([^'"]+)['"]/) : null;
+            if (match) {
+                const targetPath = match[1];
+                if (!targetPath.startsWith('http://') && !targetPath.startsWith('https://')) {
+                    try {
+                        const targetUrl = new URL(targetPath, window.location.origin);
+                        targetUrl.searchParams.set('group_id', groupId);
+                        el.setAttribute('onclick', `window.location.href='${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}'`);
+                    } catch (e) { /* ignorar */ }
+                }
+            }
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    preserveGroupIdInLinks();
+});
+
+/**
  * Configura los controles comunes de todos los juegos:
  * botón volver, botón recargar y el handler de pageshow para bfcache.
  */

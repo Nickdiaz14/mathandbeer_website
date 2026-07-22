@@ -67,10 +67,10 @@ def get_profile(userid):
         cursor.execute("SELECT COUNT(*) FROM reactions WHERE userid = %s;", (userid,))
         total_brindis = cursor.fetchone()[0]
 
-        cursor.execute("SELECT COUNT(DISTINCT board) FROM leaderboard WHERE userid = %s;", (userid,))
+        cursor.execute("SELECT COUNT(DISTINCT board) FROM leaderboard WHERE userid = %s AND group_id = 'default';", (userid,))
         games_played = cursor.fetchone()[0]
 
-        cursor.execute("SELECT board, string_record FROM leaderboard WHERE userid = %s ORDER BY board;", (userid,))
+        cursor.execute("SELECT board, string_record FROM leaderboard WHERE userid = %s AND group_id = 'default' ORDER BY board;", (userid,))
         user_boards = cursor.fetchall()
 
         records = []
@@ -83,7 +83,7 @@ def get_profile(userid):
             cursor.execute(f"""
                 SELECT position FROM (
                     SELECT ROW_NUMBER() OVER (ORDER BY record {order_type}) AS position, userid
-                    FROM leaderboard WHERE board = %s
+                    FROM leaderboard WHERE board = %s AND group_id = 'default'
                 ) t WHERE userid = %s;
             """, (b, userid))
             pos = cursor.fetchone()

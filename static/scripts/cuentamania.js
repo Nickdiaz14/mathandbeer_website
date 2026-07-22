@@ -130,12 +130,14 @@ function max_value(matrix) {
 function sendRecord() {
     stop_timer();
     const isDaily = isDailyMode();
+    const groupId = getGroupId();
+    const groupParam = groupId !== 'default' ? `&group_id=${encodeURIComponent(groupId)}` : '';
 
     if (max_value(user_matrix) !== n * n) {
         if (isDaily) {
             window.location.href = '/daily';
         } else {
-            window.location.href = `/leaderboard?game=TS${n}&name=${game_name}&better=false&type=1`;
+            window.location.href = `/leaderboard?game=TS${n}&name=${game_name}&better=false&type=1${groupParam}`;
         }
         return;
     }
@@ -148,7 +150,8 @@ function sendRecord() {
         body: JSON.stringify({
             game: `TS${n}`,
             record: centisecondsElapsed,
-            userid: localStorage.getItem('userId')
+            userid: localStorage.getItem('userId'),
+            group_id: groupId
         })
     })
         .then(response => response.json())
@@ -156,7 +159,7 @@ function sendRecord() {
             if (isDaily) {
                 window.location.href = '/daily';
             } else {
-                window.location.href = `/leaderboard?game=TS${n}&name=${game_name}&better=${data.better}&type=1&record=${centisecondsElapsed}`
+                window.location.href = `/leaderboard?game=TS${n}&name=${game_name}&better=${data.better}&type=1&record=${centisecondsElapsed}${groupParam}`
             }
         })
 }

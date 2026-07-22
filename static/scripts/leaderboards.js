@@ -37,7 +37,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (back) {
         back.addEventListener('click', () => {
-            window.location.href = `/menu_games`;
+            const groupId = getGroupId();
+            const url = groupId !== 'default' ? `/menu_games?group_id=${encodeURIComponent(groupId)}` : '/menu_games';
+            window.location.href = url;
         });
     }
 
@@ -68,13 +70,15 @@ document.addEventListener('DOMContentLoaded', function () {
 function updateLeaderboard() {
     game_name = document.body.dataset.game || document.getElementById('select').value;
     const userid = localStorage.getItem('userId');
+    const groupId = getGroupId();
     showSkeletonRows(leader, records || 10);
     fetch('/leaderboard/consult', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             game: game_name,
-            userid: userid
+            userid: userid,
+            group_id: groupId
         })
     })
         .then(response => response.json())

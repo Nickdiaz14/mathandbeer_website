@@ -240,17 +240,20 @@ function valid_solution() {
 }
 
 function sendRecord() {
+    const groupId = getGroupId();
     fetch('/leaderboard/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             game: `TContrareloj`,
             record: boards_solved,
-            userid: localStorage.getItem('userId')
+            userid: localStorage.getItem('userId'),
+            group_id: groupId
         })
     })
         .then(response => response.json())
         .then(data => {
-            window.location.href = `/leaderboard?game=TContrareloj&name=0hh1 Contrareloj&better=${data.better}&type=3&record=${boards_solved}`
+            const groupParam = groupId !== 'default' ? `&group_id=${encodeURIComponent(groupId)}` : '';
+            window.location.href = `/leaderboard?game=TContrareloj&name=0hh1 Contrareloj&better=${data.better}&type=3&record=${boards_solved}${groupParam}`;
         })
 }

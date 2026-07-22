@@ -180,6 +180,7 @@ function valid_solution() {
 
 function sendRecord() {
     const isDaily = isDailyMode();
+    const groupId = getGroupId();
     const submitUrl = isDaily ? '/api/daily/submit' : '/leaderboard/submit';
     const recordVal = 100000.0 / (((centisecondsElapsed / 100) + 1) * (moves + 1));
 
@@ -189,7 +190,8 @@ function sendRecord() {
         body: JSON.stringify({
             game: `TKnight`,
             record: recordVal,
-            userid: localStorage.getItem('userId')
+            userid: localStorage.getItem('userId'),
+            group_id: groupId
         })
     })
         .then(response => response.json())
@@ -197,7 +199,8 @@ function sendRecord() {
             if (isDaily) {
                 window.location.href = '/daily';
             } else {
-                window.location.href = `/leaderboard?game=TKnight&name=Salto Real&better=${data.better}&type=2&record=${recordVal}`
+                const groupParam = groupId !== 'default' ? `&group_id=${encodeURIComponent(groupId)}` : '';
+                window.location.href = `/leaderboard?game=TKnight&name=Salto Real&better=${data.better}&type=2&record=${recordVal}${groupParam}`
             }
         })
 }

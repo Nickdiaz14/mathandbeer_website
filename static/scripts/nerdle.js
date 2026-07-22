@@ -263,6 +263,7 @@ function set_colors(correct) {
 
 function sendRecord() {
     const isDaily = isDailyMode();
+    const groupId = getGroupId();
     const submitUrl = isDaily ? '/api/daily/submit' : '/leaderboard/submit';
     const recordVal = 100000.0 / (((centisecondsElapsed / 100) + 1) * (guess_row + 1));
 
@@ -272,7 +273,8 @@ function sendRecord() {
         body: JSON.stringify({
             game: `NRD${n}`,
             record: recordVal,
-            userid: localStorage.getItem('userId')
+            userid: localStorage.getItem('userId'),
+            group_id: groupId
         })
     })
         .then(response => response.json())
@@ -281,7 +283,8 @@ function sendRecord() {
                 window.location.href = '/daily';
             } else {
                 const game_name = n == 6 ? 'Mini-Nerdle' : n == 8 ? 'Nerdle' : 'Maxi-Nerdle';
-                window.location.href = `/leaderboard?game=NRD${n}&name=${game_name}&better=${data.better}&type=2&record=${recordVal}`
+                const groupParam = groupId !== 'default' ? `&group_id=${encodeURIComponent(groupId)}` : '';
+                window.location.href = `/leaderboard?game=NRD${n}&name=${game_name}&better=${data.better}&type=2&record=${recordVal}${groupParam}`
             }
         })
 }

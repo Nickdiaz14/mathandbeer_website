@@ -158,6 +158,7 @@ def update_leaderboard():
     user_id = request.json['userid']
     board = request.json['game']
     record_raw = request.json['record']
+    group_id = request.json.get('group_id') or 'default'
 
     count_games = ['TContrareloj', 'TUnicolor', 'TBicolor', 'TProgresivo', 'TAleatorio']
     points_games = ['TCruzado', 'TKnight', 'NRD6', 'NRD8', 'NRD10']
@@ -184,7 +185,7 @@ def update_leaderboard():
             string_record = f'{(record//6000):02}:{((record%6000)//100):02}.{(record%100):02}'
             is_better = lambda new, old: new < old
 
-        cursor.execute("SELECT id, record FROM leaderboard WHERE userid = %s AND board = %s;", (user_id, board))
+        cursor.execute("SELECT id, record FROM leaderboard WHERE userid = %s AND board = %s AND group_id = %s;", (user_id, board, group_id))
         prev_record = cursor.fetchone()
 
         if prev_record:
@@ -194,7 +195,7 @@ def update_leaderboard():
                 cursor.execute("UPDATE leaderboard SET record = %s, string_record = %s WHERE id = %s;", (record, string_record, lead_id))
                 better = True
         else:
-            cursor.execute("INSERT INTO leaderboard (board, userid, record, string_record) VALUES (%s, %s, %s, %s);", (board, user_id, record, string_record))
+            cursor.execute("INSERT INTO leaderboard (board, userid, record, string_record, group_id) VALUES (%s, %s, %s, %s, %s);", (board, user_id, record, string_record, group_id))
 
         connection.commit()
     except Exception as e:
@@ -209,6 +210,7 @@ def update_leaderboard():
 def get_leaderboard():
     user_id = request.json['userid']
     board = request.json['game']
+    group_id = request.json.get('group_id') or 'default'
     desc = ['TContrareloj', 'TUnicolor', 'TBicolor', 'TProgresivo', 'TAleatorio', 'TCruzado', 'TKnight', 'NRD6', 'NRD8', 'NRD10', 'TKnightTT']
     order_type = "DESC" if board in desc else ""
 
@@ -217,21 +219,25 @@ def get_leaderboard():
         cursor = connection.cursor()
 
         query = f"""
-            SELECT ROW_NUMBER() OVER (PARTITION BY board ORDER BY record {order_type}) AS position,
-                   nickname, string_record, userid
-            FROM leader_final_view WHERE board = %s;
+            SELECT ROW_NUMBER() OVER (PARTITION BY l.board ORDER BY l.record {order_type}) AS position,
+                   n.nickname, l.string_record, l.userid
+            FROM leaderboard l
+            JOIN nickname n ON l.userid = n.userid
+            WHERE l.board = %s AND l.group_id = %s;
         """
-        cursor.execute(query, (board,))
+        cursor.execute(query, (board, group_id))
         ranking = cursor.fetchall()
 
         query_2 = f"""
             SELECT * FROM (
-                SELECT ROW_NUMBER() OVER (PARTITION BY board ORDER BY record {order_type}) AS position,
-                       nickname, string_record, userid
-                FROM leader_final_view WHERE board = %s
+                SELECT ROW_NUMBER() OVER (PARTITION BY l.board ORDER BY l.record {order_type}) AS position,
+                       n.nickname, l.string_record, l.userid
+                FROM leaderboard l
+                JOIN nickname n ON l.userid = n.userid
+                WHERE l.board = %s AND l.group_id = %s
             ) t WHERE t.userid = %s
         """
-        cursor.execute(query_2, (board, user_id))
+        cursor.execute(query_2, (board, group_id, user_id))
         personal_ranking = cursor.fetchone()
     finally:
         cursor.close()
