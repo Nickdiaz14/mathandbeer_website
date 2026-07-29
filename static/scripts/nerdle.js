@@ -280,7 +280,15 @@ function sendRecord() {
         .then(response => response.json())
         .then(data => {
             if (isDaily) {
-                window.location.href = '/daily';
+                if (data.consumed_freeze) {
+                    showToast("¡Racha salvada con un Escudo de Racha! 🍺", "success");
+                }
+                if (data.earned_freeze) {
+                    showToast("¡Ganaste un nuevo Escudo de Racha! 🏆", "success");
+                }
+                setTimeout(() => {
+                    window.location.href = '/daily';
+                }, data.consumed_freeze || data.earned_freeze ? 2000 : 1000);
             } else {
                 const game_name = n == 6 ? 'Mini-Nerdle' : n == 8 ? 'Nerdle' : 'Maxi-Nerdle';
                 const groupParam = groupId !== 'default' ? `&group_id=${encodeURIComponent(groupId)}` : '';

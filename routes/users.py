@@ -134,17 +134,20 @@ def get_profile(userid):
 
             cursor.execute("""
                 WITH fechas_unicas AS (
-                    SELECT DISTINCT userid, challenge_date FROM daily_results
+                    SELECT DISTINCT userid, challenge_date, 1 AS is_played FROM daily_results
+                    UNION
+                    SELECT DISTINCT userid, freeze_date AS challenge_date, 0 AS is_played FROM streak_freezes_used
                 ),
                 diferencias AS (
                     SELECT
                         userid,
                         challenge_date,
+                        is_played,
                         challenge_date - (ROW_NUMBER() OVER (PARTITION BY userid ORDER BY challenge_date)) * INTERVAL '1 day' as grp
                     FROM fechas_unicas
                 ),
                 todas_las_rachas AS (
-                    SELECT userid, COUNT(*) as racha
+                    SELECT userid, SUM(is_played) as racha
                     FROM diferencias
                     GROUP BY userid, grp
                 )

@@ -257,7 +257,15 @@ function sendRecord() {
         .then(response => response.json())
         .then(data => {
             if (isDaily) {
-                window.location.href = '/daily';
+                if (data.consumed_freeze) {
+                    showToast("¡Racha salvada con un Escudo de Racha! 🍺", "success");
+                }
+                if (data.earned_freeze) {
+                    showToast("¡Ganaste un nuevo Escudo de Racha! 🏆", "success");
+                }
+                setTimeout(() => {
+                    window.location.href = '/daily';
+                }, data.consumed_freeze || data.earned_freeze ? 2000 : 1000);
             } else {
                 const groupParam = groupId !== 'default' ? `&group_id=${encodeURIComponent(groupId)}` : '';
                 window.location.href = `/leaderboard?game=T${n}&name=0h-h1 - ${n}&better=${data.better}&type=1&record=${centisecondsElapsed}${groupParam}`;

@@ -108,8 +108,65 @@ def _generate_daily_board(game_type, game_size, seed):
     return None
 
 
+def _apply_streak_freezes(cursor, userid):
+    """
+    Revisa si existen días pasados no jugados donde se debió consumir un escudo de racha
+    (streak freeze) y los aplica automáticamente restando de streak_freezes e
+    insertando en streak_freezes_used. Devuelve el conjunto de fechas recién congeladas.
+    """
+    cursor.execute("SELECT freezes_count FROM streak_freezes WHERE userid = %s;", (userid,))
+    row = cursor.fetchone()
+    freezes_avail = row[0] if row else 0
+
+    if freezes_avail <= 0:
+        return set()
+
+    cursor.execute("SELECT DISTINCT challenge_date FROM daily_results WHERE userid = %s;", (userid,))
+    played_dates = {r[0] for r in cursor.fetchall()}
+
+    cursor.execute("SELECT DISTINCT freeze_date FROM streak_freezes_used WHERE userid = %s;", (userid,))
+    freeze_dates = {r[0] for r in cursor.fetchall()}
+
+    all_active_dates = played_dates.union(freeze_dates)
+    if not all_active_dates:
+        return set()
+
+    today = _get_bogota_date()
+    yesterday = today - timedelta(days=1)
+
+    past_active_dates = {d for d in all_active_dates if d <= yesterday}
+    if not past_active_dates:
+        return set()
+
+    last_active = max(past_active_dates)
+    curr_date = last_active + timedelta(days=1)
+    newly_frozen = set()
+
+    while curr_date <= yesterday and freezes_avail > 0:
+        if curr_date not in played_dates and curr_date not in freeze_dates:
+            cursor.execute("""
+                UPDATE streak_freezes
+                SET freezes_count = freezes_count - 1
+                WHERE userid = %s AND freezes_count > 0;
+            """, (userid,))
+            if cursor.rowcount > 0:
+                cursor.execute("""
+                    INSERT INTO streak_freezes_used (userid, freeze_date)
+                    VALUES (%s, %s)
+                    ON CONFLICT DO NOTHING;
+                """, (userid, curr_date))
+                freezes_avail -= 1
+                freeze_dates.add(curr_date)
+                newly_frozen.add(curr_date)
+        curr_date += timedelta(days=1)
+
+    return newly_frozen
+
+
 def _calculate_streak_with_cursor(cursor, userid):
     """Calcula la racha combinando las fechas jugadas y los escudos de racha usados."""
+    _apply_streak_freezes(cursor, userid)
+
     cursor.execute("""
         SELECT DISTINCT challenge_date FROM daily_results
         WHERE userid = %s;
@@ -122,10 +179,14 @@ def _calculate_streak_with_cursor(cursor, userid):
     """, (userid,))
     freeze_dates = {row[0] for row in cursor.fetchall()}
 
+    cursor.execute("SELECT freezes_count FROM streak_freezes WHERE userid = %s;", (userid,))
+    freeze_row = cursor.fetchone()
+    freezes_count = freeze_row[0] if freeze_row else 0
+
     all_dates = sorted(played_dates.union(freeze_dates), reverse=True)
 
     if not all_dates:
-        return {'current': 0, 'best': 0, 'today': False}
+        return {'current': 0, 'best': 0, 'today': False, 'freezes_count': freezes_count}
 
     today = _get_bogota_date()
     today_played = today in played_dates
@@ -135,27 +196,38 @@ def _calculate_streak_with_cursor(cursor, userid):
     check_date = today if (today in played_dates or today in freeze_dates) else today - timedelta(days=1)
     for d in all_dates:
         if d == check_date:
-            streak += 1
+            if d in played_dates:
+                streak += 1
             check_date -= timedelta(days=1)
         elif d < check_date:
             break
 
-    best = 1 if all_dates else 0
-    current_run = 1
-    for i in range(1, len(all_dates)):
-        if all_dates[i - 1] - all_dates[i] == timedelta(days=1):
-            current_run += 1
-            best = max(best, current_run)
-        else:
-            current_run = 1
+    best = 0
+    if all_dates:
+        current_run_played = 1 if all_dates[0] in played_dates else 0
+        best = current_run_played
+        for i in range(1, len(all_dates)):
+            if all_dates[i - 1] - all_dates[i] == timedelta(days=1):
+                if all_dates[i] in played_dates:
+                    current_run_played += 1
+                best = max(best, current_run_played)
+            else:
+                current_run_played = 1 if all_dates[i] in played_dates else 0
+                best = max(best, current_run_played)
 
-    return {'current': streak, 'best': max(best, streak), 'today': today_played}
+    return {
+        'current': streak,
+        'best': max(best, streak),
+        'today': today_played,
+        'freezes_count': freezes_count
+    }
 
 def _calculate_streak(userid):
     connection = get_connection()
     try:
         cursor = connection.cursor()
         res = _calculate_streak_with_cursor(cursor, userid)
+        connection.commit()
     finally:
         cursor.close()
         release_connection(connection)
@@ -234,10 +306,11 @@ def submit_daily():
         if cursor.fetchone():
             return jsonify({'success': False, 'message': 'Ya jugaste el reto de hoy'})
 
-        # Verificar si corresponde consumir un escudo de racha (Streak Freeze)
+        # Aplicar escudos de racha automáticamente
+        newly_frozen = _apply_streak_freezes(cursor, user_id)
+
         today_date = _get_bogota_date()
         yesterday = today_date - timedelta(days=1)
-        day_before = today_date - timedelta(days=2)
 
         cursor.execute("SELECT 1 FROM daily_results WHERE challenge_date = %s AND userid = %s;", (yesterday, user_id))
         played_yesterday = cursor.fetchone() is not None
@@ -245,32 +318,8 @@ def submit_daily():
         cursor.execute("SELECT 1 FROM streak_freezes_used WHERE freeze_date = %s AND userid = %s;", (yesterday, user_id))
         frozen_yesterday = cursor.fetchone() is not None
 
-        if not played_yesterday and not frozen_yesterday:
-            # Ayer no jugó ni se usó escudo. Verificar si tenía racha activa anteayer
-            cursor.execute("SELECT 1 FROM daily_results WHERE challenge_date = %s AND userid = %s;", (day_before, user_id))
-            played_day_before = cursor.fetchone() is not None
-            cursor.execute("SELECT 1 FROM streak_freezes_used WHERE freeze_date = %s AND userid = %s;", (day_before, user_id))
-            frozen_day_before = cursor.fetchone() is not None
-
-            if played_day_before or frozen_day_before:
-                # Tenía racha anteayer. Verificar si tiene escudos
-                cursor.execute("SELECT freezes_count FROM streak_freezes WHERE userid = %s;", (user_id,))
-                freeze_row = cursor.fetchone()
-                freezes_avail = freeze_row[0] if freeze_row else 0
-
-                if freezes_avail > 0:
-                    # Consumir un escudo
-                    cursor.execute("""
-                        UPDATE streak_freezes 
-                        SET freezes_count = freezes_count - 1 
-                        WHERE userid = %s;
-                    """, (user_id,))
-                    cursor.execute("""
-                        INSERT INTO streak_freezes_used (userid, freeze_date)
-                        VALUES (%s, %s)
-                        ON CONFLICT DO NOTHING;
-                    """, (user_id, yesterday))
-                    consumed_freeze = True
+        if not played_yesterday and frozen_yesterday and yesterday in newly_frozen:
+            consumed_freeze = True
 
         try:
             cursor.execute(
@@ -345,24 +394,33 @@ def daily_leaderboard():
                 ORDER BY dr.record {order}
                 LIMIT 10
             ),
-            historial_top AS (
-                SELECT dr.userid, dr.challenge_date,
-                    DENSE_RANK() OVER (PARTITION BY dr.userid ORDER BY dr.challenge_date DESC) as rn
+            all_user_dates AS (
+                SELECT dr.userid, dr.challenge_date AS date_val, 1 AS is_played
                 FROM daily_results dr
                 JOIN top_today t ON dr.userid = t.userid
-                WHERE dr.challenge_date <= %s
+                WHERE dr.challenge_date <= %s::date
+                UNION
+                SELECT sfu.userid, sfu.freeze_date AS date_val, 0 AS is_played
+                FROM streak_freezes_used sfu
+                JOIN top_today t ON sfu.userid = t.userid
+                WHERE sfu.freeze_date <= %s::date
+            ),
+            historial_top AS (
+                SELECT userid, date_val, is_played,
+                    DENSE_RANK() OVER (PARTITION BY userid ORDER BY date_val DESC) as rn
+                FROM all_user_dates
             ),
             racha_actual AS (
-                SELECT userid, MAX(rn) AS streak
+                SELECT userid, SUM(is_played) AS streak
                 FROM historial_top
-                WHERE challenge_date = %s::date - (rn - 1)::int
+                WHERE date_val = %s::date - (rn - 1)::int
                 GROUP BY userid
             )
             SELECT t.pos, t.nickname, t.record, t.userid, COALESCE(r.streak, 1) AS racha
             FROM top_today t
             LEFT JOIN racha_actual r ON t.userid = r.userid
             ORDER BY t.pos;
-        """, (today, today, today))
+        """, (today, today, today, today))
         ranking = cursor.fetchall()
 
         formatted = []
@@ -411,17 +469,4 @@ def daily_leaderboard():
 @daily_bp.route('/api/streak/<userid>', methods=['GET'])
 def get_streak(userid):
     res = _calculate_streak(userid)
-    connection = get_connection()
-    freezes_count = 0
-    try:
-        cursor = connection.cursor()
-        cursor.execute("SELECT freezes_count FROM streak_freezes WHERE userid = %s;", (userid,))
-        row = cursor.fetchone()
-        if row:
-            freezes_count = row[0]
-    finally:
-        cursor.close()
-        release_connection(connection)
-    
-    res['freezes_count'] = freezes_count
     return jsonify(res)
