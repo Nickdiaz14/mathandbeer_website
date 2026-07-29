@@ -8,7 +8,7 @@
     {
         "name": "ASeisManos",
         "logo": "static/images/logos/logo_aseismanos.png",
-        "url": "https://www.instagram.com/aseismanos/reels/",
+        "url": "https://www.instagram.com/aseismanos/",
         "tipo": "bar"
     },
     {
@@ -21,6 +21,12 @@
         "name": "PuntoJar",
         "logo": "static/images/logos/logo_puntojar.png",
         "url": "https://www.instagram.com/punto.jar/",
+        "tipo": "aplicacion"
+    },
+    {
+        "name": "Indeleble Café",
+        "logo": "static/images/logos/logo_indeleble.png",
+        "url": "https://www.instagram.com/indeleblecafe/",
         "tipo": "aplicacion"
     }
 ]
