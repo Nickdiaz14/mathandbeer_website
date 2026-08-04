@@ -133,6 +133,19 @@
                             <a href="#nosotros" class="nav-link active" aria-current="page" id="nav-active"><i
                                     class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
                         </li>
+                        <li class="nav-item dropdown" data-bs-auto-close="outside">
+                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-language"></i> Idioma
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('es')">Español</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('en')">Inglés</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('fr')">Francés</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('de')">Alemán</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('nl')">Holandés</a></li>
+                            </ul>
+                        </li>
+                        <div id="google_translate_element" style="display: none;"></div>
                         {#
                         <li class="nav-item">
                             <a href="/empresas" class="nav-link active" aria-current="page">
@@ -596,6 +609,22 @@
             s.src="https://w.behold.so/widget.js";d.head.append(s);
         })();
     </script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'es',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            }, 'google_translate_element');
+        }
+
+        function setLanguage(langCode) {
+            // Escribe la cookie que lee Google Translate
+            document.cookie = `googtrans=/es/${langCode}; path=/; domain=${window.location.hostname}`;
+            document.cookie = `googtrans=/es/${langCode}; path=/;`;
+            location.reload();
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 
 </html>
