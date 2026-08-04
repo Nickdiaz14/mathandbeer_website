@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -617,18 +617,30 @@
             }, 'google_translate_element');
         }
 
+        function deleteCookie(name) {
+            const domain = window.location.hostname;
+            // Expira la cookie inmediatamente en todas sus variantes posibles
+            document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+            document.cookie = `${name}=; path=/; domain=${domain}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+            document.cookie = `${name}=; path=/; domain=.${domain}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+        }
+
         function setLanguage(langCode) {
-            // Write cookie for Google Translate
-            document.cookie = `googtrans=/es/${langCode}; path=/; domain=${window.location.hostname}`;
-            document.cookie = `googtrans=/es/${langCode}; path=/;`;
-            // Close any open nav menu and dropdowns before reload
-            const menu = document.getElementById('navbarNavDropdown');
-            const toggler = document.querySelector('.navbar-toggler');
-            if (menu) menu.classList.remove('nav-open');
-            if (toggler) toggler.setAttribute('aria-expanded', 'false');
-            document.querySelectorAll('.dropdown-menu.show').forEach(m => m.classList.remove('show'));
-            // Small timeout to ensure cookies are set
-            setTimeout(() => location.reload(), 100);
+            // 1. Limpiar cookie anterior
+            deleteCookie('googtrans');
+
+            // 2. Definir expiración
+            const expiry = new Date();
+            expiry.setFullYear(expiry.getFullYear() + 1);
+            const expires = `expires=${expiry.toUTCString()}`;
+
+            // 3. Crear la nueva cookie limpia
+            const value = `/es/${langCode}`;
+            document.cookie = `googtrans=${value}; path=/; ${expires}`;
+            document.cookie = `googtrans=${value}; path=/; domain=${window.location.hostname}; ${expires}`;
+
+            // 4. Recargar
+            setTimeout(() => location.reload(), 300);
         }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
