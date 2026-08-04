@@ -79,7 +79,6 @@
                              <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('nl')">Holandés</a></li>
                          </ul>
                      </li>
-                    <div id="google_translate_element" style="display: none;"></div>
                     </ul>
                 </div>
             </div>
@@ -134,41 +133,48 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+    <!-- Mantenemos el contenedor visible para Google Translate -->
+    <div id="google_translate_element" style="display:none;"></div>
+
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'es',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
             }, 'google_translate_element');
         }
 
-        function deleteCookie(name) {
-            const domain = window.location.hostname;
-            // Expira la cookie inmediatamente en todas sus variantes posibles
-            document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-            document.cookie = `${name}=; path=/; domain=${domain}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-            document.cookie = `${name}=; path=/; domain=.${domain}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-        }
-
         function setLanguage(langCode) {
-            // 1. Limpiar cookie anterior
-            deleteCookie('googtrans');
-
-            // 2. Definir expiración
+            const domain = window.location.hostname;
+            const mainDomain = domain.startsWith('.') ? domain : '.' + domain;
+            const cookieValue = `/es/${langCode}`;
+            
+            // Expiración en 1 año
             const expiry = new Date();
             expiry.setFullYear(expiry.getFullYear() + 1);
             const expires = `expires=${expiry.toUTCString()}`;
 
-            // 3. Crear la nueva cookie limpia
-            const value = `/es/${langCode}`;
-            document.cookie = `googtrans=${value}; path=/; ${expires}`;
-            document.cookie = `googtrans=${value}; path=/; domain=${window.location.hostname}; ${expires}`;
+            // 1. Borramos la cookie previa en todas las rutas/dominios
+            const past = 'expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+            document.cookie = `googtrans=; ${past}`;
+            document.cookie = `googtrans=; ${past}; domain=${domain}`;
+            document.cookie = `googtrans=; ${past}; domain=${mainDomain}`;
 
-            // 4. Recargar
-            setTimeout(() => location.reload(), 300);
+            // 2. Si vuelve al idioma original ('es'), simplemente borramos y recargamos
+            if (langCode === 'es') {
+                location.reload();
+                return;
+            }
+
+            // 3. Escribimos la cookie fresca solo en el path raíz
+            document.cookie = `googtrans=${cookieValue}; path=/; ${expires}`;
+            document.cookie = `googtrans=${cookieValue}; path=/; domain=${domain}; ${expires}`;
+
+            // 4. Recargar la página
+            location.reload();
         }
     </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 
 </html>
