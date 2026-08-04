@@ -622,28 +622,33 @@
         function setLanguage(langCode) {
             const domain = window.location.hostname;
             const mainDomain = domain.startsWith('.') ? domain : '.' + domain;
-            const cookieValue = `/es/${langCode}`;
             
-            // Expiración en 1 año
-            const expiry = new Date();
-            expiry.setFullYear(expiry.getFullYear() + 1);
-            const expires = `expires=${expiry.toUTCString()}`;
-
-            // 1. Borramos la cookie previa en todas las rutas/dominios
+            // 1. Borrado exhaustivo de la cookie antigua en todas las variaciones
             const past = 'expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
             document.cookie = `googtrans=; ${past}`;
             document.cookie = `googtrans=; ${past}; domain=${domain}`;
             document.cookie = `googtrans=; ${past}; domain=${mainDomain}`;
 
-            // 2. Si vuelve al idioma original ('es'), simplemente borramos y recargamos
+            // Para dominios compartidos como .onrender.com, probamos quitar el subdominio si aplica
+            const parts = domain.split('.');
+            if (parts.length > 2) {
+                const rootDomain = '.' + parts.slice(-2).join('.');
+                document.cookie = `googtrans=; ${past}; domain=${rootDomain}`;
+            }
+
+            // 2. Si el idioma seleccionado es Español, simplemente recargamos con las cookies limpias
             if (langCode === 'es') {
                 location.reload();
                 return;
             }
 
-            // 3. Escribimos la cookie fresca solo en el path raíz
-            document.cookie = `googtrans=${cookieValue}; path=/; ${expires}`;
-            document.cookie = `googtrans=${cookieValue}; path=/; domain=${domain}; ${expires}`;
+            // 3. Escribir la nueva cookie de forma universal (Sin forzar el parámetro domain)
+            const expiry = new Date();
+            expiry.setFullYear(expiry.getFullYear() + 1);
+            const expires = `expires=${expiry.toUTCString()}`;
+            
+            // Escribimos la cookie de forma limpia sobre el path raíz
+            document.cookie = `googtrans=/es/${langCode}; path=/; ${expires}`;
 
             // 4. Recargar la página
             location.reload();
