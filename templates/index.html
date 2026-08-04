@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -618,10 +618,17 @@
         }
 
         function setLanguage(langCode) {
-            // Escribe la cookie que lee Google Translate
+            // Write cookie for Google Translate
             document.cookie = `googtrans=/es/${langCode}; path=/; domain=${window.location.hostname}`;
             document.cookie = `googtrans=/es/${langCode}; path=/;`;
-            location.reload();
+            // Close any open nav menu and dropdowns before reload
+            const menu = document.getElementById('navbarNavDropdown');
+            const toggler = document.querySelector('.navbar-toggler');
+            if (menu) menu.classList.remove('nav-open');
+            if (toggler) toggler.setAttribute('aria-expanded', 'false');
+            document.querySelectorAll('.dropdown-menu.show').forEach(m => m.classList.remove('show'));
+            // Small timeout to ensure cookies are set
+            setTimeout(() => location.reload(), 100);
         }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
