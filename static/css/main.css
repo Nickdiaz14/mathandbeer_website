@@ -34,6 +34,35 @@
   --matrix-cell-color: rgba(45, 31, 54, 0.53);
 }
 
+.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+/* 2. Ocultar el iframe de la barra superior de Google Translate */
+.goog-te-banner-frame,
+iframe.goog-te-banner-frame,
+.goog-te-banner {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* 3. Ocultar el icono flotante/banner emergente */
+.goog-te-gadget-icon,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+/* 4. Evitar que resalte el texto traducido al pasar el cursor */
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
 
 .streak-fire {
   font-size: 1.6rem;
