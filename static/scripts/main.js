@@ -1,25 +1,47 @@
 // ── Menú hamburguesa: GPU-accelerated (opacity+transform, sin Bootstrap collapse) ──
 (function () {
   const toggler = document.querySelector('.navbar-toggler');
-  const menu    = document.getElementById('navbarNavDropdown');
+  const menu = document.getElementById('navbarNavDropdown');
   if (!toggler || !menu) return;
 
   // Desconectar Bootstrap para que no interfiera con nuestra animación
   toggler.removeAttribute('data-bs-toggle');
   toggler.removeAttribute('data-bs-target');
 
-  const openMenu  = () => { menu.classList.add('nav-open');    toggler.setAttribute('aria-expanded', 'true');  };
+  const openMenu = () => { menu.classList.add('nav-open'); toggler.setAttribute('aria-expanded', 'true'); };
   const closeMenu = () => { menu.classList.remove('nav-open'); toggler.setAttribute('aria-expanded', 'false'); };
   const toggleMenu = () => menu.classList.contains('nav-open') ? closeMenu() : openMenu();
 
   toggler.addEventListener('click', toggleMenu);
 
-  // Cerrar al tocar un link del menú
-  menu.querySelectorAll('a.nav-link').forEach(a => a.addEventListener('click', closeMenu));
+  // Cerrar al tocar un link del menú (excepto dropdown toggle)
+  menu.querySelectorAll('a.nav-link:not(.dropdown-toggle)')
+    .forEach(a => a.addEventListener('click', closeMenu));
 
-  // Cerrar al tocar fuera del menú
+  // Prevent dropdown toggle clicks from propagating to document listener (handled manually)
+  // Remove Bootstrap dropdown data attributes to avoid conflict
+  menu.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+    toggle.removeAttribute('data-bs-toggle');
+    toggle.removeAttribute('aria-expanded');
+    toggle.addEventListener('click', e => {
+      e.preventDefault();
+      const dropdown = toggle.nextElementSibling; // .dropdown-menu
+      const parentLi = toggle.parentElement; // li.nav-item.dropdown
+      if (dropdown) dropdown.classList.toggle('show');
+      if (parentLi) parentLi.classList.toggle('show');
+      // Update aria-expanded for accessibility
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', (!expanded).toString());
+    });
+  });
+
+  // Cerrar al tocar fuera del menú, ignorando clicks dentro del dropdown
   document.addEventListener('click', e => {
-    if (menu.classList.contains('nav-open') && !menu.contains(e.target) && !toggler.contains(e.target)) {
+    if (menu.classList.contains('nav-open')
+      && !menu.contains(e.target)
+      && !toggler.contains(e.target)
+      && !e.target.closest('.dropdown-toggle')
+      && !e.target.closest('.dropdown-menu')) {
       closeMenu();
     }
   });
@@ -103,8 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
 (function () {
   const container = document.querySelector('.math-particles');
   if (!container || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const symbols = ['∑','π','∞','√','∫','Δ','θ','λ','φ','±','∂','ℕ','ℝ','×','∈'];
-  const colors  = [
+  const symbols = ['∑', 'π', '∞', '√', '∫', 'Δ', 'θ', 'λ', 'φ', '±', '∂', 'ℕ', 'ℝ', '×', '∈'];
+  const colors = [
     'rgba(0,242,255,0.55)',
     'rgba(255,183,0,0.48)',
     'rgba(182,189,231,0.42)',
@@ -114,10 +136,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const el = document.createElement('span');
     el.className = 'math-particle';
     el.textContent = symbols[i % symbols.length];
-    const left     = ((i / n) * 95 + (i % 5)).toFixed(1);
-    const size     = (1.1 + (i % 4) * 0.45).toFixed(1);
+    const left = ((i / n) * 95 + (i % 5)).toFixed(1);
+    const size = (1.1 + (i % 4) * 0.45).toFixed(1);
     const duration = 14 + (i % 5) * 5;
-    const delay    = i % 2 === 0 ? -(i * 1.8).toFixed(1) : (i * 0.9).toFixed(1);
+    const delay = i % 2 === 0 ? -(i * 1.8).toFixed(1) : (i * 0.9).toFixed(1);
     el.style.cssText = `left:${left}%;color:${colors[i % colors.length]};font-size:${size}rem;animation-duration:${duration}s;animation-delay:${delay}s`;
     container.appendChild(el);
   }
