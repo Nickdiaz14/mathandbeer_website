@@ -268,7 +268,7 @@ def page_profile():
 def page_daily():
     return render_template('daily.html')
 
-@pages_bp.route('\institutions')
+@pages_bp.route('/institutions')
 def page_empresas():
     return render_template('empresas.html')
 
