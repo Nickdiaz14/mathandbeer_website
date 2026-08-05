@@ -156,7 +156,7 @@ async function loadLeaderboard() {
 
             // register es el array [posición, nombre, record]
             mtd_position.textContent = register[0];
-            mtd_name.textContent = register[1];
+            mtd_name.innerHTML = `<span class="notranslate">${register[1]}</span>`;
             mtd_record.textContent = register[2];
             mtd_streak.innerHTML = register[4] + ' <i class="fa-solid fa-fire me-1"></i>';
 
@@ -202,7 +202,7 @@ async function loadLeaderboard() {
             tr.classList.add('my-row');
             tr.innerHTML = `
                 <td>${data.personal_ranking[0]}</td>
-                <td>${data.personal_ranking[1]}</td>
+                <td><span class="notranslate">${data.personal_ranking[1]}</span></td>
                 <td>${data.personal_ranking[2]}</td>
                 <td>${data.personal_ranking[4]}</td>
             `;

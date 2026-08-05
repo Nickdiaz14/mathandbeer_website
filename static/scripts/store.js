@@ -34,7 +34,7 @@
     const adminOrdersList = document.getElementById('admin-orders-list');
     const productForm = document.getElementById('admin-product-form');
     const filterBtns = document.querySelectorAll('#store-filters .filter-btn');
-    
+
     // New Elements
     const searchInput = document.getElementById('search-input');
     const sortSelect = document.getElementById('sort-select');
@@ -112,10 +112,10 @@
             if (adminPanel.style.display === 'block') {
                 renderAdminProducts();
             }
-            
+
             // Preload base images
             products.forEach(p => {
-                if(p.image_url) preloadImage(p.image_url);
+                if (p.image_url) preloadImage(p.image_url);
             });
         } catch (err) {
             console.error('Error loading products:', err);
@@ -135,8 +135,8 @@
         }
 
         // We make a copy of filtered to sort it without mutating original if it was just returning a reference
-        filtered = [...filtered]; 
-        
+        filtered = [...filtered];
+
         if (sortOrder === 'price-asc') filtered.sort((a, b) => a.price - b.price);
         else if (sortOrder === 'price-desc') filtered.sort((a, b) => b.price - a.price);
         else if (sortOrder === 'name-asc') filtered.sort((a, b) => a.name.localeCompare(b.name));
@@ -196,7 +196,7 @@
                         <span class="product-card__category">
                             <i class="fa-solid ${getCategoryIcon(p.category)}"></i> ${getCategoryLabel(p.category)}
                         </span>
-                        <h3 class="product-card__name">${p.name}</h3>
+                        <h3 class="product-card__name notranslate">${p.name}</h3>
                         <p class="product-card__desc">${p.description || ''}</p>
                         <div class="product-card__price">${formatPrice(p.price)}</div>
                         ${variationHTML}
@@ -209,16 +209,16 @@
 
         // Preload variant images on hover over the card to speed up switching
         grid.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
+            card.addEventListener('mouseenter', function () {
                 const chips = card.querySelectorAll('.variation-chip[data-variation-type="color"]');
                 const img = card.querySelector('.product-card__image img');
                 const baseImage = img ? (img.dataset.baseImage || '../static/images/logos/logo_M&B.png') : null;
-                if(baseImage) {
+                if (baseImage) {
                     chips.forEach(chip => {
                         preloadImage(buildVariantImage(baseImage, chip.dataset.variation));
                     });
                 }
-            }, {once: true}); // Only run once per card
+            }, { once: true }); // Only run once per card
         });
 
         // Bind variation chip clicks
@@ -235,7 +235,7 @@
                 const addBtn = card.querySelector('.product-card__add-btn');
                 const selectedVariation = this.dataset.variation;
                 const selectedType = this.dataset.variationType;
-                
+
                 if (selectedType === 'color' && img) {
                     const baseImage = img.dataset.baseImage || '../static/images/logos/logo_M&B.png';
                     const filename = buildVariantImage(baseImage, selectedVariation);
@@ -249,7 +249,7 @@
                 const isBuso = categoryEl && categoryEl.textContent.toLowerCase().includes('buso');
                 const hasColor = !!card.querySelector('.variation-chip.selected[data-variation-type="color"]');
                 const hasSize = isBuso ? !!card.querySelector('.variation-chip.selected[data-variation-type="size"]') : true;
-                
+
                 if (card.querySelector('.product-card__variations') && hasColor && hasSize) {
                     addBtn.disabled = false;
                 } else {
@@ -304,28 +304,28 @@
         const img = card.querySelector('img');
         const selectedImage = (img && (img.dataset.selectedImage || img.src)) || product.image_url;
         addToCart(productId, variation, color, size, selectedImage);
-        
+
         if (quickViewModal && quickViewModal.style.display === 'flex') {
             closeQuickView();
         }
     }
 
     // ── Quick View Logic ───────────────────────────────
-    window.openQuickView = function(productId) {
+    window.openQuickView = function (productId) {
         const product = products.find(p => p.id === productId);
-        if(!product) return;
+        if (!product) return;
         currentQuickViewProduct = product;
 
         document.getElementById('quick-view-name').textContent = product.name;
         document.getElementById('quick-view-desc').textContent = product.description || '';
         document.getElementById('quick-view-price').textContent = formatPrice(product.price);
         document.getElementById('quick-view-category').innerHTML = `<i class="fa-solid ${getCategoryIcon(product.category)}"></i> ${getCategoryLabel(product.category)}`;
-        
+
         const imgEl = document.getElementById('quick-view-image');
         const baseImage = product.image_url || '../static/images/logos/logo_M&B.png';
         imgEl.dataset.baseImage = baseImage;
         imgEl.dataset.fallback = '../static/images/logos/logo_M&B.png';
-        
+
         // Generate Variations HTML
         const variations = product.variations || {};
         let variationHTML = '';
@@ -360,7 +360,7 @@
         }
 
         document.getElementById('quick-view-variations').innerHTML = variationHTML;
-        
+
         const initialImage = defaultColor ? buildVariantImage(baseImage, defaultColor) : baseImage;
         imgEl.src = initialImage;
         imgEl.dataset.selectedImage = initialImage;
@@ -371,7 +371,7 @@
 
         // Rebind chips inside modal
         quickViewModal.querySelectorAll('.variation-chip').forEach(chip => {
-            chip.addEventListener('click', function(e) {
+            chip.addEventListener('click', function (e) {
                 e.stopPropagation();
                 const chipsGroup = this.closest('.variation-chips');
                 const siblings = chipsGroup.querySelectorAll('.variation-chip');
@@ -387,7 +387,7 @@
 
                 const hasColor = !!quickViewModal.querySelector('.variation-chip.selected[data-variation-type="color"]');
                 const hasSize = product.category === 'buso' ? !!quickViewModal.querySelector('.variation-chip.selected[data-variation-type="size"]') : true;
-                
+
                 addBtn.disabled = !(hasColor && hasSize);
             });
         });
@@ -402,16 +402,16 @@
         currentQuickViewProduct = null;
     }
 
-    if(quickViewClose) quickViewClose.addEventListener('click', closeQuickView);
-    if(quickViewModal) {
-        quickViewModal.addEventListener('click', function(e) {
-            if(e.target === quickViewModal) closeQuickView();
+    if (quickViewClose) quickViewClose.addEventListener('click', closeQuickView);
+    if (quickViewModal) {
+        quickViewModal.addEventListener('click', function (e) {
+            if (e.target === quickViewModal) closeQuickView();
         });
     }
-    
+
     const quickViewAddBtn = document.getElementById('quick-view-add-btn');
-    if(quickViewAddBtn) {
-        quickViewAddBtn.addEventListener('click', function() {
+    if (quickViewAddBtn) {
+        quickViewAddBtn.addEventListener('click', function () {
             handleAddToCartClick(this);
         });
     }
@@ -677,12 +677,12 @@
     }
 
     function resetAdminForm() {
-        if(productForm) productForm.reset();
+        if (productForm) productForm.reset();
         const idInput = document.getElementById('admin-product-id');
-        if(idInput) idInput.value = '';
-        if(adminProductTitle) adminProductTitle.textContent = 'Agregar un nuevo diseño';
-        if(adminProductSubmitBtn) adminProductSubmitBtn.textContent = 'Guardar diseño';
-        if(adminProductCancelBtn) adminProductCancelBtn.style.display = 'none';
+        if (idInput) idInput.value = '';
+        if (adminProductTitle) adminProductTitle.textContent = 'Agregar un nuevo diseño';
+        if (adminProductSubmitBtn) adminProductSubmitBtn.textContent = 'Guardar diseño';
+        if (adminProductCancelBtn) adminProductCancelBtn.style.display = 'none';
     }
 
     function renderAdminProducts() {
@@ -706,7 +706,7 @@
         `).join('');
     }
 
-    window.editAdminProduct = function(id) {
+    window.editAdminProduct = function (id) {
         const product = products.find(p => p.id === id);
         if (!product) return;
         document.getElementById('admin-product-id').value = product.id;
@@ -716,16 +716,16 @@
         document.getElementById('admin-product-price').value = product.price;
         document.getElementById('admin-product-desc').value = product.description || '';
         document.getElementById('admin-product-var').value = product.variations && Object.keys(product.variations).length > 0 ? JSON.stringify(product.variations) : '';
-        
+
         adminProductTitle.textContent = `Editar diseño: ${product.name}`;
         adminProductSubmitBtn.textContent = 'Actualizar diseño';
         adminProductCancelBtn.style.display = 'inline-block';
-        
+
         // Scroll to form
         productForm.scrollIntoView({ behavior: 'smooth' });
     };
 
-    window.deleteAdminProduct = async function(id) {
+    window.deleteAdminProduct = async function (id) {
         if (!confirm('¿Estás seguro de que deseas desactivar este producto? Ya no aparecerá en la tienda.')) return;
         const userid = localStorage.getItem('userid');
         try {
@@ -905,7 +905,7 @@
 
     // Admin Tabs
     adminTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
+        tab.addEventListener('click', function () {
             adminTabs.forEach(t => t.classList.remove('active'));
             this.classList.add('active');
             const target = this.dataset.tab;
