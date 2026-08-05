@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="../static/css/profile.css">
     <link rel="stylesheet" href="../static/css/leaderboards.css">
     <link rel="icon" type="image/webp" href="../static/images/logos/favicon.webp">
-    <title>Mi Perfil | Math & Beer</title>
+    <title class="notranslate">Mi Perfil | Math & Beer</title>
     <meta name="description" content="Edita tu perfil y compite con tus amigos.">
     <meta name="robots" content="noindex, nofollow">
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -65,7 +65,7 @@
                                     class="fa-solid fa-ranking-star"></i> Rankings</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/tienda" class="nav-link active" aria-current="page"><i
+                            <a href="/store" class="nav-link active" aria-current="page"><i
                                     class="fa-solid fa-bag-shopping"></i> Tienda</a>
                         </li>
                         <li class="nav-item">
@@ -73,7 +73,8 @@
                                     class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Idioma</a>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-language"></i> Idioma</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('es')">Español</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('en')">Inglés</a></li>
@@ -124,7 +125,7 @@
                 <div class="profile-avatar">
                     <i class="fa-solid fa-user-astronaut"></i>
                 </div>
-                <h1 id="profile-nick" class="subtitle fs-3 mb-0"></h1>
+                <h1 id="profile-nick" class="subtitle fs-3 mb-0 notranslate"></h1>
                 <div class="profile-edit-row">
                     <button id="edit-nick-btn" class="profile-edit-btn" title="Cambiar nombre">
                         <i class="fa-solid fa-pen me-1"></i>Cambiar nombre
@@ -142,7 +143,7 @@
                 <div class="profile-userid-box mt-3">
                     <span class="profile-userid-label"><i class="fa-solid fa-fingerprint me-1"></i>Tu ID de usuario</span>
                     <div class="profile-userid-row">
-                        <span id="profile-userid-value" class="profile-userid-value"></span>
+                        <span id="profile-userid-value" class="profile-userid-value notranslate"></span>
                         <button id="copy-userid-btn" class="profile-copy-btn" title="Copiar ID">
                             <i class="fa-regular fa-copy"></i>
                         </button>

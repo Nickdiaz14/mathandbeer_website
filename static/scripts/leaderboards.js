@@ -116,7 +116,7 @@ function updateLeaderboard() {
                     mtd_position.textContent = register[0];
                     mtd_position.style.color = colorClass;
                 }
-                mtd_name.textContent = register[1];
+                mtd_name.innerHTML = `<span class="notranslate">${register[1]}</span>`;
                 mtd_record.textContent = register[2];
                 mtd_name.style.color = colorClass;
                 mtd_record.style.color = colorClass;
@@ -143,7 +143,7 @@ function updateLeaderboard() {
                 const mtd_record = document.createElement('td');
 
                 mtd_position.textContent = data.personal_ranking[0];
-                mtd_name.textContent = data.personal_ranking[1];
+                mtd_name.innerHTML = `<span class="notranslate">${data.personal_ranking[1]}</span>`;
                 mtd_record.textContent = data.personal_ranking[2];
 
                 mtr.classList.add('my-row');

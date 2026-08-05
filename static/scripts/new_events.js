@@ -46,10 +46,10 @@ function getSummaryTeaser(summary) {
 
 function formatEventDate(isoDate) {
     const d = new Date(isoDate);
-    const days = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-    const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    const days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+    const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
     const h = d.getHours(), m = d.getMinutes();
-    const time = h > 0 ? ` · ${h}:${String(m).padStart(2,'0')}` : '';
+    const time = h > 0 ? ` · ${h}:${String(m).padStart(2, '0')}` : '';
     return `${days[d.getDay()]} ${d.getDate()} de ${months[d.getMonth()]}${time}`;
 }
 
@@ -84,7 +84,7 @@ function construirTarjetas(eventos) {
             <div class="upcoming-body">
                 <div class="upcoming-countdown-bar">
                     <i class="fa-solid fa-hourglass-half"></i>
-                    <span id="restante-${index}" class="upcoming-time">--d --h --m --s</span>
+                    <span id="restante-${index}" class="upcoming-time notranslate">--d --h --m --s</span>
                 </div>
                 <span class="upcoming-city-badge"><i class="fa-solid fa-map-marker-alt me-1"></i>${evento.city}</span>
                 <p class="upcoming-date"><i class="fa-regular fa-calendar me-1"></i>${dateStr}</p>

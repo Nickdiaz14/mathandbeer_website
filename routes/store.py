@@ -68,7 +68,7 @@ def _parse_variations(raw_value, category):
     return {'opciones': values}
 
 
-@store_bp.route('/tienda')
+@store_bp.route('/store')
 def page_tienda():
     return render_template('store.html')
 
