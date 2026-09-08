@@ -98,6 +98,32 @@ def page_about():
             for evento in proxima
         ]
 
+        # Buscar si hay una charla HOY
+        try:
+            cursor.execute("""
+                SELECT id, title, city, place, date
+                FROM events
+                WHERE DATE(date) = (CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota')::date
+                LIMIT 1;
+            """)
+            evento_hoy_row = cursor.fetchone()
+            charla_hoy = None
+            group_id_fecha = None
+            if evento_hoy_row:
+                charla_hoy = {
+                    'id': evento_hoy_row[0],
+                    'title': evento_hoy_row[1],
+                    'city': evento_hoy_row[2],
+                    'place': evento_hoy_row[3],
+                    'hora': evento_hoy_row[4].strftime('%H:%M')
+                }
+                group_id_fecha = datetime.now().strftime('%Y%m%d')
+        except Exception as e:
+            print("Error query charla hoy:", e)
+            connection.rollback()
+            charla_hoy = None
+            group_id_fecha = None
+
         # Fetch 3 random testimonials
         try:
             cursor.execute("""
@@ -133,10 +159,24 @@ def page_about():
             """)
             row_avg = cursor.fetchone()
             avg_asistentes = int(row_avg[0]) if row_avg and row_avg[0] else 40
+            
         except Exception as avg_err:
             print("Error query avg asistentes, using fallback:", avg_err)
             connection.rollback()
             avg_asistentes = 40
+
+        # Conteo de ciudades distintas
+        try:
+            cursor.execute("""
+                SELECT COUNT(DISTINCT city)
+                FROM events;
+            """)
+            row_cities = cursor.fetchone()
+            n_ciudades = int(row_cities[0]) if row_cities and row_cities[0] else 2
+        except Exception as cities_err:
+            print("Error query distinct cities, using fallback:", cities_err)
+            connection.rollback()
+            n_ciudades = 2
 
     finally:
         cursor.close()
@@ -147,7 +187,7 @@ def page_about():
 
     n_anos = datetime.now().year - 2022
     proxima_json = json.dumps(proxima) if proxima else None
-    return render_template("index.html", charlas=grouped, miembros=equipo, partners=partners, n_charlas=len(charlas), proxima=proxima_json, n_anos=n_anos, testimonials=testimonials, fotos=fotos, avg_asistentes=avg_asistentes)
+    return render_template("index.html", charlas=grouped, miembros=equipo, partners=partners, n_charlas=len(charlas), proxima=proxima_json, n_anos=n_anos, testimonials=testimonials, fotos=fotos, avg_asistentes=avg_asistentes, n_ciudades=n_ciudades, charla_hoy=charla_hoy, group_id_fecha=group_id_fecha)
 
 @pages_bp.route('/leaderboards')
 def page_leaderboards():
@@ -162,11 +202,22 @@ def page_menu():
         cursor.execute("SELECT nickname FROM nickname WHERE userid = %s;", (id,))
         row = cursor.fetchone()
         name = row[0] if row else "Guest"
+        
+        # Buscar charla hoy
+        cursor.execute("""
+            SELECT id, title, city
+            FROM events
+            WHERE DATE(date) = (CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota')::date
+            LIMIT 1;
+        """)
+        evento_hoy = cursor.fetchone()
+        charla_hoy = {'id': evento_hoy[0], 'title': evento_hoy[1], 'city': evento_hoy[2]} if evento_hoy else None
+        group_id_fecha = datetime.now().strftime('%Y%m%d') if evento_hoy else None
     finally:
         cursor.close()
         release_connection(connection)
 
-    return render_template('menu.html', nickname=name)
+    return render_template('menu.html', nickname=name, charla_hoy=charla_hoy, group_id_fecha=group_id_fecha)
 
 @pages_bp.route('/forms')
 def page_forms():
