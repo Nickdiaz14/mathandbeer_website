@@ -107,6 +107,27 @@
         <hr>
         <h1 class="title">¡Hola, {{ nickname }}! <br> Elige un juego</h1>
         <hr>
+        
+        {% if charla_hoy %}
+        <div class="charla-hoy-menu-wrap">
+            <button class="charla-hoy-btn" id="charla-hoy-btn"
+                    onclick="window.location.href='/menu_games?group_id={{ group_id_fecha }}'">
+                <i class="fa-solid fa-users"></i> ¡Únete a la Charla de hoy!
+            </button>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                if (typeof getGroupId === "function") {
+                    const currentGroup = getGroupId();
+                    if (currentGroup !== 'default' && currentGroup) {
+                        const btnWrap = document.querySelector('.charla-hoy-menu-wrap');
+                        if (btnWrap) btnWrap.style.display = 'none';
+                    }
+                }
+            });
+        </script>
+        {% endif %}
+        
         <div class="grid_container menu_games">
             <button class="game" data-bs-toggle="modal" data-bs-target="#0h-h1-size">
                 <span class="game_text_out">¡Jugar!</span>
