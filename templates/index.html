@@ -91,11 +91,12 @@
     </script>
 </head>
 
-<body data-proxima='{{ proxima | safe }}'>
+<body data-proxima='{{ proxima | safe }}' {% if charla_hoy %}class="has-charla-notif"{% endif %}>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXZ6G9P3"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+
     <header>
         <nav class="navbar navbar-expand-lg menu">
             <div class="container-fluid">
@@ -191,7 +192,7 @@
                         <span class="hero-stat-label">Años de historia</span>
                     </div>
                     <div class="hero-stat">
-                        <span class="hero-stat-number counter">2</span>
+                        <span class="hero-stat-number counter">{{ n_ciudades }}</span>
                         <span class="hero-stat-label">Ciudades</span>
                     </div>
                     <div class="hero-stat">
@@ -564,6 +565,26 @@
 
             </div>
         </section>
+
+        {% if charla_hoy %}
+    <div class="charla-notif-bar" id="charla-notif-bar">
+        <div class="charla-notif-inner">
+            <span class="charla-notif-badge">
+                <i class="fa-solid fa-circle-exclamation"></i> ¡Charla de hoy!
+            </span>
+            <span class="charla-notif-info">
+                <strong>{{ charla_hoy.title }}</strong><br>
+                <i class="fa-solid fa-location-dot"></i> {{ charla_hoy.city }}
+                &nbsp;·&nbsp; {{ charla_hoy.place }}
+                &nbsp;·&nbsp; <i class="fa-regular fa-clock"></i> {{ charla_hoy.hora }}
+            </span>
+        </div>
+        <button class="charla-notif-close" onclick="document.getElementById('charla-notif-bar').style.display='none'"
+                aria-label="Cerrar">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    {% endif %}
     </main>
 
     <!-- Footer -->

@@ -222,3 +222,44 @@
     font-size: 28px;
   }
 }
+
+/* ── Charla de Hoy — solo botón, en el menú ── */
+.charla-hoy-menu-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 28px;
+}
+
+@keyframes pulse-glow-soft {
+    0%, 100% { box-shadow: 0 0 10px rgba(255, 183, 0, 0.1); }
+    50%      { box-shadow: 0 0 20px rgba(255, 183, 0, 0.3); }
+}
+
+.charla-hoy-btn {
+    background: rgba(255, 183, 0, 0.15);
+    border: 1px solid var(--accent-beer);
+    border-radius: 50px;
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 16px 36px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: pulse-glow-soft 2.5s infinite;
+}
+
+.charla-hoy-btn i {
+    color: var(--accent-beer);
+    margin-right: 6px;
+}
+
+.charla-hoy-btn:hover {
+    background: rgba(255, 183, 0, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 183, 0, 0.2);
+}
+
+.charla-hoy-btn:active {
+    transform: scale(0.97);
+}
