@@ -11,7 +11,6 @@ const stepTitles = {
 };
 
 const STORAGE_KEY = 'mnb_attendance_profile';
-let detectedUserNickname = null;
 let hasSavedProfile = false;
 let lastSubmittedFormData = null;
 
@@ -159,9 +158,8 @@ function validateStep(step) {
     return true;
 }
 
-// Verifica si el usuario ya tiene userId / nickname creado en juegos y si tiene perfil guardado
-async function checkExistingUserAndProfile() {
-    const userId = localStorage.getItem('userId');
+// Carga perfil guardado en localStorage si existe y posiciona en el paso final
+function checkExistingUserAndProfile() {
     const savedProfileStr = localStorage.getItem(STORAGE_KEY);
 
     if (savedProfileStr) {
@@ -175,33 +173,14 @@ async function checkExistingUserAndProfile() {
             updateStepView();
 
             const banner = document.getElementById('profile-detected-banner');
+            const textSpan = document.getElementById('profile-banner-text');
             if (banner) banner.style.display = 'flex';
+            if (textSpan && savedProfile.nombre_completo) {
+                textSpan.innerHTML = `<strong>${savedProfile.nombre_completo}</strong>, tus datos fueron autocompletados.`;
+            }
         } catch (e) {
             console.warn('Error leyendo perfil guardado:', e);
         }
-    }
-
-    if (!userId) {
-        return; // No tiene cuenta de juegos
-    }
-
-    try {
-        const response = await fetch(`/api/profile/${userId}`);
-        if (!response.ok) return;
-        const profileData = await response.json();
-
-        if (profileData && profileData.nickname) {
-            detectedUserNickname = profileData.nickname;
-
-            if (hasSavedProfile) {
-                const textSpan = document.getElementById('profile-banner-text');
-                if (textSpan) {
-                    textSpan.innerHTML = `<strong>${detectedUserNickname}</strong>, tus datos fueron autocompletados.`;
-                }
-            }
-        }
-    } catch (err) {
-        console.warn('No se pudo verificar el nickname:', err);
     }
 
     // Botón de limpiar perfil guardado
@@ -213,7 +192,6 @@ async function checkExistingUserAndProfile() {
             const banner = document.getElementById('profile-detected-banner');
             if (banner) banner.style.display = 'none';
             goToStep(1);
-            location.reload(); // Recargar para limpiar campos
             showToast('Respuestas predeterminadas eliminadas.', 'info');
         });
     }
@@ -397,10 +375,8 @@ async function submitForm(event) {
         if (result.success) {
             overlayLabel.innerHTML = '¡Asistencia registrada!<br><span style="font-size: 0.95rem; font-weight: 400; color: #b6bde7;">Gracias por venir a Math & Beer 🍻</span>';
 
-            // Preguntar si desea guardar solo si:
-            // 1. Tiene nickname creado en juegos (o tiene userId)
-            // 2. Aún NO tiene un perfil guardado en localStorage
-            const shouldPromptSave = detectedUserNickname && !hasSavedProfile;
+            // Preguntar si desea guardar a cualquiera que aún no tenga un perfil guardado
+            const shouldPromptSave = !hasSavedProfile;
 
             if (shouldPromptSave) {
                 overlaySavePrompt.style.display = 'block';
