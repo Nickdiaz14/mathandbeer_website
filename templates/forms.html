@@ -11,10 +11,9 @@
     <!-- End Google Tag Manager -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
     <meta name="google-site-verification" content="prMhJRzxbzY-OPF8pAc3w72jFMuNqcPC9nxMkH_9rQU" />
-    <meta name="viewport" content="width=device-width height=device-height, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/webp" href="../static/images/logos/favicon.webp">
     <link rel="stylesheet" href="../static/css/main.css">
     <link rel="stylesheet" href="../static/css/menu.css">
@@ -29,219 +28,357 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXZ6G9P3"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <main>
-    <div id="overlay">
-        <label id="overlay-label" style="font-size: 33px; margin-bottom: 20px; text-align: center;"></label>
-        <div id="overlay-buttons"></div>
-    </div>
-    <div><h1 class="title">Asistencia<br>Math&Beer</h1></div>
-    
 
-    <form id="your-form-id" onsubmit="submitForm(event)" style="margin-bottom: 10px;">
-        <label class="titulo-pregunta">Nombre Completo <span style="color: red;">*</span></label>
-        <input type="text" name="nombre_completo" required><br>
-
-        <label class="titulo-pregunta">Sexo <span style="color: red;">*</span></label>
-        <div class="opcion-multiple">
-            <input type="radio" name="sexo" value="Masculino">
-            <label>Masculino</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="sexo" value="Femenino">
-            <label>Femenino</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="sexo" value="Otro" required>
-            <label>Otro</label>
+    <main class="forms-main-container">
+        <!-- Overlay para confirmación -->
+        <div id="overlay">
+            <div id="overlay-content-box" class="overlay-modal">
+                <div id="overlay-icon" class="overlay-icon">🍺</div>
+                <label id="overlay-label"></label>
+                <div id="overlay-save-prompt" class="overlay-save-container" style="display: none;">
+                    <p class="save-prompt-title">¿Guardar respuestas para las próximas charlas?</p>
+                    <p class="save-prompt-subtitle">Tu calificación y comentarios siempre serán nuevos, pero tus datos personales se llenarán solos.</p>
+                    <div class="save-prompt-actions">
+                        <button type="button" id="btn-save-profile" class="game-btn-primary">Guardar como predeterminado</button>
+                        <button type="button" id="btn-skip-save" class="game-btn-secondary">No por ahora</button>
+                    </div>
+                </div>
+                <div id="overlay-buttons" class="overlay-buttons-row"></div>
+            </div>
         </div>
 
-        <label class="titulo-pregunta">Tipo de documento <span style="color: red;">*</span></label>
-        <div class="opcion-multiple">
-            <input type="radio" name="tipo_doc" value="CC">
-            <label>Cédula de Ciudadanía</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="tipo_doc" value="TI">
-            <label>Tarjeta de Identidad</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="tipo_doc" value="CE">
-            <label>Cédula de Extranjería</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="tipo_doc" value="PA">
-            <label>Pasaporte</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="tipo_doc" value="Otro" required>
-            <label>Otro</label>
+        <div class="forms-header">
+            <h1 class="title">Asistencia<br><span class="highlight-text">Math & Beer</span></h1>
+            <p class="subtitle">Tu registro suma</p>
         </div>
 
-        <label class="titulo-pregunta">Número de documento <span style="color: red;">*</span></label>
-        <input type="number" name="numero_doc" required><br>
-
-        <label class="titulo-pregunta">Edad <span style="color: red;">*</span></label>
-        <div class="opcion-multiple">
-            <input type="radio" name="edad" value="Menor de 18">
-            <label>Menor de 18</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="edad" value="18 - 25">
-            <label>18 - 25</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="edad" value="26 - 35">
-            <label>26 - 35</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="edad" value="36 - 50">
-            <label>36 - 50</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="edad" value="51 - 65">
-            <label>51 - 65</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="edad" value="Mayor de 65" required>
-            <label>Mayor de 65</label>
+        <!-- Banner de datos autocompletados para usuario recurrente -->
+        <div id="profile-detected-banner" class="profile-banner" style="display: none;">
+            <div class="profile-banner-info">
+                <span id="profile-banner-text">Tus datos personales fueron autocompletados.</span>
+            </div>
+            <div class="profile-banner-actions">
+                <button type="button" id="btn-review-data" class="profile-banner-btn" onclick="goToStep(1)">Ver datos</button>
+                <button type="button" id="btn-clear-saved" class="profile-banner-btn danger" title="Borrar respuestas guardadas">Limpiar</button>
+            </div>
         </div>
 
-        <label class="titulo-pregunta">Correo Electrónico <span style="color: red;">*</span></label>
-        <input type="email" name="correo_electronico" required><br>
-
-        <label class="titulo-pregunta">Ciudad del Evento <span style="color: red;">*</span></label>
-        <div class="opcion-multiple" onclick="toggleCiudad(true)">
-            <input type="radio" name="ciudad" value="Bogotá">
-            <label>Bogotá</label>
-        </div>
-        <div class="opcion-multiple" onclick="toggleCiudad(false)">
-            <input type="radio" name="ciudad" value="Cali">
-            <label>Cali</label>
-        </div>
-        <div class="opcion-multiple" onclick="toggleCiudad(false)">
-            <input type="radio" name="ciudad" value="Barranquilla" required>
-            <label>Barranquilla</label>
-        </div>
-
-        <label class="titulo-pregunta">Rol del Asistente <span style="color: red;">*</span></label>
-        <div class="opcion-multiple">
-            <input type="radio" name="rol" value="Asistente ocasional">
-            <label>Asistente ocasional</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="rol" value="Estudiante">
-            <label>Estudiante</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="rol" value="Egresado">
-            <label>Egresado</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="rol" value="Docente" required >
-            <label>Docente</label>
-        </div>
-
-        <div  id="ciudad-field" style="display: none;">
-        <label class="titulo-pregunta">¿Pertenece a la comunidad konradista? <span style="color: red;">*</span></label>
-        <div class="opcion-multiple" onclick="toggleKonradista(true)">
-            <input type="radio" name="konradista" value="Si" class="input-condicional-ciudad">
-            <label>Sí</label>
-        </div>
-        <div class="opcion-multiple" onclick="toggleKonradista(false)">
-            <input type="radio" name="konradista" value="No" class="input-condicional-ciudad" required>
-            <label>No</label>
-        </div>
-        </div>
-
-        <div id="carrera-field" style="display: none;">
-            <label class="titulo-pregunta">¿Qué carrera estudiaste o estudias?<span style="color: red;">*</span></label>
-            <div class="opcion-multiple">
-                <input type="radio" name="carrera" value="Matemáticas" class="input-condicional-carrera">
-                <label>Matemáticas</label>
-            </div>
-            <div class="opcion-multiple">
-                <input type="radio" name="carrera" value="Ingeniería de Sistemas" class="input-condicional-carrera">
-                <label>Ingeniería de Sistemas</label>
-            </div>
-            <div class="opcion-multiple">
-                <input type="radio" name="carrera" value="Ingeniería Industrial" class="input-condicional-carrera">
-                <label>Ingeniería Industrial</label>
-            </div>
-            <div class="opcion-multiple">
-                <input type="radio" name="carrera" value="Marketing" class="input-condicional-carrera">
-                <label>Marketing</label>
-            </div>
-            <div class="opcion-multiple">
-                <input type="radio" name="carrera" value="Administración de Negocios Internacionales" class="input-condicional-carrera">
-                <label>Administración de Negocios Internacionales</label>
-            </div>
-            <div class="opcion-multiple">
-                <input type="radio" name="carrera" value="Psicología" class="input-condicional-carrera">
-                <label>Psicología</label>
-            </div>
-            <div class="opcion-multiple">
-                <input type="radio" name="carrera" value="Tecnología en desarrollo de software" class="input-condicional-carrera">
-                <label>Tecnología en desarrollo de software</label>
-            </div>
-            <div class="opcion-multiple">
-                <input type="radio" name="carrera" value="Administración de Empresas" class="input-condicional-carrera">
-                <label>Administración de Empresas</label>
-            </div>
-            <div class="opcion-multiple">
-                <input type="radio" name="carrera" value="Administración en Seguridad y Salud en el Trabajo" class="input-condicional-carrera">
-                <label>Administración en Seguridad y Salud en el Trabajo</label>
-            </div>
-            <div class="opcion-multiple">
-                <input type="radio" name="carrera" value="Escuela de Posgrados" class="input-condicional-carrera">
-                <label>Escuela de Posgrados</label>
+        <div class="wizard-card">
+            <!-- Barra de Progreso Superior -->
+            <div class="wizard-progress-header">
+                <div class="progress-info">
+                    <span id="step-indicator-text">1 / 5</span>
+                    <span id="step-title-text" class="step-title-badge">Información Personal</span>
+                </div>
+                <div class="progress-bar-track">
+                    <div id="progress-bar-fill" class="progress-bar-fill" style="width: 20%;"></div>
+                </div>
             </div>
 
-            <input type="radio" name="carrera" value="No aplica" id="carrera-default" style="display: none;" class="input-condicional-carrera" checked>
-        </div>
+            <form id="your-form-id" onsubmit="submitForm(event)">
+                
+                <!-- PASO 1: Datos Personales Básicos -->
+                <div class="wizard-step active" data-step="1">
+                    <div class="form-group">
+                        <label class="titulo-pregunta" for="nombre_completo">Nombre Completo <span class="required-star">*</span></label>
+                        <input type="text" id="nombre_completo" name="nombre_completo" placeholder="Ej. Sofia Kovalevskaya" required autocomplete="name">
+                    </div>
 
-        <label class="titulo-pregunta">¿Qué te pareció el contenido y desarrollo del evento? <span style="color: red;">*</span></label>
-        <label>¡Califícalo del 1 al 5!</label>
-        <div class="rating">
-            <div>
-                <input type="radio" name="calificacion" value="1" id="star1" required>
-                <label for="star1"><img src="/static/images/logos/logo_M&B_b.png" style="width: 60px; height: 60px;" alt="1 estrella" onclick="updateRating(1)"></label>
-            </div>
-            <div>
-                <input type="radio" name="calificacion" value="2" id="star2" required>
-                <label for="star2"><img src="/static/images/logos/logo_M&B_b.png" style="width: 60px; height: 60px;" alt="2 estrella" onclick="updateRating(2)"></label>
-            </div>
-            <div>
-                <input type="radio" name="calificacion" value="3" id="star3" required>
-                <label for="star3"><img src="/static/images/logos/logo_M&B_b.png" style="width: 60px; height: 60px;" alt="3 estrella" onclick="updateRating(3)"></label>
-            </div>
-            <div>
-                <input type="radio" name="calificacion" value="4" id="star4" required>
-                <label for="star4"><img src="/static/images/logos/logo_M&B_b.png" style="width: 60px; height: 60px;" alt="4 estrella" onclick="updateRating(4)"></label>
-            </div>
-            <div>
-                <input type="radio" name="calificacion" value="5" id="star5" required>
-                <label for="star5"><img src="/static/images/logos/logo_M&B_b.png" style="width: 60px; height: 60px;" alt="5 estrella" onclick="updateRating(5)"></label>
-            </div>
-        </div>
-        <input type="hidden" name="calificacion" id="calificacion">
+                    <div class="form-group">
+                        <label class="titulo-pregunta">Sexo <span class="required-star">*</span></label>
+                        <div class="pill-group">
+                            <label class="pill-option">
+                                <input type="radio" name="sexo" value="Masculino" required>
+                                <span class="pill-content">Masculino</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="sexo" value="Femenino">
+                                <span class="pill-content">Femenino</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="sexo" value="Otro">
+                                <span class="pill-content">Otro</span>
+                            </label>
+                        </div>
+                    </div>
 
-        <label class="titulo-pregunta">¿Quieres que te invitemos a nuestras próximas ediciones de Math&Beer? <span style="color: red;">*</span></label>
-        <div class="opcion-multiple">
-            <input type="radio" name="futuros_eventos" value="¡Por supuesto!">
-            <label>¡Por supuesto!</label>
-        </div>
-        <div class="opcion-multiple">
-            <input type="radio" name="futuros_eventos" value="No, gracias." required>
-            <label>No, gracias.</label>
-        </div>
+                    <div class="form-group">
+                        <label class="titulo-pregunta">Edad <span class="required-star">*</span></label>
+                        <div class="pill-group grid-2">
+                            <label class="pill-option">
+                                <input type="radio" name="edad" value="Menor de 18" required>
+                                <span class="pill-content">Menor de 18</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="edad" value="18 - 25">
+                                <span class="pill-content">18 - 25</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="edad" value="26 - 35">
+                                <span class="pill-content">26 - 35</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="edad" value="36 - 50">
+                                <span class="pill-content">36 - 50</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="edad" value="51 - 65">
+                                <span class="pill-content">51 - 65</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="edad" value="Mayor de 65">
+                                <span class="pill-content">Mayor de 65</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
 
-        <label class="titulo-pregunta">¿Tienes algún comentario o recomendación?</label>
-        <label>Tu opinión es muy importante y nos ayuda a mejorar.</label>
-        <textarea name="comentario" rows="2" placeholder="Escribe tus comentarios aquí..."></textarea><br>
-        <button id="enviar" type="submit">Enviar</button>
-    </form>
-      </main>
-      <script src="../static/scripts/utils.js"></script>
-      <script src="../static/scripts/forms.js"></script>
+                <!-- PASO 2: Identificación y Contacto -->
+                <div class="wizard-step" data-step="2">
+                    <div class="form-group">
+                        <label class="titulo-pregunta">Tipo de documento <span class="required-star">*</span></label>
+                        <div class="pill-group">
+                            <label class="pill-option">
+                                <input type="radio" name="tipo_doc" value="CC" required>
+                                <span class="pill-content">Cédula (CC)</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="tipo_doc" value="TI">
+                                <span class="pill-content">Tarjeta Identidad (TI)</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="tipo_doc" value="CE">
+                                <span class="pill-content">Extranjería (CE)</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="tipo_doc" value="PA">
+                                <span class="pill-content">Pasaporte</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="tipo_doc" value="Otro">
+                                <span class="pill-content">Otro</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="titulo-pregunta" for="numero_doc">Número de documento <span class="required-star">*</span></label>
+                        <input type="number" id="numero_doc" name="numero_doc" placeholder="Número sin puntos ni espacios" required inputmode="numeric">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="titulo-pregunta" for="correo_electronico">Correo Electrónico <span class="required-star">*</span></label>
+                        <input type="email" id="correo_electronico" name="correo_electronico" placeholder="tunombre@ejemplo.com" required autocomplete="email">
+                    </div>
+                </div>
+
+                <!-- PASO 3: Ubicación y Perfil Académico -->
+                <div class="wizard-step" data-step="3">
+                    <div class="form-group">
+                        <label class="titulo-pregunta">Ciudad del Evento <span class="required-star">*</span></label>
+                        <div class="pill-group">
+                            <label class="pill-option" onclick="toggleCiudad(true)">
+                                <input type="radio" name="ciudad" value="Bogotá" required>
+                                <span class="pill-content">📍 Bogotá</span>
+                            </label>
+                            <label class="pill-option" onclick="toggleCiudad(false)">
+                                <input type="radio" name="ciudad" value="Cali">
+                                <span class="pill-content">📍 Cali</span>
+                            </label>
+                            <label class="pill-option" onclick="toggleCiudad(false)">
+                                <input type="radio" name="ciudad" value="Barranquilla">
+                                <span class="pill-content">📍 Barranquilla</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Condicional: Pertenece a Konrad Lorenz (solo Bogotá) -->
+                    <div id="ciudad-field" class="form-group conditional-block" style="display: none;">
+                        <label class="titulo-pregunta">¿Pertenece a la comunidad konradista? <span class="required-star">*</span></label>
+                        <div class="pill-group">
+                            <label class="pill-option" onclick="toggleKonradista(true)">
+                                <input type="radio" name="konradista" value="Si" class="input-condicional-ciudad">
+                                <span class="pill-content">Sí, pertenezco</span>
+                            </label>
+                            <label class="pill-option" onclick="toggleKonradista(false)">
+                                <input type="radio" name="konradista" value="No" class="input-condicional-ciudad">
+                                <span class="pill-content">No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Condicional: Carrera (si es Konradista) -->
+                    <div id="carrera-field" class="form-group conditional-block" style="display: none;">
+                        <label class="titulo-pregunta">¿Qué carrera estudiaste o estudias? <span class="required-star">*</span></label>
+                        <div class="pill-group grid-2">
+                            <label class="pill-option">
+                                <input type="radio" name="carrera" value="Matemáticas" class="input-condicional-carrera">
+                                <span class="pill-content">Matemáticas</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="carrera" value="Ingeniería de Sistemas" class="input-condicional-carrera">
+                                <span class="pill-content">Ing. de Sistemas</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="carrera" value="Ingeniería Industrial" class="input-condicional-carrera">
+                                <span class="pill-content">Ing. Industrial</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="carrera" value="Marketing" class="input-condicional-carrera">
+                                <span class="pill-content">Marketing</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="carrera" value="Administración de Negocios Internacionales" class="input-condicional-carrera">
+                                <span class="pill-content">Negocios Int.</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="carrera" value="Psicología" class="input-condicional-carrera">
+                                <span class="pill-content">Psicología</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="carrera" value="Tecnología en desarrollo de software" class="input-condicional-carrera">
+                                <span class="pill-content">Tec. en Software</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="carrera" value="Administración de Empresas" class="input-condicional-carrera">
+                                <span class="pill-content">Adm. de Empresas</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="carrera" value="Administración en Seguridad y Salud en el Trabajo" class="input-condicional-carrera">
+                                <span class="pill-content">Adm. SST</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="carrera" value="Escuela de Posgrados" class="input-condicional-carrera">
+                                <span class="pill-content">Posgrados</span>
+                            </label>
+                        </div>
+                        <input type="radio" name="carrera" value="No aplica" id="carrera-default" style="display: none;" class="input-condicional-carrera" checked>
+                    </div>
+                </div>
+
+                <!-- PASO 4: Rol del Asistente -->
+                <div class="wizard-step" data-step="4">
+                    <div class="form-group">
+                        <label class="titulo-pregunta">¿Cuál es tu rol como asistente? <span class="required-star">*</span></label>
+                        <div class="pill-group column-layout">
+                            <label class="pill-option">
+                                <input type="radio" name="rol" value="Asistente ocasional" required>
+                                <span class="pill-content">
+                                    <span class="pill-title">🍺 Asistente ocasional</span>
+                                    <span class="pill-desc">Vengo a disfrutar de las charlas, los juegos y las cervezas.</span>
+                                </span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="rol" value="Estudiante">
+                                <span class="pill-content">
+                                    <span class="pill-title">🎓 Estudiante</span>
+                                    <span class="pill-desc">Actualmente cursando estudios universitarios o técnicos.</span>
+                                </span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="rol" value="Egresado">
+                                <span class="pill-content">
+                                    <span class="pill-title">💼 Egresado</span>
+                                    <span class="pill-desc">Graduado o profesional en ejercicio.</span>
+                                </span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="rol" value="Docente">
+                                <span class="pill-content">
+                                    <span class="pill-title">📚 Docente / Investigador</span>
+                                    <span class="pill-desc">Profesor o académico en instituciones educativas.</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO 5: Calificación, Comentarios y Próximos Eventos (Nunca se autocompleta) -->
+                <div class="wizard-step" data-step="5">
+                    <div class="form-group text-center">
+                        <label class="titulo-pregunta">¿Qué te pareció el contenido y desarrollo del evento? <span class="required-star">*</span></label>
+                        <p class="section-help-text">¡Califícalo del 1 al 5 cervezas!</p>
+                        
+                        <div class="rating-beer-container">
+                            <div class="rating-option" onclick="updateRating(1)">
+                                <input type="radio" name="calificacion_radio" value="1" id="star1">
+                                <label for="star1" class="beer-label">
+                                    <img src="/static/images/logos/logo_M&B_b.png" alt="1 cerveza">
+                                    <span class="beer-number">1</span>
+                                </label>
+                            </div>
+                            <div class="rating-option" onclick="updateRating(2)">
+                                <input type="radio" name="calificacion_radio" value="2" id="star2">
+                                <label for="star2" class="beer-label">
+                                    <img src="/static/images/logos/logo_M&B_b.png" alt="2 cervezas">
+                                    <span class="beer-number">2</span>
+                                </label>
+                            </div>
+                            <div class="rating-option" onclick="updateRating(3)">
+                                <input type="radio" name="calificacion_radio" value="3" id="star3">
+                                <label for="star3" class="beer-label">
+                                    <img src="/static/images/logos/logo_M&B_b.png" alt="3 cervezas">
+                                    <span class="beer-number">3</span>
+                                </label>
+                            </div>
+                            <div class="rating-option" onclick="updateRating(4)">
+                                <input type="radio" name="calificacion_radio" value="4" id="star4">
+                                <label for="star4" class="beer-label">
+                                    <img src="/static/images/logos/logo_M&B_b.png" alt="4 cervezas">
+                                    <span class="beer-number">4</span>
+                                </label>
+                            </div>
+                            <div class="rating-option" onclick="updateRating(5)">
+                                <input type="radio" name="calificacion_radio" value="5" id="star5">
+                                <label for="star5" class="beer-label">
+                                    <img src="/static/images/logos/logo_M&B_b.png" alt="5 cervezas">
+                                    <span class="beer-number">5</span>
+                                </label>
+                            </div>
+                        </div>
+                        <input type="hidden" name="calificacion" id="calificacion" required>
+                        <div id="calificacion-error" class="inline-error" style="display: none;">Por favor selecciona una calificación de 1 a 5 cervezas.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="titulo-pregunta">¿Quieres que te invitemos a nuestras próximas ediciones? <span class="required-star">*</span></label>
+                        <div class="pill-group">
+                            <label class="pill-option">
+                                <input type="radio" name="futuros_eventos" value="¡Por supuesto!" required>
+                                <span class="pill-content">🍻 ¡Por supuesto!</span>
+                            </label>
+                            <label class="pill-option">
+                                <input type="radio" name="futuros_eventos" value="No, gracias.">
+                                <span class="pill-content">No, gracias</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="titulo-pregunta" for="comentario">¿Tienes algún comentario o recomendación?</label>
+                        <p class="section-help-text">Tu opinión es muy importante y nos ayuda a mejorar.</p>
+                        <textarea id="comentario" name="comentario" rows="3" placeholder="¿Qué fue lo que más te gustó? ¿Qué podríamos mejorar?"></textarea>
+                    </div>
+                </div>
+
+                <!-- Botones de Navegación del Wizard -->
+                <div class="wizard-nav-actions">
+                    <button type="button" id="btn-prev" class="btn-wizard-secondary" onclick="navigateStep(-1)" style="display: none;">
+                        Anterior
+                    </button>
+                    <button type="button" id="btn-next" class="btn-wizard-primary" onclick="navigateStep(1)">
+                        Siguiente
+                    </button>
+                    <button type="submit" id="enviar" class="btn-wizard-submit" style="display: none;">
+                        Enviar
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <script src="../static/scripts/utils.js"></script>
+    <script src="../static/scripts/forms.js"></script>
 </body>
 </html>
