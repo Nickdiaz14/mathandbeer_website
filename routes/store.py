@@ -82,7 +82,7 @@ def get_products():
         _seed_products(connection)
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT id, name, category, price, image_url, variations
+            SELECT id, name, category, price, image_url, variations, description
             FROM products
             WHERE active = TRUE
             ORDER BY category, name;
@@ -96,7 +96,8 @@ def get_products():
                 'category': row[2],
                 'price': row[3],
                 'image_url': row[4],
-                'variations': row[5] if row[5] else {}
+                'variations': row[5] if row[5] else {},
+                'description': row[6] or ''
             })
         return jsonify(products)
     except Exception as e:
@@ -235,6 +236,7 @@ def create_product():
     category = (data.get('category') or '').strip().lower()
     price = data.get('price')
     image_url = (data.get('image_url') or '').strip()
+    description = (data.get('description') or '').strip()
     variations_raw = data.get('variations') or ''
 
     if not name or not category or not price:
@@ -246,15 +248,16 @@ def create_product():
     try:
         cursor = connection.cursor()
         cursor.execute("""
-            INSERT INTO products (name, category, price, image_url, variations, active)
-            VALUES (%s, %s, %s, %s, %s, %s, TRUE)
+            INSERT INTO products (name, category, price, image_url, variations, description, active)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, TRUE)
             RETURNING id;
         """, (
             name,
             category,
             int(price),
             image_url or '../static/images/logos/logo_M&B.png',
-            json.dumps(_parse_variations(variations_raw, category))
+            json.dumps(_parse_variations(variations_raw, category)),
+            description
         ))
         product_id = cursor.fetchone()[0]
         connection.commit()
@@ -279,6 +282,7 @@ def update_product(product_id):
     category = (data.get('category') or '').strip().lower()
     price = data.get('price')
     image_url = (data.get('image_url') or '').strip()
+    description = (data.get('description') or '').strip()
     variations_raw = data.get('variations') or ''
 
     if not name or not category or not price:
@@ -291,7 +295,7 @@ def update_product(product_id):
         cursor = connection.cursor()
         cursor.execute("""
             UPDATE products
-            SET name = %s, category = %s, price = %s, image_url = %s, variations = %s
+            SET name = %s, category = %s, price = %s, image_url = %s, variations = %s, description = %s
             WHERE id = %s AND active = TRUE
             RETURNING id;
         """, (
@@ -300,6 +304,7 @@ def update_product(product_id):
             int(price),
             image_url or '../static/images/logos/logo_M&B.png',
             json.dumps(_parse_variations(variations_raw, category)),
+            description,
             product_id
         ))
         row = cursor.fetchone()

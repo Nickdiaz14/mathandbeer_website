@@ -20,8 +20,7 @@
     <link rel="stylesheet" href="../static/css/main.css">
     <link rel="stylesheet" href="../static/css/games.css">
     {% block extra_css %}{% endblock %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/1eceecb241.js" crossorigin="anonymous" async></script>
     <link rel="icon" type="image/webp" href="../static/images/logos/favicon.webp">
     <title class="notranslate">{% block page_title %}Math and Beer{% endblock %}</title>
@@ -102,50 +101,6 @@
         crossorigin="anonymous"></script>
     <!-- Mantenemos el contenedor visible para Google Translate -->
     <div id="google_translate_element" style="display:none;"></div>
-
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'es',
-                autoDisplay: false
-            }, 'google_translate_element');
-        }
-
-        function setLanguage(langCode) {
-            const domain = window.location.hostname;
-            const mainDomain = domain.startsWith('.') ? domain : '.' + domain;
-            
-            // 1. Borrado exhaustivo de la cookie antigua en todas las variaciones
-            const past = 'expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
-            document.cookie = `googtrans=; ${past}`;
-            document.cookie = `googtrans=; ${past}; domain=${domain}`;
-            document.cookie = `googtrans=; ${past}; domain=${mainDomain}`;
-
-            // Para dominios compartidos como .onrender.com, probamos quitar el subdominio si aplica
-            const parts = domain.split('.');
-            if (parts.length > 2) {
-                const rootDomain = '.' + parts.slice(-2).join('.');
-                document.cookie = `googtrans=; ${past}; domain=${rootDomain}`;
-            }
-
-            // 2. Si el idioma seleccionado es Español, simplemente recargamos con las cookies limpias
-            if (langCode === 'es') {
-                location.reload();
-                return;
-            }
-
-            // 3. Escribir la nueva cookie de forma universal (Sin forzar el parámetro domain)
-            const expiry = new Date();
-            expiry.setFullYear(expiry.getFullYear() + 1);
-            const expires = `expires=${expiry.toUTCString()}`;
-            
-            // Escribimos la cookie de forma limpia sobre el path raíz
-            document.cookie = `googtrans=/es/${langCode}; path=/; ${expires}`;
-
-            // 4. Recargar la página
-            location.reload();
-        }
-    </script>
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 

@@ -161,3 +161,53 @@ function showToast(msg, type = 'info') {
         toast.classList.remove('show');
     }, 3500);
 }
+
+/**
+ * Inicializador de Google Translate Element
+ */
+function googleTranslateElementInit() {
+    if (window.google && window.google.translate) {
+        new window.google.translate.TranslateElement({
+            pageLanguage: 'es',
+            autoDisplay: false
+        }, 'google_translate_element');
+    }
+}
+
+/**
+ * Manejo global de selección y persistencia de idioma
+ */
+function setLanguage(langCode) {
+    const domain = window.location.hostname;
+    const mainDomain = domain.startsWith('.') ? domain : '.' + domain;
+    
+    // 1. Borrado exhaustivo de la cookie antigua en todas las variaciones
+    const past = 'expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+    document.cookie = `googtrans=; ${past}`;
+    document.cookie = `googtrans=; ${past}; domain=${domain}`;
+    document.cookie = `googtrans=; ${past}; domain=${mainDomain}`;
+
+    // Para dominios compartidos como .onrender.com, probamos quitar el subdominio si aplica
+    const parts = domain.split('.');
+    if (parts.length > 2) {
+        const rootDomain = '.' + parts.slice(-2).join('.');
+        document.cookie = `googtrans=; ${past}; domain=${rootDomain}`;
+    }
+
+    // 2. Si el idioma seleccionado es Español, simplemente recargamos con las cookies limpias
+    if (langCode === 'es') {
+        location.reload();
+        return;
+    }
+
+    // 3. Escribir la nueva cookie de forma universal (Sin forzar el parámetro domain)
+    const expiry = new Date();
+    expiry.setFullYear(expiry.getFullYear() + 1);
+    const expires = `expires=${expiry.toUTCString()}`;
+    
+    // Escribimos la cookie de forma limpia sobre el path raíz
+    document.cookie = `googtrans=/es/${langCode}; path=/; ${expires}`;
+
+    // 4. Recargar la página
+    location.reload();
+}

@@ -112,11 +112,6 @@
             if (adminPanel.style.display === 'block') {
                 renderAdminProducts();
             }
-
-            // Preload base images
-            products.forEach(p => {
-                if (p.image_url) preloadImage(p.image_url);
-            });
         } catch (err) {
             console.error('Error loading products:', err);
             grid.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:40px;">Error al cargar los productos</p>';
@@ -147,64 +142,33 @@
             return;
         }
         emptyState.style.display = 'none';
-
         grid.innerHTML = filtered.map((p, i) => {
-            const variations = p.variations || {};
-            let variationHTML = '';
-
-            if (p.category === 'buso') {
-                const colorOptions = variations.colores || [];
-                const sizeOptions = variations.tallas || [];
-                const defaultColor = colorOptions.find(c => /morado|purple|violeta/i.test(c)) || colorOptions[0] || '';
-                const defaultSize = sizeOptions[0] || '';
-                variationHTML = `
-                    <div class="product-card__variations">
-                        ${colorOptions.length ? `<span class="variation-label">Color</span><div class="variation-chips variation-chips--colors">${colorOptions.map(c => `<button class="variation-chip${c === defaultColor ? ' selected' : ''}" data-variation="${c}" data-variation-type="color">${c}</button>`).join('')}</div>` : ''}
-                        ${sizeOptions.length ? `<span class="variation-label">Talla</span><div class="variation-chips">${sizeOptions.map(t => `<button class="variation-chip${t === defaultSize ? ' selected' : ''}" data-variation="${t}" data-variation-type="size">${t}</button>`).join('')}</div>` : ''}
-                    </div>`;
-            } else if (p.category === 'pin' && variations.colores) {
-                const colorOptions = variations.colores || [];
-                const defaultColor = colorOptions.find(c => /morado|purple|violeta/i.test(c)) || colorOptions[0] || '';
-                variationHTML = `
-                    <div class="product-card__variations">
-                        <span class="variation-label">Color</span>
-                        <div class="variation-chips">
-                            ${colorOptions.map(c => `<button class="variation-chip${c === defaultColor ? ' selected' : ''}" data-variation="${c}" data-variation-type="color">${c}</button>`).join('')}
-                        </div>
-                    </div>`;
-            } else if (p.category === 'forro') {
-                const colorOptions = variations.colores || [];
-                const defaultColor = colorOptions.find(c => /morado|purple|violeta/i.test(c)) || colorOptions[0] || '';
-                variationHTML = `
-                    <div class="product-card__variations">
-                        ${colorOptions.length ? `<span class="variation-label">Color</span><div class="variation-chips">${colorOptions.map(c => `<button class="variation-chip${c === defaultColor ? ' selected' : ''}" data-variation="${c}" data-variation-type="color">${c}</button>`).join('')}</div>` : ''}
-                        <span class="variation-label">Modelo de celular (por encargo)</span>
-                        <input type="text" class="variation-input" placeholder="Ej: iPhone 15, Samsung S24..." data-product-id="${p.id}">
-                    </div>`;
-            }
-
             const baseImage = p.image_url || '../static/images/logos/logo_M&B.png';
-            const defaultColor = (p.variations && p.variations.colores && p.variations.colores.find(c => /morado|purple|violeta/i.test(c))) || (p.variations && p.variations.colores && p.variations.colores[0]) || '';
+            //elige al azar un color predeterminado si es buso, pin o forro, para mostrar la imagen inicial del producto
+            const defaultColor = (p.category === 'buso' || p.category === 'pin' || p.category === 'forro') && p.variations && p.variations.colores ? p.variations.colores[Math.floor(Math.random() * p.variations.colores.length)] : '';
             const initialImage = (p.category === 'buso' || p.category === 'pin' || p.category === 'forro') && defaultColor ? buildVariantImage(baseImage, defaultColor) : baseImage;
+            const hasDesc = p.description && p.description.trim().length > 0;
+            const descHTML = hasDesc
+                ? `<p class="product-card__desc">${p.description}</p>`
+                : `<p class="product-card__desc product-card__desc--empty"></p>`;
 
             return `
-                <div class="product-card" style="--delay:${i}">
-                    <div class="product-card__image" style="cursor:pointer;" onclick="window.openQuickView(${p.id})">
-                        <img src="${initialImage}" alt="${p.name}" loading="lazy" data-base-image="${baseImage}" data-fallback="../static/images/logos/logo_M&B.png" onerror="this.src === this.dataset.baseImage ? (this.src = this.dataset.fallback) : (this.src = this.dataset.baseImage)">
-                    </div>
-                    <div class="product-card__body">
-                        <span class="product-card__category">
-                            <i class="fa-solid ${getCategoryIcon(p.category)}"></i> ${getCategoryLabel(p.category)}
-                        </span>
-                        <h3 class="product-card__name notranslate">${p.name}</h3>
-                        <p class="product-card__desc">${p.description || ''}</p>
-                        <div class="product-card__price">${formatPrice(p.price)}</div>
-                        ${variationHTML}
-                        <button class="product-card__add-btn" data-product-id="${p.id}" ${p.category === 'buso' && variations.colores && variations.tallas ? 'disabled' : ''}>
-                            <i class="fa-solid fa-cart-plus"></i> Agregar al carrito
-                        </button>
-                    </div>
-                </div>`;
+                    <div class="product-card" style="--delay:${i}">
+                        <div class="product-card__header">
+                            <h3 class="product-card__name notranslate">${p.name}</h3>
+                        </div>
+                        <div class="product-card__image" style="cursor:pointer;" onclick="window.openQuickView(${p.id})">
+                            <img src="${initialImage}" alt="${p.name}" loading="lazy" data-base-image="${baseImage}" data-fallback="../static/images/logos/logo_M&B.png" onerror="this.src === this.dataset.baseImage ? (this.src = this.dataset.fallback) : (this.src = this.dataset.baseImage)">
+                            <span class="product-card__image-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Ver detalles</span>
+                        </div>
+                        <div class="product-card__body">
+                            ${descHTML}
+                            <div class="product-card__price">${formatPrice(p.price)}</div>
+                            <button class="product-card__quick-btn" onclick="window.openQuickView(${p.id})">
+                                <i class="fa-solid fa-sliders me-1"></i> Elige tu diseño
+                            </button>
+                        </div>
+                    </div>`;
         }).join('');
 
         // Preload variant images on hover over the card to speed up switching
