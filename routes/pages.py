@@ -48,7 +48,7 @@ def page_about():
 
     fotos_dir = "static/images/fotos/thumbs"
     if os.path.isdir(fotos_dir):
-        todas = [f for f in os.listdir(fotos_dir) if f.lower().endswith(('.webp', '.jpg', '.jpeg', '.png'))]
+        todas = [f for f in os.listdir(fotos_dir) if f.lower().endswith(('.webp'))]
         fotos = random.sample(todas, min(20, len(todas)))
     else:
         fotos = []

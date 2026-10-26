@@ -35,3 +35,17 @@ for nombre in fotos:
         os.remove(src_path)
 
 print("\nListo.")
+
+# Renombrar fotos en orden
+fotos = sorted(os.listdir(DST))
+for i, nombre in enumerate(fotos, start=1):
+    src_path = os.path.join(DST, os.path.splitext(nombre)[0] + ".webp")
+    dst_name = f"foto_{i:03d}.webp"
+    dst_path = os.path.join(DST, dst_name)
+
+    if os.path.exists(dst_path):
+        print(f"  ya existe: {dst_name}")
+        continue
+
+    os.rename(src_path, dst_path)
+    print(f"  renombrado: {src_path} → {dst_name}")
