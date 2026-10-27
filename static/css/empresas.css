@@ -84,7 +84,7 @@
     z-index: 2;
     max-width: 800px;
     text-align: center;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .hero-badge {
@@ -101,7 +101,7 @@
 }
 
 .hero-title {
-    font-size: clamp(3.2rem, 6vw, 3.5rem);
+    font-size: clamp(3.2rem, 6vw, 3.2rem);
     font-weight: 900;
     color: #fff;
     line-height: 1.05;
@@ -123,7 +123,6 @@
     gap: 1rem;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 0.5rem;
 }
 
 .btn-hero-primary {
@@ -192,7 +191,7 @@
 }
 
 .hero-stat-number {
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-size: clamp(1.6rem, 3.7vw, 2.6rem);
     font-weight: 800;
     background: linear-gradient(135deg, var(--accent-beer), var(--accent-math));
     -webkit-background-clip: text;
@@ -673,12 +672,8 @@
     }
 
     .hero-title {
-        font-size: clamp(2rem, 11vw, 3rem);
+        font-size: clamp(2rem, 10vw, 3rem);
         letter-spacing: -0.01em;
-    }
-
-    .hero-subtitle {
-        font-size: .75rem;
     }
 
     .hero-stats {

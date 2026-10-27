@@ -48,7 +48,7 @@ def page_about():
 
     fotos_dir = "static/images/fotos/thumbs"
     if os.path.isdir(fotos_dir):
-        todas = [f for f in os.listdir(fotos_dir) if f.lower().endswith(('.webp', '.jpg', '.jpeg', '.png'))]
+        todas = [f for f in os.listdir(fotos_dir) if f.lower().endswith(('.webp'))]
         fotos = random.sample(todas, min(20, len(todas)))
     else:
         fotos = []
@@ -323,19 +323,4 @@ def page_daily():
 def page_empresas():
     return render_template('empresas.html')
 
-@pages_bp.route('/blog')
-def page_blog():
-    with open("static/json/articles.json", "r", encoding="utf-8") as f:
-        articles = json.load(f)
-    articles_sorted = sorted(articles, key=lambda a: a["published_at"], reverse=True)
-    return render_template('blog.html', articles=articles_sorted)
-
-@pages_bp.route('/blog/<slug>')
-def page_article(slug):
-    with open("static/json/articles.json", "r", encoding="utf-8") as f:
-        articles = json.load(f)
-    article = next((a for a in articles if a["slug"] == slug), None)
-    if not article:
-        return redirect('/blog')
-    return render_template('article.html', article=article)
 

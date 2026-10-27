@@ -144,3 +144,21 @@ document.addEventListener("DOMContentLoaded", () => {
     container.appendChild(el);
   }
 })();
+
+(function () {
+  const board = document.getElementById('hero-board');
+  if (!board) return;
+  const sol = [0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0]; // 0h-h1 4x4 válido
+  const tiles = sol.map(() => { const d = document.createElement('div'); d.className = 'hero-tile'; board.appendChild(d); return d; });
+
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    tiles.forEach((t, i) => t.classList.add(sol[i] ? 'b' : 'r'));
+    return;
+  }
+  const order = [...Array(16).keys()].sort(() => Math.random() - .5);
+  (function play() {
+    tiles.forEach(t => t.className = 'hero-tile');
+    order.forEach((idx, k) => setTimeout(() => tiles[idx].classList.add(sol[idx] ? 'b' : 'r', 'pop'), 400 + k * 220));
+    setTimeout(play, 400 + 16 * 220 + 3500);
+  })();
+})();
