@@ -163,7 +163,7 @@
         <section class="hero-section" id="hero">
             <div class="math-particles" aria-hidden="true"></div>
             <div class="hero-content displayColumn">
-                <span class="hero-badge"><i class="fa-solid fa-circle-dot"></i> Divulgación científica · Colombia</span>
+                <span class="hero-badge"><span class="live-dot"></span> Divulgación científica · Colombia</span>
                 <h1 class="hero-title">Matemáticas que te <em class="hero-accent">sorprenden</em></h1>
                 <p class="hero-subtitle">El encuentro mensual donde las matemáticas se bajan del tablero para mezclarse
                     con risas, curiosidad y una cerveza bien fría.</p>
@@ -203,6 +203,9 @@
                         <span class="hero-stat-label">Personas / mes</span>
                     </div>
                 </div>
+                <div class="hero-scroll-hint" aria-hidden="true">
+                    <div class="scroll-arrow"></div>
+                </div>
             </div>
         </section>
         <div id="mantente-al-dia" class="wave-divider wave-dark-to-light" aria-hidden="true">
@@ -215,25 +218,22 @@
             <h2 class="subtitle">Mantente al día</h2>
             {% if proxima %}
             <div class="about_text displayColumn">
-                <p class="small lh-lg">¡Hay una nueva sesión en camino! Si tienes alguna pregunta no dudes en dejarla
-                    abajo.</p>
+                <p class="small lh-lg">¡Hay una nueva sesión en camino! Si tienes alguna pregunta no dudes en dejarla abajo.</p>
             </div>
             <div id="contenedor-dinamico" class="upcoming-grid mx-auto"></div>
             {% endif %}
-            <div class="about_text displayColumn">
-                <p class="small lh-lg">¿Quieres saber cuándo tengamos todo listo para la siguiente sesión? Déjanos tu
-                    correo y te avisamos.</p>
-            </div>
-            <div class="text-center myBg myBorder rounded-4 p-4 shadow-sm upcoming-subscribe-box mx-auto mt-2">
-                <p class="subtitle fs-5 mb-1"><i class="fa-solid fa-bell me-2"></i>¿No quieres perderte nada?</p>
-                <p class="small">Regístrate y te avisamos cuando haya una nueva charla.</p>
+            <div class="subscribe-section">
+                <div class="subscribe-icon-wrap">
+                    <i class="fa-solid fa-bell subscribe-bell-icon"></i>
+                </div>
+                <p class="subscribe-headline">¿No quieres perderte nada?</p>
+                <p class="subscribe-sub">Regístrate y te avisamos cuando haya una nueva charla.</p>
                 <form id="subscribe-form" class="subscribe-inline-form">
                     <input type="text" id="subscribe-name" placeholder="Tu nombre (opcional)" autocomplete="name">
-                    <input type="email" id="subscribe-email" placeholder="Tu correo electrónico" required
-                        autocomplete="email">
-                    <button type="submit" id="subscribe-btn"><i
-                            class="fa-solid fa-paper-plane me-1"></i>Suscribirme</button>
+                    <input type="email" id="subscribe-email" placeholder="Tu correo electrónico" required autocomplete="email">
+                    <button type="submit" id="subscribe-btn"><i class="fa-solid fa-paper-plane me-1"></i>Suscribirme</button>
                 </form>
+                <p class="subscribe-privacy"><i class="fa-solid fa-lock"></i> Sin spam. Solo cuando haya algo importante.</p>
             </div>
         </section>
         <div class="wave-divider wave-light-to-dark" aria-hidden="true">
@@ -244,10 +244,11 @@
         <section class="testimonials-section displayColumn" id="Inicio">
             <h2 class="subtitle">Nuestra trayectoria</h2>
             <!-- 4. HISTORIA — track record y credibilidad -->
-            <div class="about_text displayColumn">
-                <p class="lh-lg small">Detrás de cada número hay una gran historia. Te invitamos a revivir nuestros
-                    encuentros pasados y descubrir cómo la matemática se conecta con la tecnología, el arte y el día a
-                    día.</p>
+            <div class="trayectoria-intro displayColumn">
+                <p class="lh-lg small">Detrás de cada número hay una gran historia. Te invitamos a revivir nuestros encuentros pasados y descubrir cómo la matemática se conecta con la tecnología, el arte y el día a día.</p>
+                <div class="trayectoria-hint">
+                    <i class="fa-solid fa-hand-pointer"></i> Haz clic en un año para explorar las charlas
+                </div>
             </div>
             <div class="accordion faq-accordion displayColumn" id="accordionExample">
                 {% for year, lista in charlas.items() %}
@@ -321,8 +322,8 @@
                                                             <button class="blog-send-btn" title="Enviar"><i
                                                                     class="fa-solid fa-paper-plane"></i></button>
                                                         </div>
-                                                        <p class="blog-login-hint">Solo usuarios con <a href="/register"
-                                                                class="blog-nick-link">Nickname</a> pueden comentar.</p>
+                                                        <p class="blog-login-hint">Solo usuarios <a href="/register"
+                                                                class="blog-nick-link">registrados</a> pueden comentar.</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -414,32 +415,18 @@
                     Nos une la convicción de que la ciencia se disfruta más en compañía. ¡Conoce a las mentes de
                     <strong class="notranslate">Math & Beer</strong>!
                 </p>
-                <div id="carouselTeam" class="carousel slide w-100 mt-4 mb-2" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        {% for m in miembros %}
-                        <div class="carousel-item{% if loop.first %} active{% endif %}" data-bs-interval="5000">
-                            <div class="team-card-wrap">
-                                <div class="team-card myBorder rounded-4 shadow-sm">
-                                    <div class="team-info displayColumn">
-                                        <a href="{{ m.linkedin }}" target="_blank" rel="noopener noreferrer">
-                                            <img src="{{ m.image }}" alt="{{ m.person }}" class="team-avatar" loading="lazy">
-                                        </a>
-                                        <h4 class="team-name title">{{ m.person }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselTeam" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselTeam" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+            </div>
+            <div class="team-grid">
+                {% for m in miembros %}
+                <div class="team-card-v2 reveal">
+                    <a href="{{ m.linkedin }}" target="_blank" rel="noopener noreferrer" class="team-avatar-link">
+                        <img src="{{ m.image }}" alt="{{ m.person }}" class="team-avatar-v2" loading="lazy">
+                        <div class="team-avatar-overlay"><i class="fa-brands fa-linkedin"></i></div>
+                    </a>
+                    <h4 class="team-name-v2">{{ m.person }}</h4>
                 </div>
+                {% endfor %}
+            </div>
         </section>
         <div id="tu-ciudad" class="wave-divider wave-light-to-dark" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 70" preserveAspectRatio="none">
@@ -447,28 +434,29 @@
             </svg>
         </div>
         <!-- 6. CIUDAD — CTA final -->
-        <section class="displayColumn">
-            <h2 class="subtitle">¡ayúdanos a crecer!</h2>
+        <section class="displayColumn grow-section">
+            <div class="grow-header">
+                <span class="grow-badge"><i class="fa-solid fa-rocket"></i> Únete al movimiento</span>
+                <h2 class="subtitle">¡Lleva Math&amp;Beer a tu ciudad!</h2>
+            </div>
             <div class="row w-md-75 w-100">
                 <div class="col-xxl-6">
                     <div class="about_text displayColumn">
-                        <p class="lh-lg small">Estamos buscando personas apasionadas por la divulgación, la cultura y
-                            la buena conversación. Gente curiosa, con iniciativa y con ganas de construir espacios
-                            donde las matemáticas se compartan sin miedo y con una sonrisa.</p>
+                        <p class="lh-lg small">Estamos buscando personas apasionadas por la divulgación, la cultura y la buena conversación. Gente curiosa, con iniciativa y con ganas de construir espacios donde las matemáticas se compartan sin miedo y con una sonrisa.</p>
                         <p class="lh-lg small">Si decides postularte, serás el corazón del proyecto en tu ciudad.</p>
                     </div>
                 </div>
                 <div class="col-xxl-6">
                     <div class="myBg myBorder rounded-4 p-4 shadow-sm about_text displayColumn">
                         <p class="lh-lg small">Para hacer esto realidad solo debes realizar los siguientes pasos:</p>
-                        <ol>
-                            <li class="lh-lg small">Contáctanos por Instagram o WhatsApp (en el pie de página 👇).</li>
-                            <li class="lh-lg small">Completa el <a href="https://form.typeform.com/to/Zgpl7odL"
-                                    class="text-warning fw-bold">formulario</a> con tu propuesta y ultimemos
-                                detalles.
-                            </li>
-                            <li class="lh-lg small">¡Brindemos por la ciencia en tu ciudad!</li>
+                        <ol class="grow-steps">
+                            <li class="lh-lg small"><span class="step-num">1</span>Contáctanos por Instagram o WhatsApp (en el pie de página 👇).</li>
+                            <li class="lh-lg small"><span class="step-num">2</span>Completa el formulario con tu propuesta y ultimemos detalles.</li>
+                            <li class="lh-lg small"><span class="step-num">3</span>¡Brindemos por la ciencia en tu ciudad!</li>
                         </ol>
+                        <a href="https://form.typeform.com/to/Zgpl7odL" class="btn-grow-cta" target="_blank" rel="noopener noreferrer">
+                            <i class="fa-solid fa-paper-plane"></i> Quiero participar
+                        </a>
                     </div>
                 </div>
             </div>
@@ -585,18 +573,23 @@
 
     <!-- Footer -->
     <footer class="site-footer">
+        <div class="footer-nav">
+            <a href="/menu_games" class="footer-nav-link"><i class="fa-solid fa-gamepad"></i> Juegos</a>
+            <a href="/daily" class="footer-nav-link"><i class="fa-solid fa-crosshairs"></i> Reto Diario</a>
+            <a href="/store" class="footer-nav-link"><i class="fa-solid fa-bag-shopping"></i> Tienda</a>
+        </div>
         <div class="footer-social">
             <a href="https://www.instagram.com/math_and_beer/" target="_blank" rel="noopener noreferrer"
                 class="footer-social-btn footer-ig" aria-label="Instagram">
-                <i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-instagram"></i> Instagram
             </a>
             <a href="https://wa.me/+573115709293" target="_blank" rel="noopener noreferrer"
                 class="footer-social-btn footer-wa" aria-label="WhatsApp">
-                <i class="fa-brands fa-whatsapp"></i>
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
             </a>
             <a href="mailto:mate.et.cerv@gmail.com?subject=Math and Beer🍻&body=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre..."
                 class="footer-social-btn footer-mail" aria-label="Email">
-                <i class="fa-solid fa-envelope"></i>
+                <i class="fa-solid fa-envelope"></i> Email
             </a>
         </div>
         <p class="footer-copy">© {{ n_anos + 2022 }} <span class="notranslate">Math &amp; Beer</span> · Bogotá, Colombia</p>
@@ -629,6 +622,20 @@
     <div id="google_translate_element" style="display:none;"></div>
 
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script>
+        // Back to top button
+        (function() {
+            const btn = document.createElement('button');
+            btn.id = 'back-to-top';
+            btn.setAttribute('aria-label', 'Volver arriba');
+            btn.innerHTML = '<i class="fa-solid fa-chevron-up"></i>';
+            document.body.appendChild(btn);
+            btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            window.addEventListener('scroll', () => {
+                btn.classList.toggle('visible', window.scrollY > 400);
+            }, { passive: true });
+        })();
+    </script>
 </body>
 
 </html>
