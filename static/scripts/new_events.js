@@ -109,7 +109,7 @@ function construirTarjetas(eventos) {
                         <textarea class="qa-input" rows="1" placeholder="Escribe tu pregunta..." data-event-id="${evento.id}"></textarea>
                         <button class="qa-send-btn" data-event-id="${evento.id}"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
-                    <p class="blog-login-hint">Solo usuarios con <a href="/register" class="blog-nick-link">Nickname</a> pueden preguntar.</p>
+                    <p class="blog-login-hint">Solo usuarios <a href="/register" class="blog-nick-link">registrados</a> pueden preguntar.</p>
                 </div>
             </div>
         </div>
