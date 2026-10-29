@@ -94,7 +94,6 @@ El servidor estará disponible en `http://localhost:5000` (o HTTPS en `https://l
 │   ├── boards/             # Tableros pre-generados (.txt)
 │   ├── json/               # Datos estáticos (reglas, equipo, partners, artículos)
 │   └── store/              # Imágenes de productos de la tienda
-├── sync_images.py          # Script utilitario para sincronizar imágenes de productos
 ├── generate_thumbs.py      # Script utilitario para generar miniaturas de productos
 ├── boards.py               # Generación y validación de tableros de juegos
 └── requirements.txt        # Dependencias de Python

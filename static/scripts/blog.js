@@ -322,6 +322,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     modalEl.addEventListener('shown.bs.modal', () => {
       if (commentsContainer) loadComments(eventId, commentsContainer);
+      if (window.instgrm && window.instgrm.Embeds) {
+        window.instgrm.Embeds.process(modalEl);
+      }
     });
 
     if (sendBtn && textarea && commentsContainer) {
