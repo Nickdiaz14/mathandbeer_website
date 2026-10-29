@@ -7,6 +7,21 @@ from datetime import datetime
 
 pages_bp = Blueprint('pages', __name__)
 
+def _clean_event_summary(summary, title):
+    if not summary:
+        return f"Encuentro de divulgación matemática de Math & Beer: {title}."
+    if isinstance(summary, dict):
+        return next(iter(summary.values()), f"Encuentro de divulgación matemática de Math & Beer: {title}.")
+    if isinstance(summary, str):
+        try:
+            parsed = json.loads(summary)
+            if isinstance(parsed, dict):
+                return next(iter(parsed.values()), summary)
+        except Exception:
+            pass
+        return summary
+    return f"Encuentro de divulgación matemática de Math & Beer: {title}."
+
 def _load_reglas():
     with open("static/json/reglas.json", "r", encoding="utf-8") as f:
         return json.load(f)[0]
@@ -94,6 +109,7 @@ def page_about():
                 "speaker": evento[4],
                 "place": evento[5],
                 "summary": evento[6],
+                "description": _clean_event_summary(evento[6], evento[2]),
             }
             for evento in proxima
         ]
@@ -187,7 +203,22 @@ def page_about():
 
     n_anos = datetime.now().year - 2022
     proxima_json = json.dumps(proxima) if proxima else None
-    return render_template("index.html", charlas=grouped, miembros=equipo, partners=partners, n_charlas=len(charlas), proxima=proxima_json, n_anos=n_anos, testimonials=testimonials, fotos=fotos, avg_asistentes=avg_asistentes, n_ciudades=n_ciudades, charla_hoy=charla_hoy, group_id_fecha=group_id_fecha)
+    return render_template(
+        "index.html",
+        charlas=grouped,
+        miembros=equipo,
+        partners=partners,
+        n_charlas=len(charlas),
+        proxima=proxima_json,
+        proxima_eventos=proxima,
+        n_anos=n_anos,
+        testimonials=testimonials,
+        fotos=fotos,
+        avg_asistentes=avg_asistentes,
+        n_ciudades=n_ciudades,
+        charla_hoy=charla_hoy,
+        group_id_fecha=group_id_fecha
+    )
 
 @pages_bp.route('/leaderboards')
 def page_leaderboards():
