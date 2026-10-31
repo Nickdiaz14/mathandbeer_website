@@ -99,18 +99,20 @@
       "startDate": {{ ev.date | tojson }},
       "endDate": {{ ev.end_date | tojson }},
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "inLanguage": "es",
       "eventStatus": "https://schema.org/EventScheduled",
       "location": {
         "@type": "Place",
         "name": {{ ev.place | tojson }},
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": {{ ev.address | tojson }},
           "addressLocality": {{ ev.city | tojson }},
           "addressCountry": "CO"
         }
       },
       "image": [
-        "https://www.mathandbeer.com/static/images/about/charla_2.jpg"
+        {{ ("https://www.mathandbeer.com/" ~ ev.image) | tojson }}
       ],
       "description": {{ ev.description | tojson }},
       {% if ev.speaker %}
@@ -119,10 +121,10 @@
         "name": {{ ev.speaker | tojson }}
       },
       {% endif %}
-      "organizer": {
-        "@type": "Organization",
+      "organizer": {"@type": "Organization",
         "name": "Math & Beer",
-        "url": "https://www.mathandbeer.com"
+        "url": "https://www.mathandbeer.com",
+        "logo": "https://www.mathandbeer.com/static/images/logos/logo_M&B.png"
       },
       "offers": {
         "@type": "Offer",
@@ -130,12 +132,12 @@
         "price": "0",
         "priceCurrency": "COP",
         "availability": "https://schema.org/InStock",
-        "validFrom": {{ ev.validFrom | tojson }}
+        "validFrom": {{ ev.valid_from | tojson }}
       }
     }
     </script>
     {% endfor %}
-{% endif %}
+    {% endif %}
 </head>
 
 <body data-proxima='{{ proxima | safe }}' {% if charla_hoy %}class="has-charla-notif"{% endif %}>

@@ -3,7 +3,7 @@ import random
 from flask import Blueprint, render_template, request, json, Response, current_app, redirect
 from db import get_connection, release_connection
 from babel.dates import format_date
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 pages_bp = Blueprint('pages', __name__)
 
@@ -82,7 +82,7 @@ def page_about():
     try:
         cursor = connection.cursor()
         
-        cursor.execute("SELECT *, ROW_NUMBER() OVER (ORDER BY date ASC) as row FROM events WHERE date < CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota' ORDER BY date ASC;")
+        cursor.execute("SELECT *, ROW_NUMBER() OVER (ORDER BY date ASC) as row FROM events_view WHERE date < CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota' ORDER BY date ASC;")
         charlas = cursor.fetchall()
         columnas = [col[0] for col in cursor.description]
 
@@ -94,33 +94,44 @@ def page_about():
             grouped.setdefault(int(year), []).append(c)
 
         cursor.execute("""
-            SELECT id, city, title, date, speaker, place, summary, created_at
-            FROM events WHERE date > CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota'
+            SELECT id, city, title, date, speaker, place, summary, created_at, address, image
+            FROM events_view WHERE date > CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota'
             ORDER BY date ASC
         """)
 
-        proxima = cursor.fetchall()
-        proxima = [
-            {
+        result_db = cursor.fetchall()
+        bogota_tz = timezone(timedelta(hours=-5))
+
+        proxima = []
+        for evento in result_db:  # O tu bucle habitual
+            # Nos aseguramos de asignar la zona horaria si evento[3] no la tiene
+            start_dt = evento[3] if evento[3].tzinfo else evento[3].replace(tzinfo=bogota_tz)
+            end_dt = start_dt + timedelta(hours=2)
+            
+            # Lo mismo para la fecha de creación
+            created_dt = evento[7] if evento[7].tzinfo else evento[7].replace(tzinfo=bogota_tz)
+
+            proxima.append({
                 "id": evento[0],
                 "city": evento[1],
                 "title": evento[2],
-                "date": evento[3].isoformat(),
+                "date": start_dt.isoformat(),
                 "speaker": evento[4],
                 "place": evento[5],
                 "summary": evento[6],
                 "description": _clean_event_summary(evento[6], evento[2]),
-                "end_date": (evento[3] + timedelta(hours=2)).isoformat(),  # Asumiendo que cada charla dura 2 horas
-                "validFrom": evento[7].isoformat(),  # Fecha de creación del evento
-            }
-            for evento in proxima
-        ]
-        print("Proxima charlas:", proxima)
+                "end_date": end_dt.isoformat(),
+                "valid_from": created_dt.isoformat(),
+                "address": evento[8],
+                "image": f"static/images/charlas/{evento[9]}.webp" if evento[9] else "static/images/about/charla_2.jpg"
+            })
+
+        print("Próximas charlas:", proxima)
         # Buscar si hay una charla HOY
         try:
             cursor.execute("""
                 SELECT id, title, city, place, date
-                FROM events
+                FROM events_view
                 WHERE DATE(date) = (CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota')::date
                 LIMIT 1;
             """)
@@ -187,7 +198,7 @@ def page_about():
         try:
             cursor.execute("""
                 SELECT COUNT(DISTINCT city)
-                FROM events;
+                FROM events_view;
             """)
             row_cities = cursor.fetchone()
             n_ciudades = int(row_cities[0]) if row_cities and row_cities[0] else 2
@@ -239,7 +250,7 @@ def page_menu():
         # Buscar charla hoy
         cursor.execute("""
             SELECT id, title, city
-            FROM events
+            FROM events_view
             WHERE DATE(date) = (CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota')::date
             LIMIT 1;
         """)
