@@ -92,14 +92,14 @@ def get_profile(userid):
 
         cursor.execute("""
             SELECT e.id, e.title, e.speaker
-            FROM reactions r JOIN events e ON e.id = r.event_id
+            FROM reactions r JOIN events_view e ON e.id = r.event_id
             WHERE r.userid = %s ORDER BY e.date DESC;
         """, (userid,))
         liked_talks = [{'id': r[0], 'title': r[1], 'speaker': r[2]} for r in cursor.fetchall()]
 
         cursor.execute("""
             SELECT e.id, e.title, e.city, e.date
-            FROM rsvp rv JOIN events e ON e.id = rv.event_id
+            FROM rsvp rv JOIN events_view e ON e.id = rv.event_id
             WHERE rv.userid = %s AND e.date > CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota' ORDER BY e.date;
         """, (userid,))
         rsvps = [{'id': r[0], 'title': r[1], 'city': r[2], 'date': r[3].isoformat()} for r in cursor.fetchall()]
