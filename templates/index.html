@@ -97,14 +97,15 @@
       "@type": "Event",
       "name": {{ (ev.title ~ " | Math & Beer") | tojson }},
       "startDate": {{ ev.date | tojson }},
+      "endDate": {{ ev.end_date | tojson }},
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
       "eventStatus": "https://schema.org/EventScheduled",
       "location": {
         "@type": "Place",
-        "name": {{ (ev.place if ev.place else "Lugar por confirmar") | tojson }},
+        "name": {{ ev.place | tojson }},
         "address": {
           "@type": "PostalAddress",
-          "addressLocality": {{ (ev.city if ev.city else "Bogotá") | tojson }},
+          "addressLocality": {{ ev.city | tojson }},
           "addressCountry": "CO"
         }
       },
@@ -128,12 +129,13 @@
         "url": "https://www.mathandbeer.com",
         "price": "0",
         "priceCurrency": "COP",
-        "availability": "https://schema.org/InStock"
+        "availability": "https://schema.org/InStock",
+        "validFrom": {{ ev.validFrom | tojson }}
       }
     }
     </script>
     {% endfor %}
-    {% endif %}
+{% endif %}
 </head>
 
 <body data-proxima='{{ proxima | safe }}' {% if charla_hoy %}class="has-charla-notif"{% endif %}>
