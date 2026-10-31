@@ -3,7 +3,7 @@ import random
 from flask import Blueprint, render_template, request, json, Response, current_app, redirect
 from db import get_connection, release_connection
 from babel.dates import format_date
-from datetime import datetime
+from datetime import datetime, timedelta
 
 pages_bp = Blueprint('pages', __name__)
 
@@ -94,7 +94,7 @@ def page_about():
             grouped.setdefault(int(year), []).append(c)
 
         cursor.execute("""
-            SELECT id, city, title, date, speaker, place, summary
+            SELECT id, city, title, date, speaker, place, summary, created_at
             FROM events WHERE date > CURRENT_TIMESTAMP AT TIME ZONE 'America/Bogota'
             ORDER BY date ASC
         """)
@@ -110,10 +110,12 @@ def page_about():
                 "place": evento[5],
                 "summary": evento[6],
                 "description": _clean_event_summary(evento[6], evento[2]),
+                "end_date": (evento[3] + timedelta(hours=2)).isoformat(),  # Asumiendo que cada charla dura 2 horas
+                "validFrom": evento[7].isoformat(),  # Fecha de creación del evento
             }
             for evento in proxima
         ]
-
+        print("Proxima charlas:", proxima)
         # Buscar si hay una charla HOY
         try:
             cursor.execute("""
