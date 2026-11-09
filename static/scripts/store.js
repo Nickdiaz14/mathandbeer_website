@@ -720,7 +720,7 @@
             const res = await fetch(`/api/admin/orders?userid=${userid}`);
             if (res.status === 403) return;
             const data = await res.json();
-            renderAdminOrders(data.orders || [], statusFilter);
+            renderAdminOrders(data || [], statusFilter);
         } catch (err) {
             console.error('Error loading admin orders:', err);
         }

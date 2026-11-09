@@ -365,6 +365,7 @@ def admin_orders():
         return jsonify({'error': 'No autorizado'}), 403
 
     connection = get_connection()
+    cursor = None
     try:
         cursor = connection.cursor()
         cursor.execute("""
@@ -378,14 +379,16 @@ def admin_orders():
 
         order_ids = [r[0] for r in orders_rows]
         items_by_order = {oid: [] for oid in order_ids}
+        
         if order_ids:
             cursor.execute("""
                 SELECT oi.order_id, oi.id, oi.product_id, p.name, oi.quantity,
                        oi.price_at_purchase, oi.variation_selected
                 FROM order_items oi
                 JOIN products p ON p.id = oi.product_id
-                WHERE oi.order_id = ANY(%s);
-            """, (order_ids,))
+                WHERE oi.order_id IN %s;
+            """, (tuple(order_ids),))
+            
             for ir in cursor.fetchall():
                 items_by_order[ir[0]].append({
                     'id': ir[1],
@@ -398,9 +401,8 @@ def admin_orders():
 
         orders = []
         for row in orders_rows:
-            order_id = row[0]
             orders.append({
-                'id': order_id,
+                'id': row[0],
                 'customer_name': row[1],
                 'customer_phone': row[2],
                 'customer_email': row[3],
@@ -410,15 +412,16 @@ def admin_orders():
                 'status': row[7],
                 'created_at': row[8].isoformat() if row[8] else None,
                 'notes': row[9],
-                'items': items_by_order.get(order_id, [])
+                'items': items_by_order.get(row[0], [])
             })
-
+        
         return jsonify(orders)
     except Exception as e:
         print("Error admin_orders:", e)
-        return jsonify({'error': 'Error al obtener pedidos'}), 500
+        return jsonify({'error': 'Error al obtener pedidos', 'details': str(e)}), 500
     finally:
-        cursor.close()
+        if cursor:
+            cursor.close()
         release_connection(connection)
 
 
