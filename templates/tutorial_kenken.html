@@ -1,10 +1,14 @@
-{% extends "base_game.html" %}
+{% extends "base.html" %}
+
+{% set active_page = 'games' %}
 
 {% block page_title %}Tutorial KenKen | Math and Beer{% endblock %}
 {% block meta_description %}Aprende a resolver KenKen con este tutorial rápido.{% endblock %}
+{% block meta_viewport %}width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, height=device-height, user-scalable=no{% endblock %}
 
 {% block extra_css %}
-<style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/games.css') }}">
+    <style>
     .tutorial-container {
         max-width: 600px;
         margin: 0 auto;
@@ -90,8 +94,9 @@
 </style>
 {% endblock %}
 
-{% block game_content %}
-<div class="tutorial-container">
+{% block content %}
+<main>
+    <div class="tutorial-container">
     <h1 class="title first-row">Cómo Jugar KenKen</h1>
     
     <div class="tutorial-card">
@@ -143,11 +148,13 @@
     
     <div style="height: 50px;"></div>
 </div>
+</main>
 {% endblock %}
 
-{% block game_scripts %}
-<script>
-    // Configurar el botón de retroceso estándar
-    setupGameControls();
-</script>
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='scripts/game_info.js') }}"></script>
+    <script>
+        // Configurar el botón de retroceso estándar
+        setupGameControls();
+    </script>
 {% endblock %}

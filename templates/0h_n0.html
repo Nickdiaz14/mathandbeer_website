@@ -1,11 +1,18 @@
-{% extends "base_game.html" %}
+{% extends "base.html" %}
+
+{% set active_page = 'games' %}
 
 {% block page_title %}0h-n0 | Math and Beer{% endblock %}
 {% block meta_description %}Juega 0h-n0 y compite con tus amigos{% endblock %}
-{% block extra_css %}{% endblock %}
+{% block meta_viewport %}width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, height=device-height, user-scalable=no{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/games.css') }}">
+{% endblock %}
 {% block body_attrs %}data-n="{{ n }}"{% endblock %}
 
-{% block game_content %}
+{% block content %}
+<main>
     <div id="countdown-overlay"></div>
     <h1 id="title" class="title first-row">0h-n0</h1>
     <h2 id="timer" class="title small">00:00.00</h2>
@@ -41,8 +48,10 @@
             </div>
         </div>
     </div>
+</main>
 {% endblock %}
 
-{% block game_scripts %}
-    <script src="../static/scripts/0h_n0.js"></script>
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='scripts/game_info.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/0h_n0.js') }}"></script>
 {% endblock %}

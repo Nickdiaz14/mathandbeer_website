@@ -1,93 +1,21 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-WXZ6G9P3');</script>
-    <!-- End Google Tag Manager -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <meta name="google-site-verification" content="prMhJRzxbzY-OPF8pAc3w72jFMuNqcPC9nxMkH_9rQU" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/main.css">
-    <link rel="stylesheet" href="../static/css/menu.css">
-    <link rel="stylesheet" href="../static/css/empresas.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/1eceecb241.js" crossorigin="anonymous" async></script>
-    <link rel="icon" type="image/webp" href="../static/images/logos/favicon.webp">
-    <title class="notranslate">Juegos | Math & Beer</title>
-    <meta name="description"
-        content="Descubre juegos matemáticos interactivos de lógica, números y estrategia en Math & Beer. Reta tu mente, mejora tus habilidades y juega con amigos mientras te diviertes aprendiendo.">
+{% set active_page = 'games' %}
+
+{% block title %}Juegos | Math & Beer{% endblock %}
+{% block meta_description %}Descubre juegos matemáticos interactivos de lógica, números y estrategia en Math & Beer. Reta tu mente, mejora tus habilidades y juega con amigos mientras te diviertes aprendiendo.{% endblock %}
+
+{% block extra_head %}
     <meta name="robots" content="noindex">
     <link rel="canonical" href="https://www.mathandbeer.com/menu_games">
-</head>
+{% endblock %}
 
-<body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXZ6G9P3"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <header>
-        <nav class="navbar navbar-expand-lg menu">
-            <div class="container-fluid">
-                <button onclick="window.location.href='/'" class="navbar-brand">
-                    <div class="logo"></div>
-                </button>
-                <button class="navbar-toggler menuHamb" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <i class="fa-solid fa-bars fa-2xl" style="color: #b6bde7;"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="/profile" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-user"></i> Mi Perfil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/menu_games" class="nav-link active" aria-current="page" id="nav-active"><i
-                                    class="fa-solid fa-gamepad"></i> Juegos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/daily" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-crosshairs"></i> Reto Diario</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/leaderboards" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-ranking-star"></i> Rankings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/store" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-bag-shopping"></i> Tienda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-language"></i> Idioma
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('es')">Español</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('en')">Inglés</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('fr')">Francés</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('de')">Alemán</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('nl')">Holandés</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/empresas.css') }}">
+{% endblock %}
+
+{% block content %}
     <!-- Loading state: skeleton bento -->
     <div id="loading" class="loading">
         <div class="skel-menu-title skeleton"></div>
@@ -130,55 +58,55 @@
         <div class="grid_container menu_games">
             <button class="game" data-bs-toggle="modal" data-bs-target="#0h-h1-size">
                 <span class="game_text_out">¡Jugar!</span>
-                <img src="../static/images/games/0h-h1.png" alt="" class="game_img" loading="lazy">
+                <img src="{{ url_for('static', filename='images/games/0h-h1.png') }}" alt="" class="game_img" loading="lazy">
                 <span class="game_text">0h-h1</span>
             </button>
 
             <button class="game" data-bs-toggle="modal" data-bs-target="#secuenzo-size">
                 <span class="game_text_out">¡Jugar!</span>
-                <img src="../static/images/games/0h-h1.png" alt="" class="game_img" loading="lazy">
+                <img src="{{ url_for('static', filename='images/games/0h-h1.png') }}" alt="" class="game_img" loading="lazy">
                 <span class="game_text">Secuenzo</span>
             </button>
 
             <button class="game" onclick="window.location.href='/knight'">
                 <span class="game_text_out">¡Jugar!</span>
-                <img src="../static/images/games/knight.png" alt="" class="game_img" loading="lazy">
+                <img src="{{ url_for('static', filename='images/games/knight.png') }}" alt="" class="game_img" loading="lazy">
                 <span class="game_text">Salto Real</span>
             </button>
 
             <button class="game" data-bs-toggle="modal" data-bs-target="#cuentamania-size">
                 <span class="game_text_out">¡Jugar!</span>
-                <img src="../static/images/games/cuentamania.png" alt="" class="game_img" loading="lazy">
+                <img src="{{ url_for('static', filename='images/games/cuentamania.png') }}" alt="" class="game_img" loading="lazy">
                 <span class="game_text">CuentaManía</span>
             </button>
 
             <button class="game" onclick="window.location.href='/0h_h1_tt'">
                 <span class="game_text_out">¡Jugar!</span>
-                <img src="../static/images/games/time_trial.png" alt="" class="game_img" loading="lazy">
+                <img src="{{ url_for('static', filename='images/games/time_trial.png') }}" alt="" class="game_img" loading="lazy">
                 <span class="game_text">Contrarreloj 0h-h1</span>
             </button>
 
             <button class="game" data-bs-toggle="modal" data-bs-target="#0h-n0-size">
                 <span class="game_text_out">¡Jugar!</span>
-                <img src="../static/images/games/0h-n0.png" alt="" class="game_img" loading="lazy">
+                <img src="{{ url_for('static', filename='images/games/0h-n0.png') }}" alt="" class="game_img" loading="lazy">
                 <span class="game_text">0h-n0</span>
             </button>
 
             <button class="game" data-bs-toggle="modal" data-bs-target="#nerdle-size">
                 <span class="game_text_out">¡Jugar!</span>
-                <img src="../static/images/games/nerdle.png" alt="" class="game_img" loading="lazy">
+                <img src="{{ url_for('static', filename='images/games/nerdle.png') }}" alt="" class="game_img" loading="lazy">
                 <span class="game_text">Nerdle</span>
             </button>
 
             <button class="game" onclick="window.location.href='/knight_tt'">
                 <span class="game_text_out">¡Jugar!</span>
-                <img src="../static/images/games/time_trial.png" alt="" class="game_img" loading="lazy">
+                <img src="{{ url_for('static', filename='images/games/time_trial.png') }}" alt="" class="game_img" loading="lazy">
                 <span class="game_text">Contrarreloj Salto Real</span>
             </button>
 
             <button class="game" data-bs-toggle="modal" data-bs-target="#kenken-size">
                 <span class="game_text_out">¡Jugar!</span>
-                <img src="../static/images/games/0h-h1.png" alt="" class="game_img" loading="lazy" onerror="this.src='../static/images/games/0h-h1.png'">
+                <img src="{{ url_for('static', filename='images/games/kenken.png') }}" alt="" class="game_img" loading="lazy">
                 <span class="game_text">KenKen</span>
             </button>
         </div>
@@ -265,16 +193,8 @@
             </div>
         </div>
     </main>
-    <script src="../static/scripts/utils.js"></script>
-    <script src="../static/scripts/main.js"></script>
-    <script src="../static/scripts/menu.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-    <!-- Mantenemos el contenedor visible para Google Translate -->
-    <div id="google_translate_element" style="display:none;"></div>
+{% endblock %}
 
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>
-
-</html>
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='scripts/menu.js') }}"></script>
+{% endblock %}

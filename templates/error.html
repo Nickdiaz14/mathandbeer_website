@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ error_code }} - {{ error_title }} | Math & Beer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="icon" type="image/webp" href="{{ url_for('static', filename='images/logos/favicon.webp') }}">
+    <style>
+        .error-hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        .error-code {
+            font-size: clamp(5rem, 15vw, 10rem);
+            font-weight: 900;
+            line-height: 1;
+            margin: 0;
+            background: linear-gradient(135deg, var(--accent-beer, #f1c40f), #e67e22, var(--accent-math, #9b59b6));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .error-card {
+            background: rgba(20, 18, 35, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 580px;
+            width: 100%;
+            margin-top: -1.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .error-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        .error-desc {
+            color: #b6bde7;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .error-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-math {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 1.6rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.25s ease;
+        }
+        .btn-primary-math {
+            background: linear-gradient(135deg, var(--accent-beer, #f1c40f), #e67e22);
+            color: #12101f;
+        }
+        .btn-primary-math:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(241, 196, 15, 0.3);
+            color: #000;
+        }
+        .btn-secondary-math {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+        .btn-secondary-math:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+    </style>
+</head>
+<body style="background: #0d0c18; color: #fff; margin: 0; font-family: 'Inter', sans-serif;">
+    <main class="error-hero">
+        <h1 class="error-code">{{ error_code }}</h1>
+        <div class="error-card">
+            <h2 class="error-title">{{ error_title }}</h2>
+            <p class="error-desc">{{ error_message }}</p>
+            <div class="error-actions">
+                <a href="/" class="btn-math btn-primary-math">
+                    🍺 Volver al Inicio
+                </a>
+                <a href="/menu_games" class="btn-math btn-secondary-math">
+                    🎮 Ir a los Juegos
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

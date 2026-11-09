@@ -1,15 +1,19 @@
-{% extends "base_game.html" %}
+{% extends "base.html" %}
+
+{% set active_page = 'games' %}
 
 {% block page_title %}KenKen | Math and Beer{% endblock %}
 {% block meta_description %}Juega KenKen y compite con tus amigos resolviendo restricciones matemáticas{% endblock %}
+{% block meta_viewport %}width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, height=device-height, user-scalable=no{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="../static/css/kenken.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/games.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/kenken.css') }}">
 {% endblock %}
-
 {% block body_attrs %}data-n="{{ n }}"{% endblock %}
 
-{% block game_content %}
+{% block content %}
+<main>
     <div id="countdown-overlay"></div>
     
     <div class="game-container">
@@ -59,8 +63,10 @@
             </div>
         </div>
     </div>
+</main>
 {% endblock %}
 
-{% block game_scripts %}
-    <script src="../static/scripts/kenken.js"></script>
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='scripts/game_info.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/kenken.js') }}"></script>
 {% endblock %}

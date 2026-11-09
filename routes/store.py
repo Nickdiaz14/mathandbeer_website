@@ -22,12 +22,18 @@ def _format_price(price):
     return f"${price:,.0f}".replace(",", ".")
 
 
+_products_seeded = False
+
 def _seed_products(connection):
+    global _products_seeded
+    if _products_seeded:
+        return
     cursor = connection.cursor()
     try:
         cursor.execute("SELECT COUNT(*) FROM products WHERE active = TRUE;")
         count = cursor.fetchone()[0]
         if count > 0:
+            _products_seeded = True
             return
         for product in SEED_PRODUCTS:
             cursor.execute("""
@@ -41,6 +47,7 @@ def _seed_products(connection):
                 json.dumps(product['variations'])
             ))
         connection.commit()
+        _products_seeded = True
     except Exception as e:
         connection.rollback()
         print('Error seed_products:', e)
@@ -249,7 +256,7 @@ def create_product():
         cursor = connection.cursor()
         cursor.execute("""
             INSERT INTO products (name, category, price, image_url, variations, description, active)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, TRUE)
+            VALUES (%s, %s, %s, %s, %s, %s, TRUE)
             RETURNING id;
         """, (
             name,
@@ -369,28 +376,29 @@ def admin_orders():
         """)
         orders_rows = cursor.fetchall()
 
-        orders = []
-        for row in orders_rows:
-            order_id = row[0]
+        order_ids = [r[0] for r in orders_rows]
+        items_by_order = {oid: [] for oid in order_ids}
+        if order_ids:
             cursor.execute("""
-                SELECT oi.id, oi.product_id, p.name, oi.quantity,
+                SELECT oi.order_id, oi.id, oi.product_id, p.name, oi.quantity,
                        oi.price_at_purchase, oi.variation_selected
                 FROM order_items oi
                 JOIN products p ON p.id = oi.product_id
-                WHERE oi.order_id = %s;
-            """, (order_id,))
-            items_rows = cursor.fetchall()
-            items = []
-            for ir in items_rows:
-                items.append({
-                    'id': ir[0],
-                    'product_id': ir[1],
-                    'product_name': ir[2],
-                    'quantity': ir[3],
-                    'price_at_purchase': ir[4],
-                    'variation_selected': ir[5]
+                WHERE oi.order_id = ANY(%s);
+            """, (order_ids,))
+            for ir in cursor.fetchall():
+                items_by_order[ir[0]].append({
+                    'id': ir[1],
+                    'product_id': ir[2],
+                    'product_name': ir[3],
+                    'quantity': ir[4],
+                    'price_at_purchase': ir[5],
+                    'variation_selected': ir[6]
                 })
 
+        orders = []
+        for row in orders_rows:
+            order_id = row[0]
             orders.append({
                 'id': order_id,
                 'customer_name': row[1],
@@ -402,7 +410,7 @@ def admin_orders():
                 'status': row[7],
                 'created_at': row[8].isoformat() if row[8] else None,
                 'notes': row[9],
-                'items': items
+                'items': items_by_order.get(order_id, [])
             })
 
         return jsonify(orders)
