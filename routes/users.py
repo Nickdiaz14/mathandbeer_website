@@ -74,21 +74,31 @@ def get_profile(userid):
         user_boards = cursor.fetchall()
 
         records = []
-        desc_games = ['TContrareloj', 'TUnicolor', 'TBicolor', 'TProgresivo', 'TAleatorio', 'TCruzado', 'TKnight', 'TMini-Nerdle', 'TNerdle', 'TMaxi-Nerdle']
+        desc_games = {'TContrareloj', 'TUnicolor', 'TBicolor', 'TProgresivo', 'TAleatorio', 'TCruzado', 'TKnight', 'TMini-Nerdle', 'TNerdle', 'TMaxi-Nerdle'}
 
-        for r in user_boards:
-            b = r[0]
-            val = r[1]
-            order_type = "DESC" if b in desc_games else "ASC"
-            cursor.execute(f"""
-                SELECT position FROM (
-                    SELECT ROW_NUMBER() OVER (ORDER BY record {order_type}) AS position, userid
-                    FROM leaderboard WHERE board = %s AND group_id = 'default'
-                ) t WHERE userid = %s;
-            """, (b, userid))
-            pos = cursor.fetchone()
-            position = pos[0] if pos else '-'
-            records.append({'game': b, 'record': val, 'position': position})
+        if user_boards:
+            boards_list = [r[0] for r in user_boards]
+            cursor.execute("""
+                SELECT board, userid, position FROM (
+                    SELECT board, userid,
+                           ROW_NUMBER() OVER (
+                               PARTITION BY board
+                               ORDER BY
+                                   CASE WHEN board IN ('TContrareloj', 'TUnicolor', 'TBicolor', 'TProgresivo', 'TAleatorio', 'TCruzado', 'TKnight', 'TMini-Nerdle', 'TNerdle', 'TMaxi-Nerdle')
+                                        THEN record * -1
+                                        ELSE record
+                                   END ASC
+                           ) AS position
+                    FROM leaderboard
+                    WHERE group_id = 'default' AND board = ANY(%s)
+                ) ranks
+                WHERE userid = %s;
+            """, (boards_list, userid))
+            pos_dict = {row[0]: row[2] for row in cursor.fetchall()}
+            for r in user_boards:
+                b = r[0]
+                val = r[1]
+                records.append({'game': b, 'record': val, 'position': pos_dict.get(b, '-')})
 
         cursor.execute("""
             SELECT e.id, e.title, e.speaker
@@ -232,7 +242,8 @@ def get_badges(userid):
         if cursor.fetchone():
             badges.append({'id': 'leyenda', 'name': 'Leyenda', 'icon': '⭐', 'desc': 'Top 3 en un leaderboard'})
 
-        streak = _calculate_streak(userid)
+        from routes.daily import _calculate_streak_with_cursor
+        streak = _calculate_streak_with_cursor(cursor, userid)
         if streak['current'] >= 7 or streak['best'] >= 7:
             badges.append({'id': 'racha7', 'name': 'Fuego Lento', 'icon': '🔥', 'desc': 'Racha de 7 días en el reto diario'})
         if streak['current'] >= 30 or streak['best'] >= 30:

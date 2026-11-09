@@ -22,9 +22,14 @@ def _clean_event_summary(summary, title):
         return summary
     return f"Encuentro de divulgación matemática de Math & Beer: {title}."
 
+_REGLAS_CACHE = None
+
 def _load_reglas():
-    with open("static/json/reglas.json", "r", encoding="utf-8") as f:
-        return json.load(f)[0]
+    global _REGLAS_CACHE
+    if _REGLAS_CACHE is None:
+        with open("static/json/reglas.json", "r", encoding="utf-8") as f:
+            _REGLAS_CACHE = json.load(f)[0]
+    return _REGLAS_CACHE
 
 @pages_bp.before_request
 def redireccion_permanente():
