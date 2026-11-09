@@ -1,11 +1,18 @@
-{% extends "base_game.html" %}
+{% extends "base.html" %}
+
+{% set active_page = 'games' %}
 
 {% block page_title %}Secuenzo | Math and Beer{% endblock %}
 {% block meta_description %}Juega Secuenzo y compite con tus amigos{% endblock %}
-{% block extra_css %}{% endblock %}
+{% block meta_viewport %}width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, height=device-height, user-scalable=no{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/games.css') }}">
+{% endblock %}
 {% block body_attrs %}data-n="{{ n }}"{% endblock %}
 
-{% block game_content %}
+{% block content %}
+<main>
     <div id="countdown-overlay"></div>
     <h1 id="title" class="title first-row">Secuenzo</h1>
     <h2 id="s_boards" class="title">Tableros resueltos: 0</h2>
@@ -40,8 +47,10 @@
             </div>
         </div>
     </div>
+</main>
 {% endblock %}
 
-{% block game_scripts %}
-    <script src="../static/scripts/secuenzo.js"></script>
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='scripts/game_info.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/secuenzo.js') }}"></script>
 {% endblock %}

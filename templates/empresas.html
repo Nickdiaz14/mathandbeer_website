@@ -1,97 +1,27 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-WXZ6G9P3');</script>
-    <!-- End Google Tag Manager -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/1eceecb241.js" crossorigin="anonymous" async></script>
-    <link rel="stylesheet" href="../static/css/main.css">
-    <link rel="stylesheet" href="../static/css/about.css">
-    <link rel="stylesheet" href="../static/css/empresas.css">
-    <link rel="icon" type="image/webp" href="../static/images/logos/favicon.webp">
-    <title class="notranslate">Instituciones | Math & Beer</title>
-    <meta name="description"
-        content="Lleva Math & Beer a tu empresa, universidad o colegio. Experiencias matemáticas únicas para team building, semanas de la ciencia y actividades extracurriculares en Colombia.">
+{% block title %}Instituciones | Math & Beer{% endblock %}
+{% block meta_description %}Lleva Math & Beer a tu empresa, universidad o colegio. Experiencias matemáticas únicas para team building, semanas de la ciencia y actividades extracurriculares en Colombia.{% endblock %}
+
+{% block extra_head %}
     <meta name="robots" content="noindex">
     <link rel="canonical" href="https://www.mathandbeer.com/institutions">
-</head>
+{% endblock %}
 
-<body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXZ6G9P3"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <header>
-        <nav class="navbar navbar-expand-lg menu">
-            <div class="container-fluid">
-                <button onclick="window.location.href='/'" class="navbar-brand">
-                    <div class="logo"></div>
-                </button>
-                <button class="navbar-toggler menuHamb" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <i class="fa-solid fa-bars fa-2xl" style="color: #b6bde7;"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="/profile" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-user"></i> Mi Perfil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/menu_games" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-gamepad"></i> Juegos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/daily" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-crosshairs"></i> Reto Diario</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/leaderboards" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-ranking-star"></i> Rankings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/store" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-bag-shopping"></i> Tienda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-language"></i> Idioma</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('es')">Español</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('en')">Inglés</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('fr')">Francés</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('de')">Alemán</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('nl')">Holandés</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/institutions" class="nav-link active" aria-current="page" id="nav-empresas">
-                                <i class="fa-solid fa-building"></i> Entidades
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/empresas.css') }}">
+{% endblock %}
 
+{% block extra_nav_items %}
+    <li class="nav-item">
+        <a href="/institutions" class="nav-link active" aria-current="page" id="nav-active">
+            <i class="fa-solid fa-building"></i> Entidades
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
     <main>
 
         <!-- ====== HERO EMPRESAS ====== -->
@@ -129,110 +59,105 @@
                         <li><i class="fa-solid fa-check"></i> Duración: 1-2 horas</li>
                         <li><i class="fa-solid fa-check"></i> Modalidad presencial o virtual</li>
                     </ul>
-                    <div class="emp-card-price">
-                        <span class="emp-price-label">Desde</span>
-                        <span class="emp-price-value">COP 600.000</span>
-                    </div>
                 </div>
 
                 <!-- Universidades -->
-                <div class="emp-card emp-card-featured reveal" id="card-universidades">
-                    <div class="emp-card-badge-top">Más solicitado</div>
+                <div class="emp-card reveal" id="card-universidades">
                     <div class="emp-card-icon">🎓</div>
                     <h3 class="emp-card-title">Universidades</h3>
-                    <p class="emp-card-desc">Formatos perfectos para semanas culturales, días de la ciencia y
-                        actividades extracurriculares. Ya hemos presentado en el Congreso Colombiano de Matemáticas.</p>
+                    <p class="emp-card-desc">Conecta a estudiantes y docentes con la ciencia de una forma fresca.
+                        Charlas interactivas para semanas culturales, eventos de facultad o bienvenida de semestre.</p>
                     <ul class="emp-card-list">
-                        <li><i class="fa-solid fa-check"></i> Credibilidad académica comprobada</li>
-                        <li><i class="fa-solid fa-check"></i> Temas de frontera: IA, criptografía, juegos</li>
-                        <li><i class="fa-solid fa-check"></i> Ideal para grupos de 30-200 personas</li>
-                        <li><i class="fa-solid fa-check"></i> Certificado de participación</li>
+                        <li><i class="fa-solid fa-check"></i> Divulgación científica de alto nivel</li>
+                        <li><i class="fa-solid fa-check"></i> Charlas para público amplio o especializado</li>
+                        <li><i class="fa-solid fa-check"></i> Dinámicas participativas y premios</li>
+                        <li><i class="fa-solid fa-check"></i> Ponentes con trayectoria académica</li>
                     </ul>
-                    <div class="emp-card-price">
-                        <span class="emp-price-label">Desde</span>
-                        <span class="emp-price-value">COP 300.000</span>
-                    </div>
                 </div>
 
                 <!-- Colegios -->
                 <div class="emp-card reveal" id="card-colegios">
-                    <div class="emp-card-icon">📚</div>
+                    <div class="emp-card-icon">🎒</div>
                     <h3 class="emp-card-title">Colegios</h3>
-                    <p class="emp-card-desc">Cambiamos la relación de los estudiantes con las matemáticas. Una charla
-                        que demuestra que los números son creativos, sorprendentes y están en todas partes.</p>
+                    <p class="emp-card-desc">Despierta vocaciones científicas desde temprano. Rompemos el mito de que
+                        las matemáticas son aburridas o imposibles, mostrando su lado más divertido y sorprendente.</p>
                     <ul class="emp-card-list">
-                        <li><i class="fa-solid fa-check"></i> Diseñado para bachillerato</li>
-                        <li><i class="fa-solid fa-check"></i> Conecta con el currículo escolar</li>
-                        <li><i class="fa-solid fa-check"></i> Aumenta la motivación matemática</li>
-                        <li><i class="fa-solid fa-check"></i> Sin jerga técnica, 100% accesible</li>
+                        <li><i class="fa-solid fa-check"></i> Diseñado para bachillerato (grados 9° a 11°)</li>
+                        <li><i class="fa-solid fa-check"></i> Enfoque en curiosidad, no en fórmulas</li>
+                        <li><i class="fa-solid fa-check"></i> Juegos y retos en vivo</li>
+                        <li><i class="fa-solid fa-check"></i> Inspiración vocacional STEM</li>
                     </ul>
-                    <div class="emp-card-price">
-                        <span class="emp-price-label">Desde</span>
-                        <span class="emp-price-value">COP 200.000</span>
-                    </div>
                 </div>
 
             </div>
         </section>
 
-        <!-- ====== CÓMO FUNCIONA ====== -->
+        <!-- ====== FORMATOS DE CHARLA ====== -->
         <hr>
-        <h2 class="title">¿Cómo funciona?</h2>
+        <h2 class="title">Formatos disponibles</h2>
         <hr>
 
-        <section class="emp-steps-section displayColumn">
-            <div class="emp-steps-grid">
-                <div class="emp-step reveal">
-                    <div class="emp-step-number">01</div>
-                    <h4 class="emp-step-title">Nos contactas</h4>
-                    <p class="emp-step-desc">Completa el formulario de abajo o escríbenos directamente. Cuéntanos tu
-                        organización, el número de personas y la fecha tentativa.</p>
+        <section class="emp-formats-section">
+            <div class="emp-formats-grid">
+
+                <div class="emp-format-item reveal">
+                    <div class="emp-format-badge">Más popular</div>
+                    <h3 class="emp-format-name">Charla interactiva</h3>
+                    <p class="emp-format-time"><i class="fa-regular fa-clock me-1"></i>60 a 90 minutos</p>
+                    <p class="emp-format-desc">Un ponente, una historia fascinante y participación activa del público
+                        con trivias y retos en tiempo real.</p>
                 </div>
-                <div class="emp-step-arrow">→</div>
-                <div class="emp-step reveal">
-                    <div class="emp-step-number">02</div>
-                    <h4 class="emp-step-title">Diseñamos la charla</h4>
-                    <p class="emp-step-desc">Adaptamos el tema y el formato a tu audiencia. En 48 horas te enviamos una
-                        propuesta personalizada.</p>
+
+                <div class="emp-format-item reveal">
+                    <div class="emp-format-badge">Recomendado empresas</div>
+                    <h3 class="emp-format-name">Taller de retos y juegos</h3>
+                    <p class="emp-format-time"><i class="fa-regular fa-clock me-1"></i>90 a 120 minutos</p>
+                    <p class="emp-format-desc">Equipos compitiendo con los juegos de lógica de Math&Beer. Estrategia,
+                        colaboración y resolución de problemas bajo presión.</p>
                 </div>
-                <div class="emp-step-arrow">→</div>
-                <div class="emp-step reveal">
-                    <div class="emp-step-number">03</div>
-                    <h4 class="emp-step-title">¡Brindamos juntos!</h4>
-                    <p class="emp-step-desc">Llegamos, montamos la experiencia y dejamos a tu equipo con la mente activa
-                        y con ganas de más matemáticas.</p>
+
+                <div class="emp-format-item reveal">
+                    <div class="emp-format-badge">Eventos especiales</div>
+                    <h3 class="emp-format-name">Math & Beer Night</h3>
+                    <p class="emp-format-time"><i class="fa-regular fa-clock me-1"></i>2 a 3 horas</p>
+                    <p class="emp-format-desc">La experiencia completa en el espacio de tu organización o un lugar
+                        aliado. Varias charlas cortas, juegos, networking y ambiente relajado.</p>
                 </div>
+
             </div>
         </section>
 
-        <!-- ====== TEMAS DISPONIBLES ====== -->
-        <hr>
-        <h2 class="title">Temas disponibles</h2>
-        <hr>
-
-        <section class="emp-topics-section displayColumn">
-            <div class="emp-topics-grid">
-                <div class="emp-topic-pill reveal"><span>🎲</span> Probabilidad & Toma de Decisiones</div>
-                <div class="emp-topic-pill reveal"><span>🔐</span> Criptografía & Seguridad</div>
-                <div class="emp-topic-pill reveal"><span>🤖</span> Matemáticas detrás de la IA</div>
-                <div class="emp-topic-pill reveal"><span>🎵</span> Música & Matemáticas</div>
-                <div class="emp-topic-pill reveal"><span>🌐</span> Topología en la vida real</div>
-                <div class="emp-topic-pill reveal"><span>📊</span> Estadística que no miente</div>
-                <div class="emp-topic-pill reveal"><span>♟️</span> Teoría de Juegos</div>
-                <div class="emp-topic-pill reveal"><span>🌀</span> El infinito y sus paradojas</div>
-                <div class="emp-topic-pill reveal"><span>✨</span> Tema personalizado</div>
+        <!-- ====== NÚMEROS / IMPACTO ====== -->
+        <section class="emp-stats-strip">
+            <div class="emp-stat">
+                <span class="emp-stat-num">+40</span>
+                <span class="emp-stat-label">Charlas realizadas</span>
+            </div>
+            <div class="emp-stat">
+                <span class="emp-stat-num">+1,500</span>
+                <span class="emp-stat-label">Asistentes impactados</span>
+            </div>
+            <div class="emp-stat">
+                <span class="emp-stat-num">4.9 / 5</span>
+                <span class="emp-stat-label">Calificación promedio</span>
+            </div>
+            <div class="emp-stat">
+                <span class="emp-stat-num">100%</span>
+                <span class="emp-stat-label">Ganas de repetir</span>
             </div>
         </section>
 
         <!-- ====== FORMULARIO DE CONTACTO ====== -->
         <hr id="contacto">
-        <h2 class="title">Solicitar información</h2>
+        <h2 class="title">Hablemos</h2>
         <hr>
 
-        <section class="emp-form-section displayColumn">
-            <p class="emp-form-intro">Escríbenos y te respondemos en menos de 48 horas.</p>
-            <form class="emp-form myBg myBorder rounded-4 p-4" id="form-empresas" action="mailto:mate.et.cerv@gmail.com"
-                method="get">
+        <section class="emp-contact-section displayColumn">
+            <p class="emp-contact-sub">Cuéntanos sobre tu organización y diseñamos una propuesta a la medida.</p>
+
+            <form class="emp-form" id="emp-contact-form"
+                action="mailto:mate.et.cerv@gmail.com?subject=Propuesta%20Math%20%26%20Beer%20para%20Instituci%C3%B3n"
+                method="POST" enctype="text/plain">
                 <div class="emp-form-row">
                     <div class="emp-form-group">
                         <label for="emp-nombre" class="emp-label">Nombre completo *</label>
@@ -287,12 +212,9 @@
         </section>
 
     </main>
+{% endblock %}
 
-    <script src="../static/scripts/utils.js"></script>
-    <script src="../static/scripts/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
+{% block extra_js %}
     <script>
         // Scroll reveal para la página de empresas
         const reveals = document.querySelectorAll('.reveal');
@@ -301,10 +223,4 @@
         }, { threshold: 0.1 });
         reveals.forEach(r => observer.observe(r));
     </script>
-    <!-- Mantenemos el contenedor visible para Google Translate -->
-    <div id="google_translate_element" style="display:none;"></div>
-
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>
-
-</html>
+{% endblock %}

@@ -599,7 +599,7 @@
             const formData = new FormData(productForm);
             const productId = document.getElementById('admin-product-id').value;
             const payload = {
-                userid: localStorage.getItem('userid'),
+                userid: localStorage.getItem('userId'),
                 name: formData.get('name')?.toString().trim(),
                 description: formData.get('description')?.toString().trim(),
                 category: formData.get('category')?.toString().trim(),
@@ -691,7 +691,7 @@
 
     window.deleteAdminProduct = async function (id) {
         if (!confirm('¿Estás seguro de que deseas desactivar este producto? Ya no aparecerá en la tienda.')) return;
-        const userid = localStorage.getItem('userid');
+        const userid = localStorage.getItem('userId');
         try {
             const res = await fetch(`/api/admin/products/${id}`, {
                 method: 'DELETE',
@@ -713,14 +713,14 @@
 
     // ── Admin: Load Orders ─────────────────────────────
     async function loadAdminOrders(statusFilter = 'all') {
-        const userid = localStorage.getItem('userid');
+        const userid = localStorage.getItem('userId');
         if (!userid) return;
 
         try {
             const res = await fetch(`/api/admin/orders?userid=${userid}`);
             if (res.status === 403) return;
             const data = await res.json();
-            renderAdminOrders(data.orders || [], statusFilter);
+            renderAdminOrders(data || [], statusFilter);
         } catch (err) {
             console.error('Error loading admin orders:', err);
         }
@@ -791,7 +791,7 @@
             select.addEventListener('change', async function () {
                 const orderId = this.dataset.orderId;
                 const newStatus = this.value;
-                const userid = localStorage.getItem('userid');
+                const userid = localStorage.getItem('userId');
 
                 try {
                     const res = await fetch(`/api/admin/orders/${orderId}/status`, {
@@ -815,7 +815,7 @@
 
     // ── Check if user is admin ─────────────────────────
     async function checkAdmin() {
-        const userid = localStorage.getItem('userid');
+        const userid = localStorage.getItem('userId');
         if (!userid) return;
 
         try {

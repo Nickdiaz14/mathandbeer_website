@@ -1,35 +1,24 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-WXZ6G9P3');</script>
-    <!-- End Google Tag Manager -->
+{% extends "base.html" %}
+
+{% set hide_navbar = true %}
+
+{% block title %}Asistencia | Math & Beer{% endblock %}
+{% block meta_description %}Formulario de asistencia para Math & Beer{% endblock %}
+
+{% block extra_head %}
+    <meta name="robots" content="noindex">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
-    <meta name="google-site-verification" content="prMhJRzxbzY-OPF8pAc3w72jFMuNqcPC9nxMkH_9rQU" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/webp" href="../static/images/logos/favicon.webp">
-    <link rel="stylesheet" href="../static/css/main.css">
-    <link rel="stylesheet" href="../static/css/menu.css">
-    <link rel="stylesheet" href="../static/css/forms.css">
-    <title class="notranslate">Asistencia | Math & Beer</title>
-    <meta name="description" content="Formulario de asistencia para Math & Beer">
-    <meta name="robots" content="noindex">
-</head>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+{% endblock %}
 
-<body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXZ6G9P3"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+{% endblock %}
 
-    <main class="forms-main-container">
+{% block content %}
+<main class="forms-main-container">
         <!-- Overlay para confirmación -->
         <div id="overlay">
             <div id="overlay-content-box" class="overlay-modal">
@@ -377,8 +366,8 @@
             </form>
         </div>
     </main>
+{% endblock %}
 
-    <script src="../static/scripts/utils.js"></script>
-    <script src="../static/scripts/forms.js"></script>
-</body>
-</html>
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='scripts/forms.js') }}"></script>
+{% endblock %}

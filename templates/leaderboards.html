@@ -1,91 +1,22 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-WXZ6G9P3');</script>
-    <!-- End Google Tag Manager -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <meta name="google-site-verification" content="prMhJRzxbzY-OPF8pAc3w72jFMuNqcPC9nxMkH_9rQU" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/main.css">
-    <link rel="stylesheet" href="../static/css/about.css">
-    <link rel="stylesheet" href="../static/css/leaderboards.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/1eceecb241.js" crossorigin="anonymous" async></script>
-    <link rel="icon" type="image/webp" href="../static/images/logos/favicon.webp">
-    <title class="notranslate">Tabla de posiciones | Math and Beer</title>
-    <meta name="description"
-        content="Tabla de posiciones de los juegos de Math and Beer. Compite con tus amigos y demuestra quién es el mejor.">
+{% set active_page = 'leaderboards' %}
+
+{% block title %}Tabla de posiciones | Math and Beer{% endblock %}
+{% block meta_description %}Tabla de posiciones de los juegos de Math and Beer. Compite con tus amigos y demuestra quién es el mejor.{% endblock %}
+
+{% block extra_head %}
     <meta name="robots" content="noindex, nofollow">
-</head>
+{% endblock %}
 
-<body data-game="{{ game }}" data-records="{{ records }}">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXZ6G9P3"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <header>
-        <nav class="navbar navbar-expand-lg menu">
-            <div class="container-fluid">
-                <button onclick="window.location.href='/'" class="navbar-brand">
-                    <div class="logo"></div>
-                </button>
-                <button class="navbar-toggler menuHamb" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <i class="fa-solid fa-bars fa-2xl" style="color: #b6bde7;"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="/profile" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-user"></i> Mi Perfil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/menu_games" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-gamepad"></i> Juegos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/daily" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-crosshairs"></i> Reto Diario</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/leaderboards" class="nav-link active" aria-current="page" id="nav-active"><i
-                                    class="fa-solid fa-ranking-star"></i> Rankings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/store" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-bag-shopping"></i> Tienda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/" class="nav-link active" aria-current="page"><i
-                                    class="fa-solid fa-people-group"></i> Sobre Nosotros</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-language"></i> Idioma</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('es')">Español</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('en')">Inglés</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('fr')">Francés</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('de')">Alemán</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="setLanguage('nl')">Holandés</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaderboards.css') }}">
+{% endblock %}
+
+{% block body_attrs %}data-game="{{ game }}" data-records="{{ records }}"{% endblock %}
+
+{% block content %}
     <main>
         <!-- <div id="countdown-overlay">
             <h2 class="fs-3">Próximamente disponible 🚧 <br>¡Vuelve pronto!</h2>
@@ -162,16 +93,8 @@
             </table>
         </div>
     </main>
-    <script src="../static/scripts/utils.js"></script>
-    <script src="../static/scripts/main.js"></script>
-    <script src="../static/scripts/leaderboards.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-    <!-- Mantenemos el contenedor visible para Google Translate -->
-    <div id="google_translate_element" style="display:none;"></div>
+{% endblock %}
 
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>
-
-</html>
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='scripts/leaderboards.js') }}"></script>
+{% endblock %}
